@@ -1,0 +1,4 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+/.metadata/
+/sapnil_machinelearning/sapnil_machinelearning.egg-info/
+/sapnil_machinelearning/build/

