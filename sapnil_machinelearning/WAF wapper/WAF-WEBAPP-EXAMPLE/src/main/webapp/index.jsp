@@ -20,7 +20,7 @@
 
        
     </head>
-    <body onload="setinfo()">
+    <body>
         <script type="text/javascript">
             
             $(document).ready(function() {
@@ -29,7 +29,7 @@
                   
                     var user_name = $("#user_name").val();
                     var password = $("#password").val();
-                   
+                    console.log("user name "+user_name+"password "+password);
 
                     $.post('Web_app_servlet', {'user_name': user_name, 'password': password}, function(responseJson) {
 
@@ -80,7 +80,7 @@
                     <p><input type="text" name="user_name" id="user_name" value="" placeholder="Username"></p>
                     <p><input type="password" name="password" id="password" value="" placeholder="Password"></p>
 
-                    <p class="submit"><input type="button" name="login" value="Login" onclick="submitform()"></p>
+                    <p class="submit"><input type="button" id="submit" name="login" value="Login"></p>
 
                 </div>
 
