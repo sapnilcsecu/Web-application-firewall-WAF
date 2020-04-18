@@ -1,4 +1,4 @@
-h2><strong> Web-application-firewall-WAF</strong></h2>
+<h2><strong> Web-application-firewall-WAF</strong></h2>
 
 <p>This is a Web application firewall(WAF)&nbsp;. Present it use train model for filtering web parameter against the different type of web vulnerability &nbsp;</p>
 <p><strong>Release</strong></p>
