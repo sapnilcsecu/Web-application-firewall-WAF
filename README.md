@@ -22,6 +22,6 @@
 <p><strong>Windows installation</strong></p>
 <p>After cloning reprository go to sapnil_machinelearning folder from commad line.Then press the following commad from commad prompt</p>
 <ul>
-<li>pip install dist/dokr-0.1-py3-none-any.whl</li>
+<li>pip install dist/sapnil_machinelearning-1.0.0-py3-none-any.whl</li>
 </ul>
 <p>&nbsp;</p>
