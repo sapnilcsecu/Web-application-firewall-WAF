@@ -30,7 +30,7 @@ def train_model(input_dataset,test_dataset,vocabulary_path,payload_col_name,payl
     train_model_ob=multi_nativebayes_train(model_input)
   
     
-    with open(str(vocabulary_path)+'/trainmodel', 'wb') as picklefile:  
+    with open(str(vocabulary_path)+'trainmodel', 'wb') as picklefile:  
         pickle.dump(train_model_ob,picklefile)
    
     

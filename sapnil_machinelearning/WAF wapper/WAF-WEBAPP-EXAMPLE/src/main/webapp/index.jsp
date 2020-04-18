@@ -25,6 +25,30 @@
             
             $(document).ready(function() {
 
+                $("#train_model").click(function(event) {
+                  
+                   
+
+                    $.post('wab_trainmodel_servlet', function(responseJson) {
+
+                        if (responseJson.Response != null) {
+
+
+                            if (responseJson.Response != null) {
+
+                                alert("" + responseJson.Response);
+                                location.reload();
+                            }
+                            //reset();
+                            // window.location.href = "Buy_boucher_report.jsp?voucher_no=" + responseJson.voucher_no + "&total_in_tk=" + responseJson.total_in_tk + "&tra_Date=" + responseJson.tra_Date;
+                            //window.location.href = "Buy_boucher_report.jsp?voucher_no=15";
+
+                        }
+                    });
+
+                });
+                
+                
                 $("#submit").click(function(event) {
                   
                     var user_name = $("#user_name").val();
@@ -80,7 +104,7 @@
                     <p><input type="text" name="user_name" id="user_name" value="" placeholder="Username"></p>
                     <p><input type="password" name="password" id="password" value="" placeholder="Password"></p>
 
-                    <p class="submit"><input type="button" id="submit" name="login" value="Login"></p>
+                    <p class="submit"><input type="button" id="submit" name="login" value="Login"><input type="button" id="train_model" name="train" value="train"></p>
 
                 </div>
 

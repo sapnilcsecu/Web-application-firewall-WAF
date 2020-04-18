@@ -5,8 +5,6 @@
  */
 package com.sapnil.machinelearning.waf;
 
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.alibaba.fastjson.JSONArray;
 import java.io.File;
@@ -21,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.apache.commons.io.IOUtils;
+
 /**
  *
  * @author Nasir(programmer)
@@ -40,50 +39,39 @@ public class Web_app_servlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-             JSONObject jsonObject = new JSONObject();
+            JSONObject jsonObject = new JSONObject();
             String user_name = request.getParameter("user_name");
             String password = request.getParameter("password");
-          
+
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
-            
-             HttpSession session = request.getSession(true);
-             String context_path=session.getServletContext().getRealPath("/");
-             
-             //System.out.println("context_path is "+context_path.replace("\\", "/"));
-            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('"+context_path.replace(File.separator, "/")+"','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
+            HttpSession session = request.getSession(true);
+            String context_path = session.getServletContext().getRealPath("/");
+
+            //System.out.println("context_path is "+context_path.replace("\\", "/"));
+            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + user_name + "');print(json.dumps([str(live_verna_detection)]))"});
             p.waitFor();
 
-           String stdout = IOUtils.toString(p.getInputStream());
-           JSONArray syspathRaw = JSONArray.parseArray(stdout);
+            String stdout = IOUtils.toString(p.getInputStream());
+            JSONArray syspathRaw = JSONArray.parseArray(stdout);
+            String versify_result1 = "";
             for (int i = 0; i < syspathRaw.size(); i++) {
-                String path = syspathRaw.getString(i);
-                System.out.println("the param verify result " + path);
-               
+                versify_result1 = syspathRaw.getString(i);
+
             }
             //System.out.println("the json is "+stdout);
-            
-            Process p1 = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('"+context_path.replace(File.separator, "/")+"','"+password+"');print(json.dumps([str(live_verna_detection)]))"});
+
+            Process p1 = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + password + "');print(json.dumps([str(live_verna_detection)]))"});
             p1.waitFor();
 
-           String stdout1 = IOUtils.toString(p1.getInputStream());
-           
-           JSONArray syspathRaw1 = JSONArray.parseArray(stdout1);
+            String stdout1 = IOUtils.toString(p1.getInputStream());
+            String versify_result2 = "";
+            JSONArray syspathRaw1 = JSONArray.parseArray(stdout1);
             for (int i = 0; i < syspathRaw1.size(); i++) {
-                String path = syspathRaw1.getString(i);
-                System.out.println("the param verify result " + path);
-               
+                versify_result2 = syspathRaw1.getString(i);
+
             }
-           
-            //System.out.println("the json is "+stdout1);
-            
-          /*  JSONArray syspathRaw = JSONArray.parseArray(stdout);
-            for (int i = 0; i < syspathRaw.size(); i++) {
-                String path = syspathRaw.getString(i);
-                System.out.println("the accuracy is " + path);
-               
-            }*/
-            
-            jsonObject.put("Response", "complaint is taken");
+
+            jsonObject.put("Response", "web param verify is completed");
 
             ObjectMapper mapper = new ObjectMapper();
             response.setContentType("application/json");
