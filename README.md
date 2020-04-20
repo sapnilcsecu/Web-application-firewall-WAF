@@ -4,7 +4,7 @@
 <p><strong>Release</strong></p>
 <p><strong>Release 1.0:</strong></p>
 <ul>
-<li>in release 1.0 support supervised machine learning for text classification with the multinomial native bayes algorithom.</li>
+<li>in release 1.0 support supervised machine learning for text classification with the multinomial native bayes algorithm.</li>
 <li>It support only CVS file as a structured input data for supervised machine learning.</li>
 <li>It support only&nbsp;CountVectorizer<strong>&nbsp;</strong>feature engineering.CountVectorizer works on Terms Frequency, i.e. counting the occurrences of tokens and building a sparse matrix of documents x tokens.</li>
 <li>in release 1.0 it support only sql injection and xss(cross script attack) filter</li>
