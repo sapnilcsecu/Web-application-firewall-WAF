@@ -5,7 +5,7 @@
  */
 package com.sapnil.machinelearning.waf;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.alibaba.fastjson.JSONArray;
 import java.io.File;
 import java.io.IOException;
@@ -73,9 +73,13 @@ public class Web_app_servlet extends HttpServlet {
 
             jsonObject.put("Response", "web param verify is completed");
 
-            ObjectMapper mapper = new ObjectMapper();
-            response.setContentType("application/json");
-            mapper.writeValue(response.getOutputStream(), jsonObject.toMap());
+            /* ObjectMapper mapper = new ObjectMapper();
+             response.setContentType("application/json");
+             mapper.writeValue(response.getOutputStream(), jsonObject.toMap());*/
+            PrintWriter out = response.getWriter();
+// Assuming your json object is **jsonObject**, perform the following, it will return your json object  
+            out.print(jsonObject);
+            out.flush();
 
         } catch (Exception ex) {
             ex.printStackTrace();

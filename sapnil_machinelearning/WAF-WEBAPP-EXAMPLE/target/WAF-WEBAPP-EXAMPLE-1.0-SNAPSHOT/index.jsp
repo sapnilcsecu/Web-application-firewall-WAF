@@ -21,101 +21,73 @@
        
     </head>
     <body>
-        <script type="text/javascript">
-            
-            $(document).ready(function() {
-
-                $("#train_model").click(function(event) {
-                  
-                   
-
-                    $.post('wab_trainmodel_servlet', function(responseJson) {
-
-                        if (responseJson.Response != null) {
-
-
-                            if (responseJson.Response != null) {
-
-                                alert("" + responseJson.Response);
-                                location.reload();
-                            }
-                            //reset();
-                            // window.location.href = "Buy_boucher_report.jsp?voucher_no=" + responseJson.voucher_no + "&total_in_tk=" + responseJson.total_in_tk + "&tra_Date=" + responseJson.tra_Date;
-                            //window.location.href = "Buy_boucher_report.jsp?voucher_no=15";
-
-                        }
-                    });
-
-                });
-                
-                
-                $("#submit").click(function(event) {
-                  
-                    var user_name = $("#user_name").val();
-                    var password = $("#password").val();
-                    console.log("user name "+user_name+"password "+password);
-
-                    $.post('Web_app_servlet', {'user_name': user_name, 'password': password}, function(responseJson) {
-
-                        if (responseJson.Response != null) {
-
-
-                            if (responseJson.Response != null) {
-
-                                alert("" + responseJson.Response);
-                                location.reload();
-                            }
-                            //reset();
-                            // window.location.href = "Buy_boucher_report.jsp?voucher_no=" + responseJson.voucher_no + "&total_in_tk=" + responseJson.total_in_tk + "&tra_Date=" + responseJson.tra_Date;
-                            //window.location.href = "Buy_boucher_report.jsp?voucher_no=15";
-
-                        }
-                    });
-
-                });
-
-            });
-            
-        </script>
-
-
-
         <div id="wrapper">
 
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <!--------------------------------------------------------header section---------------------------------------------------------->
 
-                <jsp:include page="login_header.jsp"/>
+                <jsp:include page="header.jsp"/>
 
 
 
                 <!--------------------------------------------------------header section----------------------------------------------------------->
 
+
+
+                <!----------------------------------------------------Side menu bar section--------------------------------------------------------->
+                <jsp:include page="SideMenu.jsp"/>
+
+
+
             </nav>
-            <!-- Navigation -->
 
 
-            <section class="container"> 
-                <div class="login">
-                    <h1>Login to Rupali chata</h1>
-                    <!-- <form method="post" action="index.html"> -->
-                    <p id="login_satus"></p>
-                    <p><input type="text" name="user_name" id="user_name" value="" placeholder="Username"></p>
-                    <p><input type="password" name="password" id="password" value="" placeholder="Password"></p>
+            <!--Side menu bar section  -->
 
-                    <p class="submit"><input type="button" id="submit" name="login" value="Login"><input type="button" id="train_model" name="train" value="train"></p>
+
+
+
+
+
+            <!-- page content -->
+
+            <div id="page-wrapper">
+
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1 class="page-header">
+                                Form example
+                            </h1>
+
+                        </div>
+
+                    </div>
+                    <!-- /.row -->
+
+                    <div class="row">
+                        <div class="col-lg-6">
+
+
+                           
+
+                        </div>
+                    </div>
+
 
                 </div>
+                <!-- /#page-wrapper -->
+                <!-- page content -->
+
+                <div id="wait" style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;"><img src='loader.gif' width="64" height="64" /><br>Loading..</div>
 
 
-            </section>
 
 
-
-
-        </div>
-        <!-- /#wrapper -->
+            </div>
 
     </body>
 </html>

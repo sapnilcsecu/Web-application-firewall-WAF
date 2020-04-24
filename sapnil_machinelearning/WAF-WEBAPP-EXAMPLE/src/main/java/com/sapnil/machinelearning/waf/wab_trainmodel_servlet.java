@@ -6,7 +6,7 @@
 package com.sapnil.machinelearning.waf;
 
 import com.alibaba.fastjson.JSONArray;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,9 +58,13 @@ public class wab_trainmodel_servlet extends HttpServlet {
 
             jsonObject.put("Response", "training process is completed");
 
-            ObjectMapper mapper = new ObjectMapper();
-            response.setContentType("application/json");
-            mapper.writeValue(response.getOutputStream(), jsonObject.toMap());
+            /*ObjectMapper mapper = new ObjectMapper();
+             response.setContentType("application/json");
+             mapper.writeValue(response.getOutputStream(), jsonObject.toMap());*/
+            PrintWriter out = response.getWriter();
+// Assuming your json object is **jsonObject**, perform the following, it will return your json object  
+            out.print(jsonObject);
+            out.flush();
 
         } catch (Exception ex) {
             ex.printStackTrace();
