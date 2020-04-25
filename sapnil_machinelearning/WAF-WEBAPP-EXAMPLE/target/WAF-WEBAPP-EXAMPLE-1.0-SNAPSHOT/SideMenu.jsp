@@ -27,46 +27,16 @@
             <ul class="nav navbar-nav side-nav">
 
                 <li>
-                    <a href="javascript:;" data-toggle="collapse" data-target="#demo">Leave Encashment<i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="demo" class="collapse">
-                        <li>
-                            <a href="#">Leave encashment application</a>
-                        </li>
-
-                        <li>
-                            <a href="#">PRL leave application</a>
-                        </li>
-
-                        <li>
-                            <a href="#">Profile info</a>
-                        </li>
-                        <li>
-                            <a href="#">Forward employee application</a>
-                        </li>
-                        <li>
-                            <a href="#">Employee leave info</a>
-                        </li>
-                        <li>
-                            <a href="#">Employee testimonial</a>
-                        </li>
-                         <li>
-                            <a href="#">Disciplinary Report</a>
-                        </li>
-                        <li>
-                            <a href="#">Loan Info</a>
-                        </li>
-                         <li>
-                            <a href="#">Release letter</a>
-                        </li>
-                    </ul>
+                    <a href="index.jsp" >Form demo</a>
+                    
                 </li>
                 
                  <li>
-                    <a href="javascript:;" data-toggle="collapse">GPF/CPF<i class="fa fa-fw fa-caret-down"></i></a>
+                    <a href="train_model.jsp" >train model</a>
                    
                 </li>
                 <li>
-                    <a href="javascript:;" data-toggle="collapse">Final Benefit<i class="fa fa-fw fa-caret-down"></i></a>
+                    <a href="javascript:;" data-toggle="collapse">live testing</a>
                    
                 </li>
 

@@ -8,6 +8,10 @@
         <servlet-name>wab_trainmodel_servlet</servlet-name>
         <servlet-class>com.sapnil.machinelearning.waf.wab_trainmodel_servlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UploadFile</servlet-name>
+        <servlet-class>com.sapnil.machinelearning.waf.UploadFile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Web_app_servlet</servlet-name>
         <url-pattern>/Web_app_servlet</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>wab_trainmodel_servlet</servlet-name>
         <url-pattern>/wab_trainmodel_servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadFile</servlet-name>
+        <url-pattern>/UploadFile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

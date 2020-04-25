@@ -79,10 +79,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Retirement Benefit</a>
+            <a class="navbar-brand" href="#">WAF WEB DEMO</a>
         </div>
         <!-- Top Menu Items -->
-        <ul class="nav navbar-right top-nav">
+        <!--<ul class="nav navbar-right top-nav">
             <li class="dropdown">
                 <a id="emp_name" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -98,11 +98,8 @@
                 </ul>
             </li>
 
-            <!--  <li class="dropdown">
-                  <a href="login.jsp">Logout</a>
-  
-              </li>-->
-        </ul>
+          
+        </ul>-->
 
 
 

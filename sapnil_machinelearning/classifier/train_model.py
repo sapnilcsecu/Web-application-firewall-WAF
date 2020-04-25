@@ -19,6 +19,7 @@ from classifier.multinomial_nativebayes import live_multi_nativebayes_verna_pred
 import pickle
 
 #this function take separate trainset,testdataset as input
+'''
 def train_model(input_dataset,test_dataset,vocabulary_path,payload_col_name,payload_label,test_payload_col_name,test_payload_label):
     trainDF = load_cvs_dataset(input_dataset)
     
@@ -46,6 +47,32 @@ def train_model(input_dataset,test_dataset,vocabulary_path,payload_col_name,payl
    
     
     return accuracy_score(txt_label1,final_doc_class_label) 
+	
+'''
+def train_model(input_dataset,vocabulary_path,payload_col_name,payload_label,mode):
+    
+    trainDF = load_cvs_dataset(input_dataset)
+
+    txt_label = trainDF[payload_label]
+    txt_text = trainDF[payload_col_name]
+    
+    txt_text, testcopy, txt_label, testlabelcopy=splitDataset(txt_text,txt_label,0.20)
+  
+    model_input=count_ver_word_fit(txt_text,txt_label)
+    train_model_ob=multi_nativebayes_train(model_input)
+  
+    if(mode=='write'):
+        with open(str(vocabulary_path)+'trainmodel', 'wb') as picklefile:  
+            pickle.dump(train_model_ob,picklefile)
+    elif(mode=='append'):
+        with open(str(vocabulary_path)+'trainmodel', 'a+') as picklefile:  
+            pickle.dump(train_model_ob,picklefile)
+    
+    final_doc_class_label=multi_nativebayes_verna_predict(train_model_ob,testcopy)
+   
+    
+    return accuracy_score(testlabelcopy,final_doc_class_label) 
+	
 
 def live_verna_detection(vocabulary_path,web_param):
     with open(str(vocabulary_path)+'trainmodel', 'rb') as training_model:  

@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-
+        <!-- Bootstrap basic blog -->
         <!-- Bootstrap Core JavaScript -->
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -14,11 +14,14 @@
 
         <!-- Bootstrap Core CSS-->
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/loginstyle.css">
         <!-- Bootstrap Core CSS-->
         <!-- Bootstrap basic blog -->
 
-       
+        <!-- Template css-->
+        <link href="css/sb-admin.css" rel="stylesheet">
+        <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <!-- Template css-->
+
     </head>
     <body>
         <div id="wrapper">
@@ -70,9 +73,54 @@
 
                     <div class="row">
                         <div class="col-lg-6">
+                            <table id="myTable">
+                                <tr class="header">
+                                    <td style="width:40%;">
+
+                                        <div class="form-group">
+
+                                            <label>Name</label>
+                                            <input id="emp_name1"  class="form-control" >
+
+                                        </div>
+                                        <div class="form-group">
+
+                                            <label>Registration no</label>
+                                            <input id="reg"  class="form-control" >
+
+                                        </div>
+                                        <div class="form-group">
+
+                                            <label>Date</label>
+                                            <!-- <input id="Date"  class="form-control datepicker"  placeholder="DD-MM-YYYY">-->
+                                            <input id="Date"  class="form-control" >
+                                        </div>
+                                        <div class="form-group">
+
+                                            <label>Mobile</label>
+                                            <input id="emp_mobile"  class="form-control" >
+
+                                        </div>
+                                       
 
 
-                           
+                                       
+
+
+                                    </td>
+
+                                    
+
+                                </tr>
+
+                            </table>
+                            <datalist id="place_of_posting_list"></datalist>
+
+
+
+                            <button id="submit" type="button" class="btn btn-default">Submit Button</button>
+
+
 
                         </div>
                     </div>
