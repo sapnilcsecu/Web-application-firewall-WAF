@@ -17,8 +17,8 @@
         <!-- Bootstrap Core JavaScript -->
 
         <!--File upload -->
-        <script src="js/jquery-1.8.2.js"></script>
-        <script src="js/jquery.ajaxfileupload.js"></script>
+        <!--<script src="js/jquery-1.8.2.js"></script>
+        <script src="js/jquery.ajaxfileupload.js"></script>-->
         <!--File upload -->
 
         <!-- Bootstrap Core CSS-->
@@ -32,39 +32,64 @@
         <!-- Template css-->
 
         <script type="text/javascript">
-            $(document).ajaxStart(function () {
-                $("#wait").css("display", "block");
-            });
-            $(document).ajaxComplete(function () {
-                $("#wait").css("display", "none");
-            });
-
-
             $(document).ready(function () {
+                function bs_input_file() {
+                    $(".input-file").before(
+                            function () {
+                                if (!$(this).prev().hasClass('input-ghost')) {
+                                    var element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0'>");
+                                    element.attr("name", $(this).attr("name"));
+                                    element.change(function () {
+                                        element.next(element).find('input').val((element.val()).split('\\').pop());
+                                    });
+                                    $(this).find("button.btn-choose").click(function () {
+                                        element.click();
+                                    });
+                                    $(this).find("button.btn-reset").click(function () {
+                                        element.val(null);
+                                        $(this).parents(".input-file").find('input').val('');
+                                    });
+                                    $(this).find('input').css("cursor", "pointer");
+                                    $(this).find('input').mousedown(function () {
+                                        $(this).parents('.input-file').prev().click();
+                                        return false;
+                                    });
+                                    return element;
+                                }
+                            }
+                    );
+                }
 
-                $('input[type="file"]').ajaxfileupload({
-                    'action': 'UploadFile',
-                    'onComplete': function (response) {
-                        /* $('#upload').hide();
-                         $('#message').show();*/
-                        file_name = JSON.stringify(response.filename);
-                        console.log("file name is333333333 " + file_name);
-                        var statusVal = JSON.stringify(response.status);
+                bs_input_file();
 
-                        if (statusVal == "false")
-                        {
-                            $("#message").html("<font color='red'>" + JSON.stringify(response.message) + " </font>");
+                $("#uploadBtn").on("click", function () {
+                    var url = "UploadFile";
+                    var form = $("#sampleUploadFrm")[0];
+                    var data = new FormData(form);
+                    /* var data = {};
+                     data['key1'] = 'value1';
+                     data['key2'] = 'value2'; */
+                    $.ajax({
+                        type: "POST",
+                        encType: "multipart/form-data",
+                        url: url,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        success: function (msg) {
+                            var response = JSON.parse(msg);
+                            var status = response.status;
+                            if (status == 1) {
+                                alert("File has been uploaded successfully");
+                            } else {
+                                alert("Couldn't upload file");
+                            }
+                        },
+                        error: function (msg) {
+                            alert("Couldn't upload file");
                         }
-                        if (statusVal == "true")
-                        {
-                            $("#message").html("<font color='green'>" + JSON.stringify(response.message) + " </font>");
-                            document.getElementById("pass_num").focus();
-                        }
-                    }
-                    /*  'onStart': function() {
-                     $('#upload').show();
-                     $('#message').hide();
-                     }*/
+                    });
                 });
             });
         </script>
@@ -122,12 +147,22 @@
                         <div class="form-group">
 
                             <label>New train dataset</label>
-
-                            <input type="file" name="file" /><br />
+                            <!--
+                            <input type="file" name="file" accept=".csv" /><br />
                             <div id="upload" style="display: none;">Uploading..</div>
                             <div id="message"></div>
 
+                            -->
+                            <form id="sampleUploadFrm" method="POST" action="#" enctype="multipart/form-data">
+                                <!-- COMPONENT START -->
+                                <div class="form-group">
+                                    <div class="input-group input-file" name="file">
+                                        <span class="input-group-btn"><button class="btn btn-default btn-choose" type="button">Choose</button></span> <input type="text" class="form-control" placeholder='Choose a file...' />
+                                    </div>
+                                    <button type="button" class="btn btn-primary pull-right" id="uploadBtn">Submit</button>
+                                </div>
 
+                            </form>
                         </div>
 
 

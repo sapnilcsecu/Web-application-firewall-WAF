@@ -38,47 +38,68 @@ public class UploadFile extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ServletContext sc = request.getSession().getServletContext();
-        String dir = sc.getRealPath("/");
-        String name = null;
-       
-        HttpSession session = request.getSession(true);
-        System.out.println("context path is " + dir);
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-
-        // process only if its multipart content
-        if (isMultipart) {
-            // Create a factory for disk-based file items
-            FileItemFactory factory = new DiskFileItemFactory();
-
-            // Create a new file upload handler
-            ServletFileUpload upload = new ServletFileUpload(factory);
+        
+        final String UPLOAD_DIRECTORY = "C:/uploads";
+        if (ServletFileUpload.isMultipartContent(request)) {
             try {
-                // Parse the request
-                List<FileItem> multiparts = upload.parseRequest(request);
-
+                List<FileItem> multiparts = new ServletFileUpload(
+                        new DiskFileItemFactory()).parseRequest(request);
                 for (FileItem item : multiparts) {
                     if (!item.isFormField()) {
-
-                        String file_name = new File(item.getName()).getName();
-
-                        System.out.println("dir+name is " + (dir + File.separator + file_name));
-                        item.write(new File(dir + File.separator + name));
+                        File fileSaveDir = new File(UPLOAD_DIRECTORY);
+                        if (!fileSaveDir.exists()) {
+                            fileSaveDir.mkdir();
+                        }
+                        String name = new File(item.getName()).getName();
+                        item.write(new File(UPLOAD_DIRECTORY + File.separator + name));
                     }
                 }
-                session.setAttribute("filename", "" + name);
-                /*  jsonObject.put("filename", name);
-                 ObjectMapper mapper = new ObjectMapper();
-                 response.setContentType("application/json");
-                 mapper.writeValue(response.getOutputStream(), jsonObject.toMap());*/
             } catch (Exception e) {
-                e.printStackTrace();
+                // exception handling
             }
+
+            PrintWriter out = response.getWriter();
+            out.print("{\"status\":1}");
         }
+        /*ServletContext sc = request.getSession().getServletContext();
+         String dir = sc.getRealPath("/");
+         String name = null;
+       
+         HttpSession session = request.getSession(true);
+         System.out.println("context path is " + dir);
+         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+
+         // process only if its multipart content
+         if (isMultipart) {
+         // Create a factory for disk-based file items
+         FileItemFactory factory = new DiskFileItemFactory();
+
+         // Create a new file upload handler
+         ServletFileUpload upload = new ServletFileUpload(factory);
+         try {
+         // Parse the request
+         List<FileItem> multiparts = upload.parseRequest(request);
+
+         for (FileItem item : multiparts) {
+         if (!item.isFormField()) {
+
+         String file_name = new File(item.getName()).getName();
+
+         System.out.println("dir+name is " + (dir + File.separator + file_name));
+         item.write(new File(dir + file_name));
+         }
+         }
+         session.setAttribute("filename", "" + name);
+              
+         } catch (Exception e) {
+         e.printStackTrace();
+         }
+         }*/
+
+       
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
