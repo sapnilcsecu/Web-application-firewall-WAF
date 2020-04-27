@@ -65,10 +65,16 @@
                 $("#uploadBtn").on("click", function () {
                     var url = "UploadFile";
                     var form = $("#sampleUploadFrm")[0];
+                    //var data = new FormData(form);
                     var data = new FormData(form);
-                    /* var data = {};
-                     data['key1'] = 'value1';
-                     data['key2'] = 'value2'; */
+                   
+                    var payload_name = $("#payload_name").val();
+                    console.log("payload_name is "+payload_name);
+                    data.append("payload_name", payload_name);
+                    /*var data_list = {};
+                     data_list['payload_name'] = 'payload_name';
+                     data_list['payload_label'] = 'payload_name';
+                     data_list['file_data']=file_data;*/
                     $.ajax({
                         type: "POST",
                         encType: "multipart/form-data",
@@ -154,6 +160,13 @@
 
                             -->
                             <form id="sampleUploadFrm" method="POST" action="#" enctype="multipart/form-data">
+                                <div class="form-group">
+
+                                    <label>Payload name</label>
+                                    <input id="payload_name"  class="form-control"  data-multiple data-minchars="1" placeholder="Payload name">
+
+
+                                </div>
                                 <!-- COMPONENT START -->
                                 <div class="form-group">
                                     <div class="input-group input-file" name="file">

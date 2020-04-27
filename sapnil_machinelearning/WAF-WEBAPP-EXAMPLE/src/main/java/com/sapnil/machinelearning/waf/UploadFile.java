@@ -40,24 +40,32 @@ public class UploadFile extends HttpServlet {
             throws ServletException, IOException {
         
         final String UPLOAD_DIRECTORY = "C:/uploads";
+        
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
                 for (FileItem item : multiparts) {
                     if (!item.isFormField()) {
+                        System.out.println("file data ");
                         File fileSaveDir = new File(UPLOAD_DIRECTORY);
                         if (!fileSaveDir.exists()) {
                             fileSaveDir.mkdir();
                         }
                         String name = new File(item.getName()).getName();
                         item.write(new File(UPLOAD_DIRECTORY + File.separator + name));
+                    } else {
+                        String payload_name = item.getString();
+                        System.out.println("payload_name is "+payload_name);
                     }
+                    
                 }
+                
             } catch (Exception e) {
                 // exception handling
+                e.printStackTrace();
             }
-
+            
             PrintWriter out = response.getWriter();
             out.print("{\"status\":1}");
         }
@@ -95,8 +103,7 @@ public class UploadFile extends HttpServlet {
          e.printStackTrace();
          }
          }*/
-
-       
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
