@@ -32,6 +32,14 @@
         <!-- Template css-->
 
         <script type="text/javascript">
+
+            $(document).ajaxStart(function () {
+                $("#wait").css("display", "block");
+            });
+            $(document).ajaxComplete(function () {
+                $("#wait").css("display", "none");
+            });
+
             $(document).ready(function () {
                 function bs_input_file() {
                     $(".input-file").before(
@@ -67,14 +75,16 @@
                     var form = $("#sampleUploadFrm")[0];
                     //var data = new FormData(form);
                     var data = new FormData(form);
-                   
+
                     var payload_name = $("#payload_name").val();
-                    console.log("payload_name is "+payload_name);
+                    console.log("payload_name is " + payload_name);
                     data.append("payload_name", payload_name);
-                    /*var data_list = {};
-                     data_list['payload_name'] = 'payload_name';
-                     data_list['payload_label'] = 'payload_name';
-                     data_list['file_data']=file_data;*/
+                    var payload_label = $("#payload_label").val();
+                    console.log("payload_name is " + payload_label);
+                    data.append("payload_label", payload_label);
+                    var mod_of_tran = $("#mod_of_tran").val();
+                    data.append("mod_of_tran", mod_of_tran);
+                    ///mod_of_tran
                     $.ajax({
                         type: "POST",
                         encType: "multipart/form-data",
@@ -84,13 +94,16 @@
                         contentType: false,
                         data: data,
                         success: function (msg) {
-                            var response = JSON.parse(msg);
-                            var status = response.status;
-                            if (status == 1) {
-                                alert("File has been uploaded successfully");
-                            } else {
-                                alert("Couldn't upload file");
-                            }
+                             var response = JSON.parse(msg);
+                             var status = response.status;
+                             if (status == 1) {
+                             alert("File has been uploaded successfully");
+                             } else {
+                             alert("Couldn't upload file");
+                             }
+                           /* if (msg.Response == 'sucessful') {
+                                alert("Training process is completed");
+                            }*/
                         },
                         error: function (msg) {
                             alert("Couldn't upload file");
@@ -150,33 +163,69 @@
                     <!-- /.row -->
 
                     <div class="row">
-                        <div class="form-group">
+                        <div class="col-lg-6">
+                            <table id="myTable">
+                                <tr class="header">
+                                    <td style="width:40%;">
 
-                            <label>New train dataset</label>
-                            <!--
-                            <input type="file" name="file" accept=".csv" /><br />
-                            <div id="upload" style="display: none;">Uploading..</div>
-                            <div id="message"></div>
-
-                            -->
-                            <form id="sampleUploadFrm" method="POST" action="#" enctype="multipart/form-data">
-                                <div class="form-group">
-
-                                    <label>Payload name</label>
-                                    <input id="payload_name"  class="form-control"  data-multiple data-minchars="1" placeholder="Payload name">
+                                        <div class="form-group">
 
 
-                                </div>
-                                <!-- COMPONENT START -->
-                                <div class="form-group">
-                                    <div class="input-group input-file" name="file">
-                                        <span class="input-group-btn"><button class="btn btn-default btn-choose" type="button">Choose</button></span> <input type="text" class="form-control" placeholder='Choose a file...' />
-                                    </div>
-                                    <button type="button" class="btn btn-primary pull-right" id="uploadBtn">Submit</button>
-                                </div>
+                                            <form id="sampleUploadFrm" method="POST" action="#" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label>Payload name</label>
+                                                    <input id="payload_name"  class="form-control"  data-multiple data-minchars="1" placeholder="Payload name">
 
-                            </form>
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Payload label</label>
+                                                    <input id="payload_label"  class="form-control"  data-multiple data-minchars="1" placeholder="Payload name">
+
+
+                                                </div>
+                                                <div class="form-group">
+
+                                                    <label>Mode of Training</label>
+                                                    <input id="mod_of_tran"  class="form-control" list="mod_of_tran_list" data-multiple data-minchars="1" placeholder="MODE OF TRAINING" onkeypress="next_field11()">
+
+
+                                                </div>
+                                                <datalist id="mod_of_tran_list">
+
+                                                    <option value="NEW TRAINING MODEL">NEW TRAINING MODEL</option>
+                                                    <option value="APPEND TRAINING MODEL">APPEND TRAINING MODEL</option>
+
+                                                </datalist>
+                                                <!-- COMPONENT START -->
+                                                <div class="form-group">
+                                                    <div class="input-group input-file" name="file">
+                                                        <span class="input-group-btn"><button class="btn btn-default btn-choose" type="button">Choose</button></span> <input type="text" class="form-control" placeholder='Choose a file...' />
+                                                    </div>
+                                                    <button type="button" class="btn btn-primary pull-right" id="uploadBtn">Submit</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+
+
+
+                                    </td>
+
+
+
+                                </tr>
+
+                            </table>
+
+
+
+
+
+
                         </div>
+
+
 
 
                     </div>

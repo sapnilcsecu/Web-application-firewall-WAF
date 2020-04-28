@@ -5,6 +5,7 @@
  */
 package com.sapnil.machinelearning.waf;
 
+import com.alibaba.fastjson.JSONArray;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,6 +21,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 
 /**
  *
@@ -38,9 +41,12 @@ public class UploadFile extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        final String UPLOAD_DIRECTORY = "C:/uploads";
-        
+
+        JSONObject jsonObject = new JSONObject();
+        String payload_name = "", payload_label = "", input_dataset_name = "", mod_of_tran = "";
+        HttpSession session = request.getSession(true);
+        String context_path = session.getServletContext().getRealPath("/");
+        String input_dataset_path = context_path.replace(File.separator, "/");
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
                 List<FileItem> multiparts = new ServletFileUpload(
@@ -48,62 +54,60 @@ public class UploadFile extends HttpServlet {
                 for (FileItem item : multiparts) {
                     if (!item.isFormField()) {
                         System.out.println("file data ");
-                        File fileSaveDir = new File(UPLOAD_DIRECTORY);
-                        if (!fileSaveDir.exists()) {
-                            fileSaveDir.mkdir();
-                        }
-                        String name = new File(item.getName()).getName();
-                        item.write(new File(UPLOAD_DIRECTORY + File.separator + name));
+                        /*File fileSaveDir = new File(UPLOAD_DIRECTORY);
+                         if (!fileSaveDir.exists()) {
+                         fileSaveDir.mkdir();
+                         }*/
+                        input_dataset_name = new File(item.getName()).getName();
+                        item.write(new File(input_dataset_path + input_dataset_name));
                     } else {
-                        String payload_name = item.getString();
-                        System.out.println("payload_name is "+payload_name);
+                        if (item.getFieldName().equals("payload_name")) {
+                            payload_name = item.getString();
+                            System.out.println("payload_name is " + payload_name);
+                        } else if (item.getFieldName().equals("payload_label")) {
+                            payload_label = item.getString();
+                            System.out.println("payload_label is " + payload_label);
+                        } else if (item.getFieldName().equals("mod_of_tran")) {
+                            mod_of_tran = item.getString();
+                            System.out.println("mod_of_tran is " + mod_of_tran);
+                        }
+
                     }
-                    
+
                 }
-                
+                String final_input_dataset_path = input_dataset_path + input_dataset_name;
+                ///train_model(input_dataset,vocabulary_path,payload_col_name,payload_label,mode)
+                //System.out.println("context_path is "+context_path.replace("\\", "/"));
+                if (mod_of_tran.equals("NEW TRAINING MODEL")) {
+                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model(" + final_input_dataset_path + "," + input_dataset_path + "," + payload_name + "," + payload_label + ",'write');print(json.dumps([str(accuracy_score)]))"});
+                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model(" + final_input_dataset_path + "," + input_dataset_path + "," + payload_name + "," + payload_label + ",'write');"});
+                    p.waitFor();
+                    String stdout = IOUtils.toString(p.getInputStream());
+                    JSONArray syspathRaw = JSONArray.parseArray(stdout);
+                    for (int i = 0; i < syspathRaw.size(); i++) {
+                        String path = syspathRaw.getString(i);
+                        System.out.println("the accuracy is " + path);
+
+                    }
+                } else if (mod_of_tran.equals("NEW TRAINING MODEL")) {
+                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; live_verna_detection=train_model(" + final_input_dataset_path + "," + input_dataset_path + "," + payload_name + "," + payload_label + ",'append');print(json.dumps([str(live_verna_detection)]))"});
+
+                    p.waitFor();
+                }
+
             } catch (Exception e) {
                 // exception handling
                 e.printStackTrace();
             }
-            
+
+            jsonObject.put("Response", "sucessful");
+
             PrintWriter out = response.getWriter();
-            out.print("{\"status\":1}");
+
+            out.print(jsonObject);
+            out.flush();
         }
-        /*ServletContext sc = request.getSession().getServletContext();
-         String dir = sc.getRealPath("/");
-         String name = null;
-       
-         HttpSession session = request.getSession(true);
-         System.out.println("context path is " + dir);
-         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
-         // process only if its multipart content
-         if (isMultipart) {
-         // Create a factory for disk-based file items
-         FileItemFactory factory = new DiskFileItemFactory();
-
-         // Create a new file upload handler
-         ServletFileUpload upload = new ServletFileUpload(factory);
-         try {
-         // Parse the request
-         List<FileItem> multiparts = upload.parseRequest(request);
-
-         for (FileItem item : multiparts) {
-         if (!item.isFormField()) {
-
-         String file_name = new File(item.getName()).getName();
-
-         System.out.println("dir+name is " + (dir + File.separator + file_name));
-         item.write(new File(dir + file_name));
-         }
-         }
-         session.setAttribute("filename", "" + name);
-              
-         } catch (Exception e) {
-         e.printStackTrace();
-         }
-         }*/
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
