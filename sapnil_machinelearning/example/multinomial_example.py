@@ -48,8 +48,7 @@ def main():
     print("this class level is ",doc_class_label)
     #To load the model
     '''
-    
-    accuracy_score=train_model("D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning/verfullpayload.csv","D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning/xss_test.csv",'D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning',"payload","label","payload","label")
+    accuracy_score=train_model("E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/verfullpayload.csv",'E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/',"payload","label","write")
     print("the score is ",accuracy_score)
     
      #To load the model and predict

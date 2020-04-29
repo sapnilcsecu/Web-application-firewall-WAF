@@ -22,7 +22,7 @@ import pickle
 
 #def train_model(input_dataset,test_dataset,vocabulary_path,payload_col_name,payload_label,test_payload_col_name,test_payload_label):
 def train_model(input_dataset,vocabulary_path,payload_col_name,payload_label,mode):
-    print("the input_dataset")
+    #print("the input_dataset")
     trainDF = load_cvs_dataset(input_dataset)
 
     txt_label = trainDF[payload_label]
@@ -32,13 +32,13 @@ def train_model(input_dataset,vocabulary_path,payload_col_name,payload_label,mod
   
     model_input=count_ver_word_fit(txt_text,txt_label)
     train_model_ob=multi_nativebayes_train(model_input)
-    print("the input_dataset"+str(input_dataset))
+    #print("the input_dataset"+str(input_dataset))
     if(mode=='write'):
-        print("the write mode"+str(input_dataset))
+        #print("the write mode"+str(input_dataset))
         with open(str(vocabulary_path)+'trainmodel', 'wb') as picklefile:  
             pickle.dump(train_model_ob,picklefile)
     elif(mode=='append'):
-        print("the append mode"+str(input_dataset))
+        #print("the append mode"+str(input_dataset))
         with open(str(vocabulary_path)+'trainmodel', 'a+') as picklefile:  
             pickle.dump(train_model_ob,picklefile)
     

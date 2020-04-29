@@ -61,10 +61,12 @@ public class wab_trainmodel_servlet extends HttpServlet {
             /*ObjectMapper mapper = new ObjectMapper();
              response.setContentType("application/json");
              mapper.writeValue(response.getOutputStream(), jsonObject.toMap());*/
-            PrintWriter out = response.getWriter();
+            //PrintWriter out = response.getWriter();
 // Assuming your json object is **jsonObject**, perform the following, it will return your json object  
-            out.print(jsonObject);
-            out.flush();
+            //out.print(jsonObject);
+            //out.flush();
+            response.setContentType("application/json");
+            response.getWriter().write(jsonObject.toString());
 
         } catch (Exception ex) {
             ex.printStackTrace();

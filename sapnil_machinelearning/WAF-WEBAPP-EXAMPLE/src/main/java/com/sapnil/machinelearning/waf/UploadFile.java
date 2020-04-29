@@ -80,9 +80,14 @@ public class UploadFile extends HttpServlet {
                 //System.out.println("context_path is "+context_path.replace("\\", "/"));
                 if (mod_of_tran.equals("NEW TRAINING MODEL")) {
                     //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model(" + final_input_dataset_path + "," + input_dataset_path + "," + payload_name + "," + payload_label + ",'write');print(json.dumps([str(accuracy_score)]))"});
-                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model(" + final_input_dataset_path + "," + input_dataset_path + "," + payload_name + "," + payload_label + ",'write');"});
+                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/verfullpayload.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','payload','label','write'); print(json.dumps([str(accuracy_score)]))"});
+                    System.out.println("input_dataset_path is " + input_dataset_path);
+                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + input_dataset_path + "','" + payload_name + "','" + payload_label + "','write'); print(json.dumps([str(accuracy_score)]))"});
+                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('"+final_input_dataset_path+"','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','"+payload_name+"','"+payload_label+"','write'); print(json.dumps([str(accuracy_score)]))"});
+
                     p.waitFor();
                     String stdout = IOUtils.toString(p.getInputStream());
+                    System.out.println("the stdout is " + stdout);
                     JSONArray syspathRaw = JSONArray.parseArray(stdout);
                     for (int i = 0; i < syspathRaw.size(); i++) {
                         String path = syspathRaw.getString(i);
@@ -90,9 +95,18 @@ public class UploadFile extends HttpServlet {
 
                     }
                 } else if (mod_of_tran.equals("NEW TRAINING MODEL")) {
-                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; live_verna_detection=train_model(" + final_input_dataset_path + "," + input_dataset_path + "," + payload_name + "," + payload_label + ",'append');print(json.dumps([str(live_verna_detection)]))"});
+                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + input_dataset_path + "','" + payload_name + "','" + payload_label + "','append'); print(json.dumps([str(accuracy_score)]))"});
+                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('"+final_input_dataset_path+"','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','"+payload_name+"','"+payload_label+"','write'); print(json.dumps([str(accuracy_score)]))"});
 
                     p.waitFor();
+                    String stdout = IOUtils.toString(p.getInputStream());
+                    System.out.println("the stdout is " + stdout);
+                    JSONArray syspathRaw = JSONArray.parseArray(stdout);
+                    for (int i = 0; i < syspathRaw.size(); i++) {
+                        String path = syspathRaw.getString(i);
+                        System.out.println("the accuracy is " + path);
+
+                    }
                 }
 
             } catch (Exception e) {
@@ -102,10 +116,12 @@ public class UploadFile extends HttpServlet {
 
             jsonObject.put("Response", "sucessful");
 
-            PrintWriter out = response.getWriter();
+            /*PrintWriter out = response.getWriter();
 
-            out.print(jsonObject);
-            out.flush();
+             out.print(jsonObject);
+             out.flush();*/
+            //response.setContentType("application/json");
+            response.getWriter().write("training process completed");
         }
 
     }

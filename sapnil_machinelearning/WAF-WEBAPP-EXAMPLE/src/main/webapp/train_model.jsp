@@ -94,13 +94,17 @@
                         contentType: false,
                         data: data,
                         success: function (msg) {
-                             var response = JSON.parse(msg);
-                             var status = response.status;
+                             //var response = JSON.parse(msg);
+                             console.log("the response is "+msg)
+                             alert(msg);
+                             reset();
+                             
+                             /*var status = response.status;
                              if (status == 1) {
                              alert("File has been uploaded successfully");
                              } else {
-                             alert("Couldn't upload file");
-                             }
+                             
+                             }*/
                            /* if (msg.Response == 'sucessful') {
                                 alert("Training process is completed");
                             }*/
@@ -111,6 +115,14 @@
                     });
                 });
             });
+            
+            function reset(){
+                document.getElementById("payload_name").value=" "
+                document.getElementById("payload_label").value=" "
+                document.getElementById("mod_of_tran").value=" "
+                document.getElementById("file_name").value=" "
+                
+            }
         </script>
 
     </head>
@@ -200,7 +212,7 @@
                                                 <!-- COMPONENT START -->
                                                 <div class="form-group">
                                                     <div class="input-group input-file" name="file">
-                                                        <span class="input-group-btn"><button class="btn btn-default btn-choose" type="button">Choose</button></span> <input type="text" class="form-control" placeholder='Choose a file...' />
+                                                        <span class="input-group-btn"><button class="btn btn-default btn-choose" type="button">Choose</button></span> <input id="file_name" type="text" class="form-control" placeholder='Choose a file...' />
                                                     </div>
                                                     <button type="button" class="btn btn-primary pull-right" id="uploadBtn">Submit</button>
                                                 </div>
