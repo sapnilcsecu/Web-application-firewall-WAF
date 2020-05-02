@@ -22,6 +22,36 @@
         <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <!-- Template css-->
 
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                $("#submit").click(function (event) {
+                    var emp_name1 = $("#emp_name1").val();
+                    var reg = $("#reg").val();
+                    var Date = $("#Date").val();
+                    var emp_mobile = $("#emp_mobile").val();
+                    $.post('Web_app_servlet', {'emp_name1': emp_name1, 'reg': reg,'Date':Date,'emp_mobile':emp_mobile}, function(responseJson) {
+
+                        if (responseJson.Response != null) {
+
+
+                            if (responseJson.Response != null) {
+
+                                alert("" + responseJson.Response);
+                                location.reload();
+                            }
+                           
+                        }
+                    });
+
+                });
+
+            });
+
+
+        </script>
+
     </head>
     <body>
         <div id="wrapper">

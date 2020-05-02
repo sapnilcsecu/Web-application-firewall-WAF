@@ -5,7 +5,6 @@
  */
 package com.sapnil.machinelearning.waf;
 
-
 import com.alibaba.fastjson.JSONArray;
 import java.io.File;
 import java.io.IOException;
@@ -40,15 +39,21 @@ public class Web_app_servlet extends HttpServlet {
 
         try {
             JSONObject jsonObject = new JSONObject();
-            String user_name = request.getParameter("user_name");
-            String password = request.getParameter("password");
+            String emp_name1 = request.getParameter("emp_name1");
+            System.out.println("user_name is " + emp_name1);
+            String reg = request.getParameter("reg");
+            System.out.println("reg is " + reg);
+            String Date = request.getParameter("Date");
+            System.out.println("Date is " + Date);
+            String emp_mobile = request.getParameter("emp_mobile");
+            System.out.println("emp_mobile is " + emp_mobile);
 
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
             HttpSession session = request.getSession(true);
             String context_path = session.getServletContext().getRealPath("/");
 
             //System.out.println("context_path is "+context_path.replace("\\", "/"));
-            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + user_name + "');print(json.dumps([str(live_verna_detection)]))"});
+            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + emp_name1 + "');print(json.dumps([str(live_verna_detection)]))"});
             p.waitFor();
 
             String stdout = IOUtils.toString(p.getInputStream());
@@ -60,7 +65,7 @@ public class Web_app_servlet extends HttpServlet {
             }
             //System.out.println("the json is "+stdout);
 
-            Process p1 = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + password + "');print(json.dumps([str(live_verna_detection)]))"});
+            Process p1 = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + reg + "');print(json.dumps([str(live_verna_detection)]))"});
             p1.waitFor();
 
             String stdout1 = IOUtils.toString(p1.getInputStream());
@@ -73,11 +78,8 @@ public class Web_app_servlet extends HttpServlet {
 
             jsonObject.put("Response", "web param verify is completed");
 
-            /* ObjectMapper mapper = new ObjectMapper();
-             response.setContentType("application/json");
-             mapper.writeValue(response.getOutputStream(), jsonObject.toMap());*/
             PrintWriter out = response.getWriter();
-// Assuming your json object is **jsonObject**, perform the following, it will return your json object  
+
             out.print(jsonObject);
             out.flush();
 
