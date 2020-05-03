@@ -35,11 +35,10 @@
                     <a href="train_model.jsp" >train model</a>
                    
                 </li>
-                <li>
+              <!--  <li>
                     <a href="javascript:;" data-toggle="collapse">live testing</a>
                    
-                </li>
-
+                </li>-->
             </ul>
         </div>
 

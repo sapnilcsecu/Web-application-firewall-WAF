@@ -94,7 +94,7 @@ public class UploadFile extends HttpServlet {
                         System.out.println("the accuracy is " + path);
 
                     }
-                } else if (mod_of_tran.equals("NEW TRAINING MODEL")) {
+                } else if (mod_of_tran.equals("APPEND TRAINING MODEL")) {
                     Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + input_dataset_path + "','" + payload_name + "','" + payload_label + "','append'); print(json.dumps([str(accuracy_score)]))"});
                     //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('"+final_input_dataset_path+"','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','"+payload_name+"','"+payload_label+"','write'); print(json.dumps([str(accuracy_score)]))"});
 

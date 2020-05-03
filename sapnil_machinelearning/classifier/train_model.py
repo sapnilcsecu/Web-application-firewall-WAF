@@ -22,7 +22,7 @@ import pickle
 
 #def train_model(input_dataset,test_dataset,vocabulary_path,payload_col_name,payload_label,test_payload_col_name,test_payload_label):
 def train_model(input_dataset,vocabulary_path,payload_col_name,payload_label,mode):
-    #print("the input_dataset")
+    #print("the input_dataset22")
     trainDF = load_cvs_dataset(input_dataset)
 
     txt_label = trainDF[payload_label]
@@ -39,7 +39,7 @@ def train_model(input_dataset,vocabulary_path,payload_col_name,payload_label,mod
             pickle.dump(train_model_ob,picklefile)
     elif(mode=='append'):
         #print("the append mode"+str(input_dataset))
-        with open(str(vocabulary_path)+'trainmodel', 'a+') as picklefile:  
+        with open(str(vocabulary_path)+'trainmodel', 'ab+') as picklefile:  
             pickle.dump(train_model_ob,picklefile)
     
     final_doc_class_label=multi_nativebayes_verna_predict(train_model_ob,testcopy)
