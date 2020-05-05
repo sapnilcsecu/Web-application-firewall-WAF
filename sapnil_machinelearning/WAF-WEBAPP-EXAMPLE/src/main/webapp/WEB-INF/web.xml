@@ -6,7 +6,7 @@
     </servlet>
     <servlet>
         <servlet-name>wab_trainmodel_servlet</servlet-name>
-        <servlet-class>com.sapnil.machinelearning.waf.wab_trainmodel_servlet</servlet-class>
+        <servlet-class>com.sapnil.machinelearning.waf.Bulk_testing</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UploadFile</servlet-name>

@@ -42,7 +42,6 @@ public class UploadFile extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        JSONObject jsonObject = new JSONObject();
         String payload_name = "", payload_label = "", input_dataset_name = "", mod_of_tran = "";
         HttpSession session = request.getSession(true);
         String context_path = session.getServletContext().getRealPath("/");
@@ -114,16 +113,13 @@ public class UploadFile extends HttpServlet {
                 e.printStackTrace();
             }
 
-            jsonObject.put("Response", "sucessful");
-
             /*PrintWriter out = response.getWriter();
 
              out.print(jsonObject);
              out.flush();*/
             //response.setContentType("application/json");
-            response.getWriter().write("training process completed");
         }
-
+        response.getWriter().write("training process completed");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
