@@ -48,11 +48,11 @@ public class Bulk_testing extends HttpServlet {
         try {
 
             JSONObject jsonObject = new JSONObject();
-            String payload_name = "", payload_label = "", input_dataset_name = "", mod_of_tran = "";
+            String payload_name = "payload", payload_label = "label", input_dataset_name = "", mod_of_tran = "";
             HttpSession session = request.getSession(true);
             String context_path = session.getServletContext().getRealPath("/");
             String input_dataset_path = context_path.replace(File.separator, "/");
-            String final_input_dataset_path = input_dataset_path + input_dataset_name;
+            String final_input_dataset_path = "";
             if (ServletFileUpload.isMultipartContent(request)) {
                 try {
                     List<FileItem> multiparts = new ServletFileUpload(
@@ -62,8 +62,10 @@ public class Bulk_testing extends HttpServlet {
                             System.out.println("file data ");
 
                             input_dataset_name = new File(item.getName()).getName();
+                            final_input_dataset_path = input_dataset_path + input_dataset_name;
                             item.write(new File(final_input_dataset_path));
-                        } else {
+                        }
+                       /* else {
                             if (item.getFieldName().equals("payload_name")) {
                                 payload_name = item.getString();
                                 System.out.println("payload_name is " + payload_name);
@@ -72,32 +74,40 @@ public class Bulk_testing extends HttpServlet {
                                 System.out.println("payload_label is " + payload_label);
                             }
 
-                        }
+                        }*/
 
                     }
-
-                    BufferedReader readFile = new BufferedReader(new FileReader(final_input_dataset_path));
+                    payload_name ="payload";
+                    payload_label="label";
+                    /* BufferedReader readFile = new BufferedReader(new FileReader(final_input_dataset_path));
                     String readFilerow;
-                    int count = 0;
+
                     int payload_index = 0, label_index = 0;
                     ArrayList<String> rows = new ArrayList<String>();
                     rows.add("" + payload_name + "," + payload_label + "");
                     rows.add("\n");
+                    int co = 0;
                     while ((readFilerow = readFile.readLine()) != null) {
                         List<String> wordList = Arrays.asList(readFilerow.split(","));
-
-                        if (count == 0) {
+                        // System.out.println("count is "+co);
+                        if (co == 0) {
                             payload_index = wordList.indexOf(payload_name);
                             label_index = wordList.indexOf(payload_label);
+                            ++co;
                             continue;
                         }
-                        Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + wordList.get(payload_index) + "');print(json.dumps([str(live_verna_detection)]))"});
+                        ++co;
+                        String payloadis = wordList.get(payload_index);
+                        System.out.println("wordList.get(payload_index) result is ----" + payloadis);
+                        Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + payloadis + "');print(json.dumps([str(live_verna_detection)]))"});
                         p.waitFor();
                         String stdout = IOUtils.toString(p.getInputStream());
+                        System.out.println("stdout result is ----" + stdout);
                         JSONArray syspathRaw = JSONArray.parseArray(stdout);
                         String versify_result1 = "";
                         for (int i = 0; i < syspathRaw.size(); i++) {
                             versify_result1 = syspathRaw.getString(i);
+                            System.out.println("versify_result1 result is ----" + versify_result1);
 
                         }
 
@@ -106,13 +116,35 @@ public class Bulk_testing extends HttpServlet {
                             rows.add("" + wordList.get(payload_index) + "," + wordList.get(label_index) + "");
                             rows.add("\n");
                         }
-                        ++count;
+
                         //System.out.println(data[0] + "|" + data[1] + "|" + data[2]);
                     }
 
-                    readFile.close();
+                    readFile.close();*/
+                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('"+final_input_dataset_path+"','" + context_path.replace(File.separator, "/") + "','"+payload_name+"','"+payload_label+"');print(json.dumps(bulk_verna_detect_result))"});
+                    p.waitFor();
+                    String stdout = IOUtils.toString(p.getInputStream());
+                    System.out.println("stdout result is ----" + stdout);
+                    JSONArray syspathRaw = JSONArray.parseArray(stdout);
+                    ArrayList<String> result_list = new ArrayList<String>();
+                    result_list.add("payload_name,payload_label");
+                    result_list.add("\n");
+                    String versify_result1 = "";
+                    for (int i = 0; i < syspathRaw.size(); i++) {
+                        versify_result1 = syspathRaw.getString(i);
+                        result_list.add(versify_result1);
+                        result_list.add("\n");
+                        System.out.println("versify_result1 result is ----" + versify_result1);
 
-                    Iterator<String> iter = rows.iterator();
+                    }
+
+                    response.setContentType("text/csv");
+                    String reportName = "GenerateCSV_Report_"
+                            + System.currentTimeMillis() + ".csv";
+                    response.setHeader("Content-disposition", "attachment; "
+                            + "filename=" + reportName);
+
+                    Iterator<String> iter = result_list.iterator();
                     while (iter.hasNext()) {
                         String outputString = (String) iter.next();
                         response.getOutputStream().print(outputString);

@@ -28,16 +28,16 @@
 
                 <li>
                     <a href="index.jsp" >Form demo</a>
-                    
+
                 </li>
-                
-                 <li>
+
+                <li>
                     <a href="train_model.jsp" >train model</a>
-                   
+
                 </li>
-              <!--  <li>
-                    <a href="javascript:;" data-toggle="collapse">live testing</a>
-                   
+               <!-- <li>
+                    <a href="Bulktest.jsp" >Bulk testing</a>
+
                 </li>-->
             </ul>
         </div>

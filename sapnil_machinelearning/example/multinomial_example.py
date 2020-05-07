@@ -12,9 +12,10 @@ from classifier.multinomial_nativebayes import live_multi_nativebayes_verna_pred
 from classifier.multinomial_nativebayes import accuracy_score
 import pickle
 '''
-from classifier.multinomial_nativebayes import live_multi_nativebayes_verna_predict
-from classifier.train_model import train_model
-import pickle
+#from classifier.multinomial_nativebayes import live_multi_nativebayes_verna_predict
+from dataset_pre.dataset_load import load_cvs_dataset
+from classifier.train_model import live_verna_detection
+#import pickle
 
 def main():
     
@@ -47,18 +48,25 @@ def main():
     doc_class_label=live_multi_nativebayes_verna_predict(train_model,' or 1=1--')    
     print("this class level is ",doc_class_label)
     #To load the model
-    '''
+    
     accuracy_score=train_model("E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload22.csv",'E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/',"payload","label","append")
     print("the score is ",accuracy_score)
+    ''
     
-     #To load the model and predict
-    '''
+    #To load the model and predict
+    
     with open('../trainmodel', 'rb') as training_model:  
         train_model1 = pickle.load(training_model)
-    #doc_class_label=live_multi_nativebayes_verna_predict(train_model1,'nasir select from rupali bank where he get it')
-    doc_class_label=live_multi_nativebayes_verna_predict(train_model1,'nasir')     
-    print("this class level is ",doc_class_label)
     '''
+    #doc_class_label=live_multi_nativebayes_verna_predict(train_model1,'nasir select from rupali bank where he get it')
+    
+    trainDF = load_cvs_dataset("E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv")
+    txt_label = trainDF['label']
+    txt_text = trainDF['payload']
+    for doc in txt_text:
+        doc_class_label=live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/',doc)     
+        print("this doc_class_label is ",doc_class_label)
+    
     #To load the model
     
 if __name__ == '__main__':

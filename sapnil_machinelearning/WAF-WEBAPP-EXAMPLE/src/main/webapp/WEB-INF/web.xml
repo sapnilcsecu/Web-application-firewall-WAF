@@ -12,6 +12,10 @@
         <servlet-name>UploadFile</servlet-name>
         <servlet-class>com.sapnil.machinelearning.waf.UploadFile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Bulk_testing</servlet-name>
+        <servlet-class>com.sapnil.machinelearning.waf.Bulk_testing</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Web_app_servlet</servlet-name>
         <url-pattern>/Web_app_servlet</url-pattern>
@@ -24,6 +28,11 @@
         <servlet-name>UploadFile</servlet-name>
         <url-pattern>/UploadFile</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Bulk_testing</servlet-name>
+        <url-pattern>/Bulk_testing</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30
