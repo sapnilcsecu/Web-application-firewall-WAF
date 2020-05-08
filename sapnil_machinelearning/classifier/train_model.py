@@ -66,10 +66,14 @@ def bulk_live_verna_detection(input_dataset, context_path, payload, label):
     trainDF = load_cvs_dataset(input_dataset)
     #txt_label = trainDF[label]
     txt_text = trainDF[payload]
+
     for doc in txt_text:
-        doc_class_label = live_verna_detection(train_model1, doc)
-        bulk_verna_detect_result.append('' + str(doc) + ',' + doc_class_label + '')     
-        print("this doc_class_label is ", doc_class_label)
+        doc_class_label = live_multi_nativebayes_verna_predict(train_model1, doc)
+        #bulk_verna_detect_result.append("" + str(doc) + "," + doc_class_label + "")
+        bulk_verna_detect_result.append(doc_class_label)
+        #bulk_verna_detect_result.append(doc)
+        #print("this doc_class_label is "+str(len(bulk_verna_detect_result)))
+    
     return bulk_verna_detect_result
 
 

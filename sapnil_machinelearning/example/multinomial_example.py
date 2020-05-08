@@ -13,8 +13,9 @@ from classifier.multinomial_nativebayes import accuracy_score
 import pickle
 '''
 #from classifier.multinomial_nativebayes import live_multi_nativebayes_verna_predict
-from dataset_pre.dataset_load import load_cvs_dataset
-from classifier.train_model import live_verna_detection
+#from dataset_pre.dataset_load import load_cvs_dataset
+from classifier.train_model import bulk_live_verna_detection
+import json
 #import pickle
 
 def main():
@@ -59,14 +60,19 @@ def main():
         train_model1 = pickle.load(training_model)
     '''
     #doc_class_label=live_multi_nativebayes_verna_predict(train_model1,'nasir select from rupali bank where he get it')
-    
+    ''' 
     trainDF = load_cvs_dataset("E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv")
     txt_label = trainDF['label']
     txt_text = trainDF['payload']
     for doc in txt_text:
         doc_class_label=live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/',doc)     
         print("this doc_class_label is ",doc_class_label)
-    
+    '''
+   
+    bulk_verna_detect_result=bulk_live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/',"payload","label")    
+    for doc1 in bulk_verna_detect_result:
+        print(doc1)    
+    #print(bulk_verna_detect_result)
     #To load the model
     
 if __name__ == '__main__':

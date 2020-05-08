@@ -6,6 +6,7 @@
 package com.sapnil.machinelearning.waf;
 
 import com.alibaba.fastjson.JSONArray;
+import com.opencsv.CSVReader;
 import java.io.BufferedReader;
 
 import java.io.File;
@@ -65,7 +66,7 @@ public class Bulk_testing extends HttpServlet {
                             final_input_dataset_path = input_dataset_path + input_dataset_name;
                             item.write(new File(final_input_dataset_path));
                         }
-                       /* else {
+                        /* else {
                             if (item.getFieldName().equals("payload_name")) {
                                 payload_name = item.getString();
                                 System.out.println("payload_name is " + payload_name);
@@ -77,20 +78,31 @@ public class Bulk_testing extends HttpServlet {
                         }*/
 
                     }
-                    payload_name ="payload";
-                    payload_label="label";
-                    /* BufferedReader readFile = new BufferedReader(new FileReader(final_input_dataset_path));
+                    payload_name = "payload";
+                    payload_label = "label";
+                    //BufferedReader readFile = new BufferedReader(new FileReader(final_input_dataset_path));
+                     CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
                     String readFilerow;
 
                     int payload_index = 0, label_index = 0;
-                    ArrayList<String> rows = new ArrayList<String>();
-                    rows.add("" + payload_name + "," + payload_label + "");
-                    rows.add("\n");
+                    ArrayList<String> payload_list = new ArrayList<String>();
+                    ArrayList<String> label_list = new ArrayList<String>();
                     int co = 0;
-                    while ((readFilerow = readFile.readLine()) != null) {
-                        List<String> wordList = Arrays.asList(readFilerow.split(","));
-                        // System.out.println("count is "+co);
+                    String[] line;
+                    while ((line = reader.readNext()) != null) {
+                        List<String> wordList = Arrays.asList(line);
                         if (co == 0) {
+                            payload_index = wordList.indexOf(payload_name);
+                            label_index = wordList.indexOf(payload_label);
+
+                            ++co;
+                            continue;
+                        }
+                        payload_list.add(wordList.get(payload_index));
+                        label_list.add(wordList.get(label_index));
+                    }
+                    // System.out.println("count is "+co);
+                    /* if (co == 0) {
                             payload_index = wordList.indexOf(payload_name);
                             label_index = wordList.indexOf(payload_label);
                             ++co;
@@ -121,7 +133,9 @@ public class Bulk_testing extends HttpServlet {
                     }
 
                     readFile.close();*/
-                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('"+final_input_dataset_path+"','" + context_path.replace(File.separator, "/") + "','"+payload_name+"','"+payload_label+"');print(json.dumps(bulk_verna_detect_result))"});
+                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('"+final_input_dataset_path+"','" + context_path.replace(File.separator, "/") + "','"+payload_name+"','"+payload_label+"');print(bulk_verna_detect_result)"});
+
+                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','payload','label');print(bulk_verna_detect_result)"});
                     p.waitFor();
                     String stdout = IOUtils.toString(p.getInputStream());
                     System.out.println("stdout result is ----" + stdout);
@@ -132,9 +146,15 @@ public class Bulk_testing extends HttpServlet {
                     String versify_result1 = "";
                     for (int i = 0; i < syspathRaw.size(); i++) {
                         versify_result1 = syspathRaw.getString(i);
-                        result_list.add(versify_result1);
-                        result_list.add("\n");
-                        System.out.println("versify_result1 result is ----" + versify_result1);
+                        if (!label_list.get(i).trim().equals(versify_result1.trim())) {
+                            System.out.println(label_list.get(i).trim());
+                            result_list.add(payload_list.get(i)+","+versify_result1);
+                            result_list.add("\n");
+                        }else{
+                            System.out.println("match");
+                        }
+                       
+                       // System.out.println("versify_result1 result is ----" + versify_result1);
 
                     }
 

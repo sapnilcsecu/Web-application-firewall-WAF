@@ -35,7 +35,7 @@
                     <a href="train_model.jsp" >train model</a>
 
                 </li>
-               <!-- <li>
+              <!-- <li>
                     <a href="Bulktest.jsp" >Bulk testing</a>
 
                 </li>-->
