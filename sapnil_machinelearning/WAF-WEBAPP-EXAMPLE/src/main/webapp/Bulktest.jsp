@@ -69,20 +69,17 @@
                 }
 
                 bs_input_file();
-
                 $("#uploadBtn").on("click", function () {
                     var url = "Bulk_testing";
                     var form = $("#sampleUploadFrm")[0];
                     //var data = new FormData(form);
                     var data = new FormData(form);
-
                     var payload_name = $("#payload_name").val();
                     console.log("payload_name is " + payload_name);
                     data.append("payload_name", payload_name);
                     var payload_label = $("#payload_label").val();
                     console.log("payload_name is " + payload_label);
                     data.append("payload_label", payload_label);
-
                     ///mod_of_tran
                     $.ajax({
                         type: "POST",
@@ -91,31 +88,42 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        data: data
-                                /*success: function (msg) {
-                                 //var response = JSON.parse(msg);
-                                 console.log("the response is "+msg)
-                                 alert(msg);
-                                 reset();
-                                 
-                                 /*var status = response.status;
-                                 if (status == 1) {
-                                 alert("File has been uploaded successfully");
-                                 } else {
-                                 
-                                 
-                                 },
-                                 error: function (msg) {
-                                 alert("Couldn't upload file");
-                                 }*/
+                        data: data,
+                        success: function (msg) {
+                            //var response = JSON.parse(msg);
+                            //console.log("the response is " + msg)
+                            var filename = 'response.csv';
+
+                            // The actual download
+
+                            var blob = new Blob([msg], {type: 'text/csv'});
+                            var link = document.createElement('a');
+                            link.href = window.URL.createObjectURL(blob);
+                            link.download = filename;
+
+                            document.body.appendChild(link);
+
+                            link.click();
+
+                            document.body.removeChild(link);
+                            location.reload();
+                            //alert(msg);
+                            // reset();
+
+
+
+
+                        },
+                        error: function (msg) {
+                            alert("Couldn't upload file");
+                        }
                     });
                 });
             });
-
             function reset() {
                 document.getElementById("payload_name").value = " "
                 document.getElementById("payload_label").value = " "
-                document.getElementById("mod_of_tran").value = " "
+                // document.getElementById("mod_of_tran").value = " "
                 document.getElementById("file_name").value = " "
 
             }
@@ -193,7 +201,7 @@
 
                                                 </div>
 
-                                                <!-- COMPONENT START -->
+
                                                 <div class="form-group">
                                                     <div class="input-group input-file" name="file">
                                                         <span class="input-group-btn"><button class="btn btn-default btn-choose" type="button">Choose</button></span> <input id="file_name" type="text" class="form-control" placeholder='Choose a file...' />
@@ -203,9 +211,30 @@
 
                                             </form>
 
-                                            <form action="Bulk_testing" method="post" enctype="multipart/form-data">
-                                                <input type="file" id="myfile" name="myfile">
-                                                <input type="submit" value="Generate CSV report">
+                                            <!-- <form action="Bulk_testing" method="post" enctype="multipart/form-data">
+                                                 <div class="form-group">
+                                                     <label>Payload name</label>
+                                                     <input id="payload_name" name="payload_name"  class="form-control"  data-multiple data-minchars="1" placeholder="Payload name">
+                                                 
+ 
+                                                 </div>
+                                                 <div class="form-group">
+                                                     <label>Payload label</label>
+                                                     <input id="payload_label"  name="payload_label" class="form-control"  data-multiple data-minchars="1" placeholder="Payload name">
+ 
+ 
+                                                 </div>
+ 
+                                                 <div class="form-group">
+                                                     <div class="input-group input-file" name="file">
+                                                         <span class="input-group-btn"><button class="btn btn-default btn-choose" type="button">Choose</button></span> <input id="file_name" type="text" class="form-control" placeholder='Choose a file...' />
+                                                     </div>
+ 
+                                                 </div>
+ 
+                                          
+                                                 <button type="submit" class="btn btn-primary pull-right" id="uploadBtn">Submit</button>-->
+                                            <!--<input type="submit" value="Generate CSV report">-->
                                             </form>
 
                                         </div>

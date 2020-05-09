@@ -7,12 +7,16 @@ package com.sapnil.machinelearning.waf;
 
 import com.alibaba.fastjson.JSONArray;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -65,8 +69,8 @@ public class Bulk_testing extends HttpServlet {
                             input_dataset_name = new File(item.getName()).getName();
                             final_input_dataset_path = input_dataset_path + input_dataset_name;
                             item.write(new File(final_input_dataset_path));
-                        }
-                        /* else {
+                        } else {
+                            System.out.println("not file data ");
                             if (item.getFieldName().equals("payload_name")) {
                                 payload_name = item.getString();
                                 System.out.println("payload_name is " + payload_name);
@@ -75,13 +79,13 @@ public class Bulk_testing extends HttpServlet {
                                 System.out.println("payload_label is " + payload_label);
                             }
 
-                        }*/
+                        }
 
                     }
-                    payload_name = "payload";
-                    payload_label = "label";
+                    // payload_name = "payload";
+                    //payload_label = "label";
                     //BufferedReader readFile = new BufferedReader(new FileReader(final_input_dataset_path));
-                     CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
+                    CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
                     String readFilerow;
 
                     int payload_index = 0, label_index = 0;
@@ -133,32 +137,32 @@ public class Bulk_testing extends HttpServlet {
                     }
 
                     readFile.close();*/
-                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('"+final_input_dataset_path+"','" + context_path.replace(File.separator, "/") + "','"+payload_name+"','"+payload_label+"');print(bulk_verna_detect_result)"});
+                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('" + final_input_dataset_path + "','" + context_path.replace(File.separator, "/") + "','" + payload_name + "','" + payload_label + "');print(bulk_verna_detect_result)"});
 
                     //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','payload','label');print(bulk_verna_detect_result)"});
                     p.waitFor();
                     String stdout = IOUtils.toString(p.getInputStream());
                     System.out.println("stdout result is ----" + stdout);
                     JSONArray syspathRaw = JSONArray.parseArray(stdout);
-                    ArrayList<String> result_list = new ArrayList<String>();
-                    result_list.add("payload_name,payload_label");
-                    result_list.add("\n");
+                    ArrayList<String[]> result_list = new ArrayList<String[]>();
+                    result_list.add(new String[]{"payload_name", "payload_label"});
+
                     String versify_result1 = "";
+                    //CSVWriter csvWriter = new CSVWriter(new FileWriter("new.csv"), ",", "'","/", "\n");
                     for (int i = 0; i < syspathRaw.size(); i++) {
                         versify_result1 = syspathRaw.getString(i);
-                        if (!label_list.get(i).trim().equals(versify_result1.trim())) {
-                            System.out.println(label_list.get(i).trim());
-                            result_list.add(payload_list.get(i)+","+versify_result1);
-                            result_list.add("\n");
-                        }else{
-                            System.out.println("match");
-                        }
-                       
-                       // System.out.println("versify_result1 result is ----" + versify_result1);
+                        // if (!label_list.get(i).trim().equals(versify_result1.trim())) {
+                        System.out.println(label_list.get(i).trim());
+                        result_list.add(new String[]{payload_list.get(i), versify_result1});
 
+                        //}else{
+                        System.out.println("match");
+                        // }
+
+                        // System.out.println("versify_result1 result is ----" + versify_result1);
                     }
 
-                    response.setContentType("text/csv");
+                    /* response.setContentType("text/csv");
                     String reportName = "GenerateCSV_Report_"
                             + System.currentTimeMillis() + ".csv";
                     response.setHeader("Content-disposition", "attachment; "
@@ -169,8 +173,22 @@ public class Bulk_testing extends HttpServlet {
                         String outputString = (String) iter.next();
                         response.getOutputStream().print(outputString);
                     }
+                    OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
+                    CSVWriter writer = new CSVWriter(osw,CSVWriter.DEFAULT_SEPARATOR,
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+                    response.getOutputStream().flush();*/
+                    response.setContentType("text/csv");
+                    String reportName = "GenerateCSV_Report_"
+                            + System.currentTimeMillis() + ".csv";
+                    response.setHeader("Content-disposition", "attachment; "
+                            + "filename=" + reportName);
 
-                    response.getOutputStream().flush();
+                    BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
+                    CSVWriter writer = new CSVWriter(buff);
+                    writer.writeAll(result_list);
+                    writer.close();
 
                 } catch (Exception e) {
                     // exception handling
