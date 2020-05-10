@@ -151,13 +151,13 @@ public class Bulk_testing extends HttpServlet {
                     //CSVWriter csvWriter = new CSVWriter(new FileWriter("new.csv"), ",", "'","/", "\n");
                     for (int i = 0; i < syspathRaw.size(); i++) {
                         versify_result1 = syspathRaw.getString(i);
-                        // if (!label_list.get(i).trim().equals(versify_result1.trim())) {
-                        System.out.println(label_list.get(i).trim());
-                        result_list.add(new String[]{payload_list.get(i), versify_result1});
+                        if (!label_list.get(i).trim().equals(versify_result1.trim())) {
+                            System.out.println(label_list.get(i).trim());
+                            result_list.add(new String[]{payload_list.get(i), versify_result1});
 
-                        //}else{
-                        System.out.println("match");
-                        // }
+                        } else {
+                            System.out.println("match");
+                        }
 
                         // System.out.println("versify_result1 result is ----" + versify_result1);
                     }
