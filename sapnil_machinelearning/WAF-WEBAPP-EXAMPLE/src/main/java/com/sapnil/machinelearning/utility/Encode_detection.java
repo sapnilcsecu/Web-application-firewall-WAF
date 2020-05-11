@@ -21,41 +21,9 @@ UTF-16LE	Sixteen-bit UCS Transformation Format, little-endian byte order
 UTF-16	Sixteen-bit UCS Transformation Format, byte order identified by an optional byte-order mark*/
 public class Encode_detection {
 
-    public static boolean isUtf8Encoded(String url) {
-        return isAlphaNumeric(url);
-    }
-
-    public static boolean isUrlUtf8Encoded(String url)
+    public static boolean isUrldoubleencoding(String encode_param)
             throws UnsupportedEncodingException {
-        return isAlphaNumeric(URLDecoder.decode(url, "UTF-8"));
-    }
-
-    //UTF-16BE
-    public static boolean isUrlUTF16BEEncoded(String url)
-            throws UnsupportedEncodingException {
-        return isAlphaNumeric(URLDecoder.decode(url, "UTF-16BE"));
-    }
-
-    //UTF-16LE
-    public static boolean isUrlUTF16BEBEEncoded(String url)
-            throws UnsupportedEncodingException {
-        return isAlphaNumeric(URLDecoder.decode(url, "UTF-16BE"));
-    }
-
-    //UTF-16
-    public static boolean isUrlUTF16Encoded(String url)
-            throws UnsupportedEncodingException {
-        return isAlphaNumeric(URLDecoder.decode(url, "UTF-16"));
-    }
-
-    public static boolean isUrlUSASCIIEncode(String url)
-            throws UnsupportedEncodingException {
-        return isAlphaNumeric(URLDecoder.decode(url, "US-ASCII"));
-    }
-
-    public static boolean isUrlIsoEncoded(String url)
-            throws UnsupportedEncodingException {
-        return isAlphaNumeric(URLDecoder.decode(url, "ISO-8859-1"));
+        return isAlphaNumeric(URLDecoder.decode(URLDecoder.decode(encode_param)));
     }
 
     private static boolean isAlphaNumeric(String decode) {
@@ -65,6 +33,31 @@ public class Encode_detection {
             }
         }
         return true;
+    }
+
+    /**
+     * *
+     * this function support hexadecimal encoding/URL encoded characters and
+     * UTF_8 charset encode and ISO_8859_1 charset and US_ASCII and UTF_16 and
+     * UTF_16BE and UTF_16LE
+     *
+     * @param encode_param
+     * @return
+     */
+    private static String decode(String encode_param) {
+        String decode_url = "";
+        try {
+
+            if (isUrldoubleencoding(encode_param)) {
+                decode_url = URLDecoder.decode(URLDecoder.decode(encode_param));
+            } else {
+                decode_url = URLDecoder.decode(encode_param);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return decode_url;
     }
 
 }
