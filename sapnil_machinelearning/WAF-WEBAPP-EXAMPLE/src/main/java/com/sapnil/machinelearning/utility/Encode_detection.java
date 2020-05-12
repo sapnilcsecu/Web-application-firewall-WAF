@@ -35,6 +35,11 @@ public class Encode_detection {
         return true;
     }
 
+    public static boolean isUrlencoding(String encode_param)
+            throws UnsupportedEncodingException {
+        return isAlphaNumeric(URLDecoder.decode(URLDecoder.decode(encode_param)));
+    }
+
     /**
      * *
      * this function support hexadecimal encoding/URL encoded characters and
@@ -44,14 +49,16 @@ public class Encode_detection {
      * @param encode_param
      * @return
      */
-    private static String decode(String encode_param) {
+    public static String decode(String encode_param) {
         String decode_url = "";
         try {
 
             if (isUrldoubleencoding(encode_param)) {
                 decode_url = URLDecoder.decode(URLDecoder.decode(encode_param));
-            } else {
+            } else if (isUrlencoding(encode_param)) {
                 decode_url = URLDecoder.decode(encode_param);
+            } else {
+                decode_url = "";
             }
         } catch (Exception ex) {
             ex.printStackTrace();

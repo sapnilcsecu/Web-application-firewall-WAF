@@ -82,9 +82,7 @@ public class Bulk_testing extends HttpServlet {
                         }
 
                     }
-                    // payload_name = "payload";
-                    //payload_label = "label";
-                    //BufferedReader readFile = new BufferedReader(new FileReader(final_input_dataset_path));
+                   
                     CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
                     String readFilerow;
 
@@ -105,38 +103,8 @@ public class Bulk_testing extends HttpServlet {
                         payload_list.add(wordList.get(payload_index));
                         label_list.add(wordList.get(label_index));
                     }
-                    // System.out.println("count is "+co);
-                    /* if (co == 0) {
-                            payload_index = wordList.indexOf(payload_name);
-                            label_index = wordList.indexOf(payload_label);
-                            ++co;
-                            continue;
-                        }
-                        ++co;
-                        String payloadis = wordList.get(payload_index);
-                        System.out.println("wordList.get(payload_index) result is ----" + payloadis);
-                        Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + payloadis + "');print(json.dumps([str(live_verna_detection)]))"});
-                        p.waitFor();
-                        String stdout = IOUtils.toString(p.getInputStream());
-                        System.out.println("stdout result is ----" + stdout);
-                        JSONArray syspathRaw = JSONArray.parseArray(stdout);
-                        String versify_result1 = "";
-                        for (int i = 0; i < syspathRaw.size(); i++) {
-                            versify_result1 = syspathRaw.getString(i);
-                            System.out.println("versify_result1 result is ----" + versify_result1);
-
-                        }
-
-                        if (!wordList.get(label_index).equals(versify_result1)) {
-
-                            rows.add("" + wordList.get(payload_index) + "," + wordList.get(label_index) + "");
-                            rows.add("\n");
-                        }
-
-                        //System.out.println(data[0] + "|" + data[1] + "|" + data[2]);
-                    }
-
-                    readFile.close();*/
+                 
+                   
                     Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('" + final_input_dataset_path + "','" + context_path.replace(File.separator, "/") + "','" + payload_name + "','" + payload_label + "');print(bulk_verna_detect_result)"});
 
                     //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','payload','label');print(bulk_verna_detect_result)"});
@@ -162,23 +130,7 @@ public class Bulk_testing extends HttpServlet {
                         // System.out.println("versify_result1 result is ----" + versify_result1);
                     }
 
-                    /* response.setContentType("text/csv");
-                    String reportName = "GenerateCSV_Report_"
-                            + System.currentTimeMillis() + ".csv";
-                    response.setHeader("Content-disposition", "attachment; "
-                            + "filename=" + reportName);
-
-                    Iterator<String> iter = result_list.iterator();
-                    while (iter.hasNext()) {
-                        String outputString = (String) iter.next();
-                        response.getOutputStream().print(outputString);
-                    }
-                    OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
-                    CSVWriter writer = new CSVWriter(osw,CSVWriter.DEFAULT_SEPARATOR,
-                    CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                    CSVWriter.DEFAULT_LINE_END);
-                    response.getOutputStream().flush();*/
+                   
                     response.setContentType("text/csv");
                     String reportName = "GenerateCSV_Report_"
                             + System.currentTimeMillis() + ".csv";
