@@ -33,16 +33,16 @@
                     var emp_mobile = $("#emp_mobile").val();
                     $.post('Web_app_servlet', {'emp_name1': emp_name1, 'reg': reg,'Date':Date,'emp_mobile':emp_mobile}, function(responseJson) {
 
-                        if (responseJson.Response != null) {
+                        
+Response
+                            console.log("response is "+responseJson);
+                            if (responseJson != null) {
 
-
-                            if (responseJson.Response != null) {
-
-                                alert("" + responseJson.Response);
+                                alert("" + responseJson);
                                 location.reload();
                             }
                            
-                        }
+                        
                     });
 
                 });

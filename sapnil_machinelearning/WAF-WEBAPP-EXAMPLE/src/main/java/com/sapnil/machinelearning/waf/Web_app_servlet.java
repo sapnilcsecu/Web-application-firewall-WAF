@@ -54,21 +54,13 @@ public class Web_app_servlet extends HttpServlet {
             param_list.add(Date);
             param_list.add(emp_mobile);
             boolean is_vernable = Sapnil_WAF.detect_verna_param(request, param_list);
-            if (!is_vernable) {
-                jsonObject.put("Response", "Parameter contain script");
+            if (is_vernable) {
 
-                PrintWriter out = response.getWriter();
-
-                out.print(jsonObject);
-                out.flush();
+                response.getWriter().write("Parameter contain script");
                 return;
             } else {
-                jsonObject.put("Response", "this is normal parameter");
 
-                PrintWriter out = response.getWriter();
-
-                out.print(jsonObject);
-                out.flush();
+                response.getWriter().write("this is normal parameter");
                 return;
             }
 
