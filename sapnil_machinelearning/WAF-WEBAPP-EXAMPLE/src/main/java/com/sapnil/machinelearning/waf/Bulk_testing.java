@@ -8,6 +8,8 @@ package com.sapnil.machinelearning.waf;
 import com.alibaba.fastjson.JSONArray;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.sapnil.machinelearning.model.Train_model_param;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
@@ -59,30 +61,51 @@ public class Bulk_testing extends HttpServlet {
             String input_dataset_path = context_path.replace(File.separator, "/");
             String final_input_dataset_path = "";
             if (ServletFileUpload.isMultipartContent(request)) {
-                try {
-                    List<FileItem> multiparts = new ServletFileUpload(
-                            new DiskFileItemFactory()).parseRequest(request);
-                    for (FileItem item : multiparts) {
-                        if (!item.isFormField()) {
-                            System.out.println("file data ");
 
-                            input_dataset_name = new File(item.getName()).getName();
-                            final_input_dataset_path = input_dataset_path + input_dataset_name;
-                            item.write(new File(final_input_dataset_path));
-                        } else {
-                            System.out.println("not file data ");
-                            if (item.getFieldName().equals("payload_name")) {
-                                payload_name = item.getString();
-                                System.out.println("payload_name is " + payload_name);
-                            } else if (item.getFieldName().equals("payload_label")) {
-                                payload_label = item.getString();
-                                System.out.println("payload_label is " + payload_label);
-                            }
+                List<FileItem> multiparts = new ServletFileUpload(
+                        new DiskFileItemFactory()).parseRequest(request);
+                for (FileItem item : multiparts) {
+                    if (!item.isFormField()) {
+                        System.out.println("file data ");
 
+                        input_dataset_name = new File(item.getName()).getName();
+                        final_input_dataset_path = input_dataset_path + input_dataset_name;
+                        item.write(new File(final_input_dataset_path));
+                    } else {
+                        System.out.println("not file data ");
+                        if (item.getFieldName().equals("payload_name")) {
+                            payload_name = item.getString();
+                            System.out.println("payload_name is " + payload_name);
+                        } else if (item.getFieldName().equals("payload_label")) {
+                            payload_label = item.getString();
+                            System.out.println("payload_label is " + payload_label);
                         }
 
                     }
-                   
+
+                }
+            }
+
+            Train_model_param param_ob = new Train_model_param();
+            param_ob.setInput_dataset_filename(input_dataset_name);
+            param_ob.setInput_dataset_path(input_dataset_path);
+            param_ob.setPayload_label(payload_label);
+            param_ob.setPayload_name(payload_name);
+            List<String[]> result_list = Sapnil_WAF.bulktest(param_ob);
+            response.setContentType("text/csv");
+            String reportName = "GenerateCSV_Report_"
+                    + System.currentTimeMillis() + ".csv";
+            response.setHeader("Content-disposition", "attachment; "
+                    + "filename=" + reportName);
+
+            BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
+            CSVWriter writer = new CSVWriter(buff);
+            writer.writeAll(result_list);
+            writer.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        /*
                     CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
                     String readFilerow;
 
@@ -103,11 +126,9 @@ public class Bulk_testing extends HttpServlet {
                         payload_list.add(wordList.get(payload_index));
                         label_list.add(wordList.get(label_index));
                     }
-                 
-                   
+
                     Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('" + final_input_dataset_path + "','" + context_path.replace(File.separator, "/") + "','" + payload_name + "','" + payload_label + "');print(bulk_verna_detect_result)"});
 
-                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','payload','label');print(bulk_verna_detect_result)"});
                     p.waitFor();
                     String stdout = IOUtils.toString(p.getInputStream());
                     System.out.println("stdout result is ----" + stdout);
@@ -116,7 +137,6 @@ public class Bulk_testing extends HttpServlet {
                     result_list.add(new String[]{"payload_name", "payload_label"});
 
                     String versify_result1 = "";
-                    //CSVWriter csvWriter = new CSVWriter(new FileWriter("new.csv"), ",", "'","/", "\n");
                     for (int i = 0; i < syspathRaw.size(); i++) {
                         versify_result1 = syspathRaw.getString(i);
                         if (!label_list.get(i).trim().equals(versify_result1.trim())) {
@@ -127,10 +147,8 @@ public class Bulk_testing extends HttpServlet {
                             System.out.println("match");
                         }
 
-                        // System.out.println("versify_result1 result is ----" + versify_result1);
                     }
 
-                   
                     response.setContentType("text/csv");
                     String reportName = "GenerateCSV_Report_"
                             + System.currentTimeMillis() + ".csv";
@@ -151,7 +169,7 @@ public class Bulk_testing extends HttpServlet {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

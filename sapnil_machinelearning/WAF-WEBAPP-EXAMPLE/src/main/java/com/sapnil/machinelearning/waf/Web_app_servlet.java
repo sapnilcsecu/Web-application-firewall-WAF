@@ -48,11 +48,34 @@ public class Web_app_servlet extends HttpServlet {
             String emp_mobile = request.getParameter("emp_mobile");
             System.out.println("emp_mobile is " + emp_mobile);
 
-            //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
-            HttpSession session = request.getSession(true);
+            List<String> param_list = new ArrayList<String>();
+            param_list.add(emp_name1);
+            param_list.add(reg);
+            param_list.add(Date);
+            param_list.add(emp_mobile);
+            boolean is_vernable = Sapnil_WAF.detect_verna_param(request, param_list);
+            if (!is_vernable) {
+                jsonObject.put("Response", "Parameter contain script");
+
+                PrintWriter out = response.getWriter();
+
+                out.print(jsonObject);
+                out.flush();
+                return;
+            } else {
+                jsonObject.put("Response", "this is normal parameter");
+
+                PrintWriter out = response.getWriter();
+
+                out.print(jsonObject);
+                out.flush();
+                return;
+            }
+
+            /*HttpSession session = request.getSession(true);
             String context_path = session.getServletContext().getRealPath("/");
 
-            //System.out.println("context_path is "+context_path.replace("\\", "/"));
+            
             Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + emp_name1 + "');print(json.dumps([str(live_verna_detection)]))"});
             p.waitFor();
 
@@ -63,7 +86,7 @@ public class Web_app_servlet extends HttpServlet {
                 versify_result1 = syspathRaw.getString(i);
 
             }
-            //System.out.println("the json is "+stdout);
+           
 
             Process p1 = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + reg + "');print(json.dumps([str(live_verna_detection)]))"});
             p1.waitFor();
@@ -81,8 +104,7 @@ public class Web_app_servlet extends HttpServlet {
             PrintWriter out = response.getWriter();
 
             out.print(jsonObject);
-            out.flush();
-
+            out.flush();*/
         } catch (Exception ex) {
             ex.printStackTrace();
         }

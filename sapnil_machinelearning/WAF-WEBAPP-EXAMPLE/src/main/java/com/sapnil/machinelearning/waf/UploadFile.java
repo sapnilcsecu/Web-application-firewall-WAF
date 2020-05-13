@@ -6,6 +6,7 @@
 package com.sapnil.machinelearning.waf;
 
 import com.alibaba.fastjson.JSONArray;
+import com.sapnil.machinelearning.model.Train_model_param;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,6 +47,7 @@ public class UploadFile extends HttpServlet {
         HttpSession session = request.getSession(true);
         String context_path = session.getServletContext().getRealPath("/");
         String input_dataset_path = context_path.replace(File.separator, "/");
+        String accuracy="";
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
                 List<FileItem> multiparts = new ServletFileUpload(
@@ -53,10 +55,7 @@ public class UploadFile extends HttpServlet {
                 for (FileItem item : multiparts) {
                     if (!item.isFormField()) {
                         System.out.println("file data ");
-                        /*File fileSaveDir = new File(UPLOAD_DIRECTORY);
-                         if (!fileSaveDir.exists()) {
-                         fileSaveDir.mkdir();
-                         }*/
+
                         input_dataset_name = new File(item.getName()).getName();
                         item.write(new File(input_dataset_path + input_dataset_name));
                     } else {
@@ -75,15 +74,24 @@ public class UploadFile extends HttpServlet {
 
                 }
                 String final_input_dataset_path = input_dataset_path + input_dataset_name;
-                ///train_model(input_dataset,vocabulary_path,payload_col_name,payload_label,mode)
-                //System.out.println("context_path is "+context_path.replace("\\", "/"));
+                Train_model_param param_ob = new Train_model_param();
+                param_ob.setInput_dataset_filename(input_dataset_name);
+                param_ob.setInput_dataset_path(input_dataset_path);
+                param_ob.setPayload_label(payload_label);
+                param_ob.setPayload_name(payload_name);
+                accuracy=Sapnil_WAF.write_append_model(param_ob);
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+            response.getWriter().write("the accuracy is "+accuracy);
+        }
+        /*
                 if (mod_of_tran.equals("NEW TRAINING MODEL")) {
-                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model(" + final_input_dataset_path + "," + input_dataset_path + "," + payload_name + "," + payload_label + ",'write');print(json.dumps([str(accuracy_score)]))"});
-                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/verfullpayload.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','payload','label','write'); print(json.dumps([str(accuracy_score)]))"});
+                  
                     System.out.println("input_dataset_path is " + input_dataset_path);
                     Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + input_dataset_path + "','" + payload_name + "','" + payload_label + "','write'); print(json.dumps([str(accuracy_score)]))"});
-                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('"+final_input_dataset_path+"','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','"+payload_name+"','"+payload_label+"','write'); print(json.dumps([str(accuracy_score)]))"});
-
+                   
                     p.waitFor();
                     String stdout = IOUtils.toString(p.getInputStream());
                     System.out.println("the stdout is " + stdout);
@@ -95,8 +103,7 @@ public class UploadFile extends HttpServlet {
                     }
                 } else if (mod_of_tran.equals("APPEND TRAINING MODEL")) {
                     Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + input_dataset_path + "','" + payload_name + "','" + payload_label + "','append'); print(json.dumps([str(accuracy_score)]))"});
-                    //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('"+final_input_dataset_path+"','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','"+payload_name+"','"+payload_label+"','write'); print(json.dumps([str(accuracy_score)]))"});
-
+                  
                     p.waitFor();
                     String stdout = IOUtils.toString(p.getInputStream());
                     System.out.println("the stdout is " + stdout);
@@ -109,17 +116,14 @@ public class UploadFile extends HttpServlet {
                 }
 
             } catch (Exception e) {
-                // exception handling
+              
                 e.printStackTrace();
             }
 
-            /*PrintWriter out = response.getWriter();
-
-             out.print(jsonObject);
-             out.flush();*/
-            //response.setContentType("application/json");
+           
         }
         response.getWriter().write("training process completed");
+         */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
