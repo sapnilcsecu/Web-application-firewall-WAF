@@ -34,7 +34,6 @@
                     $.post('Web_app_servlet', {'emp_name1': emp_name1, 'reg': reg,'Date':Date,'emp_mobile':emp_mobile}, function(responseJson) {
 
                         
-Response
                             console.log("response is "+responseJson);
                             if (responseJson != null) {
 

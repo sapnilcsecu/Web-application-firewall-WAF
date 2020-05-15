@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sapnil.machinelearning.waf;
+package com.sapnil.machinelearning.example;
 
 import com.alibaba.fastjson.JSONArray;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.sapnil.machinelearning.model.Train_model_param;
-
+import com.sapnil.machinelearning.waf.Sapnil_WAF;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
@@ -102,74 +102,13 @@ public class Bulk_testing extends HttpServlet {
             CSVWriter writer = new CSVWriter(buff);
             writer.writeAll(result_list);
             writer.close();
+        } catch (org.apache.commons.io.FileExistsException ex) {
+            response.getWriter().write("File already exist.please rename this file");
+            return;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        /*
-                    CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
-                    String readFilerow;
-
-                    int payload_index = 0, label_index = 0;
-                    ArrayList<String> payload_list = new ArrayList<String>();
-                    ArrayList<String> label_list = new ArrayList<String>();
-                    int co = 0;
-                    String[] line;
-                    while ((line = reader.readNext()) != null) {
-                        List<String> wordList = Arrays.asList(line);
-                        if (co == 0) {
-                            payload_index = wordList.indexOf(payload_name);
-                            label_index = wordList.indexOf(payload_label);
-
-                            ++co;
-                            continue;
-                        }
-                        payload_list.add(wordList.get(payload_index));
-                        label_list.add(wordList.get(label_index));
-                    }
-
-                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('" + final_input_dataset_path + "','" + context_path.replace(File.separator, "/") + "','" + payload_name + "','" + payload_label + "');print(bulk_verna_detect_result)"});
-
-                    p.waitFor();
-                    String stdout = IOUtils.toString(p.getInputStream());
-                    System.out.println("stdout result is ----" + stdout);
-                    JSONArray syspathRaw = JSONArray.parseArray(stdout);
-                    ArrayList<String[]> result_list = new ArrayList<String[]>();
-                    result_list.add(new String[]{"payload_name", "payload_label"});
-
-                    String versify_result1 = "";
-                    for (int i = 0; i < syspathRaw.size(); i++) {
-                        versify_result1 = syspathRaw.getString(i);
-                        if (!label_list.get(i).trim().equals(versify_result1.trim())) {
-                            System.out.println(label_list.get(i).trim());
-                            result_list.add(new String[]{payload_list.get(i), versify_result1});
-
-                        } else {
-                            System.out.println("match");
-                        }
-
-                    }
-
-                    response.setContentType("text/csv");
-                    String reportName = "GenerateCSV_Report_"
-                            + System.currentTimeMillis() + ".csv";
-                    response.setHeader("Content-disposition", "attachment; "
-                            + "filename=" + reportName);
-
-                    BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
-                    CSVWriter writer = new CSVWriter(buff);
-                    writer.writeAll(result_list);
-                    writer.close();
-
-                } catch (Exception e) {
-                    // exception handling
-                    e.printStackTrace();
-                }
-
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

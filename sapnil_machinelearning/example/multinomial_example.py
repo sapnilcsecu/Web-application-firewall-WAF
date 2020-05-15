@@ -14,7 +14,7 @@ import pickle
 '''
 #from classifier.multinomial_nativebayes import live_multi_nativebayes_verna_predict
 #from dataset_pre.dataset_load import load_cvs_dataset
-from classifier.train_model import bulk_live_verna_detection
+from classifier.train_model import live_verna_detection
 import json
 #import pickle
 
@@ -68,11 +68,14 @@ def main():
         doc_class_label=live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/',doc)     
         print("this doc_class_label is ",doc_class_label)
     '''
-   
+    '''    
     bulk_verna_detect_result=bulk_live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/xss_payload_33.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/',"payload","label")    
     for doc1 in bulk_verna_detect_result:
         print(doc1)    
-    #print(bulk_verna_detect_result)
+    '''   
+        
+    verna_detection_re=live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','13962')    
+    print(verna_detection_re)
     #To load the model
     
 if __name__ == '__main__':

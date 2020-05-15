@@ -97,7 +97,7 @@
                              //var response = JSON.parse(msg);
                              console.log("the response is "+msg)
                              alert(msg);
-                             reset();
+                            location.reload();
                              
                              /*var status = response.status;
                              if (status == 1) {

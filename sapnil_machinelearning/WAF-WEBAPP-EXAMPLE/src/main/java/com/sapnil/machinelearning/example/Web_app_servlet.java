@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sapnil.machinelearning.waf;
+package com.sapnil.machinelearning.example;
 
 import com.alibaba.fastjson.JSONArray;
+import com.sapnil.machinelearning.waf.Sapnil_WAF;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,39 +65,6 @@ public class Web_app_servlet extends HttpServlet {
                 return;
             }
 
-            /*HttpSession session = request.getSession(true);
-            String context_path = session.getServletContext().getRealPath("/");
-
-            
-            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + emp_name1 + "');print(json.dumps([str(live_verna_detection)]))"});
-            p.waitFor();
-
-            String stdout = IOUtils.toString(p.getInputStream());
-            JSONArray syspathRaw = JSONArray.parseArray(stdout);
-            String versify_result1 = "";
-            for (int i = 0; i < syspathRaw.size(); i++) {
-                versify_result1 = syspathRaw.getString(i);
-
-            }
-           
-
-            Process p1 = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + reg + "');print(json.dumps([str(live_verna_detection)]))"});
-            p1.waitFor();
-
-            String stdout1 = IOUtils.toString(p1.getInputStream());
-            String versify_result2 = "";
-            JSONArray syspathRaw1 = JSONArray.parseArray(stdout1);
-            for (int i = 0; i < syspathRaw1.size(); i++) {
-                versify_result2 = syspathRaw1.getString(i);
-
-            }
-
-            jsonObject.put("Response", "web param verify is completed");
-
-            PrintWriter out = response.getWriter();
-
-            out.print(jsonObject);
-            out.flush();*/
         } catch (Exception ex) {
             ex.printStackTrace();
         }

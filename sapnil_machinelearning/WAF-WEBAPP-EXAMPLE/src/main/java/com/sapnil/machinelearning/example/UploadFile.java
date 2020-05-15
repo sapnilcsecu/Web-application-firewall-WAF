@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sapnil.machinelearning.waf;
+package com.sapnil.machinelearning.example;
 
 import com.alibaba.fastjson.JSONArray;
 import com.sapnil.machinelearning.model.Train_model_param;
+import com.sapnil.machinelearning.waf.Sapnil_WAF;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,14 +43,14 @@ public class UploadFile extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            String payload_name = "", payload_label = "", input_dataset_name = "", mod_of_tran = "";
+            HttpSession session = request.getSession(true);
+            String context_path = session.getServletContext().getRealPath("/");
+            String input_dataset_path = context_path.replace(File.separator, "/");
+            String accuracy = "";
+            if (ServletFileUpload.isMultipartContent(request)) {
 
-        String payload_name = "", payload_label = "", input_dataset_name = "", mod_of_tran = "";
-        HttpSession session = request.getSession(true);
-        String context_path = session.getServletContext().getRealPath("/");
-        String input_dataset_path = context_path.replace(File.separator, "/");
-        String accuracy="";
-        if (ServletFileUpload.isMultipartContent(request)) {
-            try {
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
                 for (FileItem item : multiparts) {
@@ -79,51 +80,20 @@ public class UploadFile extends HttpServlet {
                 param_ob.setInput_dataset_path(input_dataset_path);
                 param_ob.setPayload_label(payload_label);
                 param_ob.setPayload_name(payload_name);
-                accuracy=Sapnil_WAF.write_append_model(param_ob);
-            } catch (Exception e) {
+                param_ob.setMod_of_tran(mod_of_tran);
+                accuracy = Sapnil_WAF.write_append_model(param_ob);
 
-                e.printStackTrace();
-            }
-            response.getWriter().write("the accuracy is "+accuracy);
-        }
-        /*
-                if (mod_of_tran.equals("NEW TRAINING MODEL")) {
-                  
-                    System.out.println("input_dataset_path is " + input_dataset_path);
-                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + input_dataset_path + "','" + payload_name + "','" + payload_label + "','write'); print(json.dumps([str(accuracy_score)]))"});
-                   
-                    p.waitFor();
-                    String stdout = IOUtils.toString(p.getInputStream());
-                    System.out.println("the stdout is " + stdout);
-                    JSONArray syspathRaw = JSONArray.parseArray(stdout);
-                    for (int i = 0; i < syspathRaw.size(); i++) {
-                        String path = syspathRaw.getString(i);
-                        System.out.println("the accuracy is " + path);
-
-                    }
-                } else if (mod_of_tran.equals("APPEND TRAINING MODEL")) {
-                    Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + input_dataset_path + "','" + payload_name + "','" + payload_label + "','append'); print(json.dumps([str(accuracy_score)]))"});
-                  
-                    p.waitFor();
-                    String stdout = IOUtils.toString(p.getInputStream());
-                    System.out.println("the stdout is " + stdout);
-                    JSONArray syspathRaw = JSONArray.parseArray(stdout);
-                    for (int i = 0; i < syspathRaw.size(); i++) {
-                        String path = syspathRaw.getString(i);
-                        System.out.println("the accuracy is " + path);
-
-                    }
-                }
-
-            } catch (Exception e) {
-              
-                e.printStackTrace();
+                response.getWriter().write("the accuracy is " + accuracy);
             }
 
-           
+        } catch (org.apache.commons.io.FileExistsException ex) {
+            response.getWriter().write("File already exist.please rename this file");
+            return;
+        } catch (Exception e) {
+
+            e.printStackTrace();
         }
-        response.getWriter().write("training process completed");
-         */
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
