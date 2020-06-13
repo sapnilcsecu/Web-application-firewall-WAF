@@ -50,21 +50,21 @@ public class Encode_detection {
      * @return
      */
     public static String decode(String encode_param) {
-        String decode_url = "";
+        String decode_url =null;
         try {
 
             if (isUrldoubleencoding(encode_param)) {
-                decode_url = URLDecoder.decode(URLDecoder.decode(encode_param));
+                 return URLDecoder.decode(URLDecoder.decode(encode_param));
             } else if (isUrlencoding(encode_param)) {
-                decode_url = URLDecoder.decode(encode_param);
+                return URLDecoder.decode(encode_param);
             } else {
-                decode_url = "";
+                return encode_param;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        return decode_url;
+        return "";
     }
 
 }

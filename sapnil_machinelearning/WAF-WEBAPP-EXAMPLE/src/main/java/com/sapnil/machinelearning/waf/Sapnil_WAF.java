@@ -32,35 +32,35 @@ import org.json.JSONObject;
  */
 public class Sapnil_WAF {
 
-    public static boolean detect_verna_param(HttpServletRequest request, List<String> paramlist) {
+    public static boolean detect_verna_param(HttpServletRequest request, String param_file_path) {
         boolean is_vernable = false;
         try {
 
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
             HttpSession session = request.getSession(true);
-            String context_path = session.getServletContext().getRealPath("/");
-            for (int count = 0; count < paramlist.size(); ++count) {
-                String decode_param = Encode_detection.decode(paramlist.get(count));
-                if (Utility.is_empty(decode_param)) {
-                    is_vernable = true;
-                }
-                Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path.replace(File.separator, "/") + "','" + decode_param + "');print(json.dumps([str(live_verna_detection)]))"});
-                p.waitFor();
+            String context_path = session.getServletContext().getRealPath("/").replace(File.separator, "/");
+           
+            String file_path=context_path+ param_file_path;
+          // System.out.println("context pathr is " + context_path);
 
-                String stdout = IOUtils.toString(p.getInputStream());
-                JSONArray syspathRaw = JSONArray.parseArray(stdout);
-                String versify_result1 = "";
-                for (int i = 0; i < syspathRaw.size(); i++) {
-                    versify_result1 = syspathRaw.getString(i);
+           
+            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path+ "','"+file_path+ "','payload');print(live_verna_detection)"});
+            p.waitFor();
 
-                }
+            String stdout = IOUtils.toString(p.getInputStream());
+            System.out.println("versify_result1 is 11 " + stdout);
+            JSONArray syspathRaw = JSONArray.parseArray(stdout);
+            String versify_result1 = "";
+            for (int i = 0; i < syspathRaw.size(); i++) {
+                versify_result1 = syspathRaw.getString(i);
+              
                 if (versify_result1.equals("anom")) {
+                    System.out.println("param is anom ");
                     is_vernable = true;
                 }
             }
 
-            //System.out.println("context_path is "+context_path.replace("\\", "/"));
-            //System.out.println("the json is "+stdout);
+           
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -69,38 +69,7 @@ public class Sapnil_WAF {
     }
 
     public static String write_append_model(Train_model_param param_ob) {
-        /*
-        String payload_name = "", payload_label = "", input_dataset_name = "", mod_of_tran = "", accuracy = "";
-        HttpSession session = request.getSession(true);
-        String context_path = session.getServletContext().getRealPath("/");
-        String input_dataset_path = context_path.replace(File.separator, "/");
-        if (ServletFileUpload.isMultipartContent(request)) {
-            try {
-                List<FileItem> multiparts = new ServletFileUpload(
-                        new DiskFileItemFactory()).parseRequest(request);
-                for (FileItem item : multiparts) {
-                    if (!item.isFormField()) {
-                        System.out.println("file data ");
-                      
-                        input_dataset_name = new File(item.getName()).getName();
-                        item.write(new File(input_dataset_path + input_dataset_name));
-                    } else {
-                        if (item.getFieldName().equals("payload_name")) {
-                            payload_name = item.getString();
-                            System.out.println("payload_name is " + payload_name);
-                        } else if (item.getFieldName().equals("payload_label")) {
-                            payload_label = item.getString();
-                            System.out.println("payload_label is " + payload_label);
-                        } else if (item.getFieldName().equals("mod_of_tran")) {
-                            mod_of_tran = item.getString();
-                            System.out.println("mod_of_tran is " + mod_of_tran);
-                        }
-
-                    }
-
-                }
-                String final_input_dataset_path = input_dataset_path + input_dataset_name;
-         */
+       
         String accuracy = "";
         String final_input_dataset_path = param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename();
         try {
@@ -139,38 +108,7 @@ public class Sapnil_WAF {
     }
 
     public static List<String[]> bulktest(Train_model_param param_ob) {
-        /*JSONObject jsonObject = new JSONObject();
-        String payload_name = "payload", payload_label = "label", input_dataset_name = "", mod_of_tran = "";
-        HttpSession session = request.getSession(true);
-        String context_path = session.getServletContext().getRealPath("/");
-        String input_dataset_path = context_path.replace(File.separator, "/");
-        String final_input_dataset_path = "";
-        ArrayList<String[]> result_list = new ArrayList<String[]>();
-        if (ServletFileUpload.isMultipartContent(request)) {
-            try {
-                List<FileItem> multiparts = new ServletFileUpload(
-                        new DiskFileItemFactory()).parseRequest(request);
-                for (FileItem item : multiparts) {
-                    if (!item.isFormField()) {
-                        System.out.println("file data ");
-
-                        input_dataset_name = new File(item.getName()).getName();
-                        final_input_dataset_path = input_dataset_path + input_dataset_name;
-                        item.write(new File(final_input_dataset_path));
-                    } else {
-                        System.out.println("not file data ");
-                        if (item.getFieldName().equals("payload_name")) {
-                            payload_name = item.getString();
-                            System.out.println("payload_name is " + payload_name);
-                        } else if (item.getFieldName().equals("payload_label")) {
-                            payload_label = item.getString();
-                            System.out.println("payload_label is " + payload_label);
-                        }
-
-                    }
-
-                }
-         */
+       
         ArrayList<String[]> result_list = new ArrayList<String[]>();
         try {
             String final_input_dataset_path = param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename();

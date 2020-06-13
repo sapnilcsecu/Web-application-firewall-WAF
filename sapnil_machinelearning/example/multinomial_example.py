@@ -15,7 +15,9 @@ import pickle
 #from classifier.multinomial_nativebayes import live_multi_nativebayes_verna_predict
 #from dataset_pre.dataset_load import load_cvs_dataset
 from classifier.train_model import live_verna_detection
-import json
+from classifier.train_model import train_model
+
+#import json
 #import pickle
 
 def main():
@@ -73,9 +75,14 @@ def main():
     for doc1 in bulk_verna_detect_result:
         print(doc1)    
     '''   
-        
-    verna_detection_re=live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/src/main/webapp/','13962')    
+    '''
+    accuracy_score=train_model("E:/ICT Secuirty repro/Web-application-firewall-WAF/sapnil_machinelearning/verfullpayload.csv",'E:/ICT Secuirty repro/Web-application-firewall-WAF/sapnil_machinelearning/',"payload","label","write")
+    print("the score is ",accuracy_score)
+    '''
+    
+    verna_detection_re=live_verna_detection('E:/ICT Secuirty repro/Web-application-firewall-WAF/sapnil_machinelearning/',"E:/ICT Secuirty repro/Web-application-firewall-WAF/sapnil_machinelearning/xss_payload_33.csv","payload")    
     print(verna_detection_re)
+
     #To load the model
     
 if __name__ == '__main__':

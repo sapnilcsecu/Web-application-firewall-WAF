@@ -43,13 +43,18 @@ def train_model(input_dataset, vocabulary_path, payload_col_name, payload_label,
     return accuracy_score(testlabelcopy, final_doc_class_label) 
 
 
-def live_verna_detection(vocabulary_path, web_param):
+def live_verna_detection(vocabulary_path, input_web_param_path,payload_col_name):
+    verify_result = []
+    trainDF = load_cvs_dataset(input_web_param_path)
+
+   
+    txt_text = trainDF[payload_col_name]
     with open(str(vocabulary_path) + 'trainmodel', 'rb') as training_model:  
         train_model1 = pickle.load(training_model)
+    for web_param in txt_text:
+        verify_result.append(live_multi_nativebayes_verna_predict(train_model1, web_param))     
     
-    doc_class_label = live_multi_nativebayes_verna_predict(train_model1, web_param)     
-    # print("this class level is ",doc_class_label)
-    return doc_class_label
+    return verify_result
 
 
 def bulk_live_detection(train_model1, web_param):

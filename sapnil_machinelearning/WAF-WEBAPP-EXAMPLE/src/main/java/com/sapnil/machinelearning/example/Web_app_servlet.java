@@ -6,8 +6,12 @@
 package com.sapnil.machinelearning.example;
 
 import com.alibaba.fastjson.JSONArray;
+import com.opencsv.CSVWriter;
+import com.sapnil.machinelearning.utility.Encode_detection;
+import com.sapnil.machinelearning.utility.Utility;
 import com.sapnil.machinelearning.waf.Sapnil_WAF;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -41,46 +45,83 @@ public class Web_app_servlet extends HttpServlet {
         try {
             JSONObject jsonObject = new JSONObject();
             String emp_name1 = request.getParameter("emp_name1");
-            System.out.println("user_name is " + emp_name1);
+            // System.out.println("user_name is " + emp_name1);
             String reg = request.getParameter("reg");
-            System.out.println("reg is " + reg);
+            // System.out.println("reg is " + reg);
             String Date = request.getParameter("Date");
-            System.out.println("Date is " + Date);
+            //System.out.println("Date is " + Date);
             String emp_mobile = request.getParameter("emp_mobile");
-            System.out.println("emp_mobile is " + emp_mobile);
+            // System.out.println("emp_mobile is " + emp_mobile);
+            ArrayList<String[]> result_list = new ArrayList<String[]>();
+            result_list.add(new String[]{"payload"});
+            //String decode_param = Encode_detection.decode(paramlist.get(count));
 
-            List<String> param_list = new ArrayList<String>();
-            param_list.add(emp_name1);
-            param_list.add(reg);
-            param_list.add(Date);
-            param_list.add(emp_mobile);
-            boolean is_vernable = Sapnil_WAF.detect_verna_param(request, param_list);
-            if (is_vernable) {
-
-                response.getWriter().write("Parameter contain script");
-                return;
-            } else {
-
-                response.getWriter().write("this is normal parameter");
-                return;
+            if (!Utility.is_empty(emp_name1)) {
+                System.out.println("emp_name1 is "+emp_name1);
+                result_list.add(new String[]{Encode_detection.decode(emp_name1.trim())});
+            }
+            if (!Utility.is_empty(reg)) {
+                System.out.println("reg is "+reg);
+                result_list.add(new String[]{Encode_detection.decode(reg.trim())});
+            }
+            if (!Utility.is_empty(Date)) {
+                System.out.println("date is "+Date);
+                result_list.add(new String[]{Encode_detection.decode(Date.trim())});
+            }
+            if (!Utility.is_empty(emp_mobile)) {
+                String decode_val = Encode_detection.decode(emp_mobile.trim());
+                System.out.println("emp_mobile is "+emp_mobile);
+                result_list.add(new String[]{Encode_detection.decode(emp_mobile.trim())});
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+            HttpSession session = request.getSession(true);
+            String csv_file = session.getId() + ".csv";
+            String context_path = session.getServletContext().getRealPath("/");
+            String final_cvs_path = context_path + csv_file;
+            CSVWriter writer = new CSVWriter(new FileWriter(final_cvs_path));
+            writer.writeAll(result_list);
+            writer.close();
+            if (result_list.size() > 1) {
+                boolean is_vernable = Sapnil_WAF.detect_verna_param(request, csv_file);
+               if (is_vernable) {
+                    Utility.del_file(final_cvs_path);
+                    System.out.println("Parameter contain script");
+                    response.getWriter().write("Parameter contain script");
+                    return;
+                } else {
+                    Utility.del_file(final_cvs_path);
+                    System.out.println("this is normal parameter");
+                    response.getWriter().write("this is normal parameter");
+                    return;
+                }
+            } else {
+                Utility.del_file(final_cvs_path);
+                System.out.println("empty parameter");
+                response.getWriter().write("empty parameter");
+                return;
+            }
+        
+       // Utility.del_file(final_cvs_path);
+              
+      
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    }
+    catch (Exception ex) {
+            ex.printStackTrace();
+    }
+}
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+/**
+ * Handles the HTTP <code>GET</code> method.
+ *
+ * @param request servlet request
+ * @param response servlet response
+ * @throws ServletException if a servlet-specific error occurs
+ * @throws IOException if an I/O error occurs
+ */
+@Override
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -94,7 +135,7 @@ public class Web_app_servlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -105,7 +146,7 @@ public class Web_app_servlet extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+        public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
