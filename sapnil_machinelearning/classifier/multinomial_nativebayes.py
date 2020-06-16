@@ -49,50 +49,54 @@ def multi_nativebayes_verna_predict(train_model_data, test_dataset):
  
     for doc in test_dataset:
        
-        doc=re.sub("\d+", " ", doc)
+        doc=re.sub("\d+", " ", str(doc))
         final_doc_class_label['doc' + '-' + str(doccount)] = ''
         words = word_tokenize(doc)
         score_Class = 0
         max_score = 0
         final_class_label = ''
         is_norm = 0
-      
-       
-        for class_label in train_model_data.get_class_labels(): 
-            condProbabilityOfTermClass[class_label] = 0
-          
-            logprior_val=logprior[class_label]
-            for word in words:
-                word=word.lower()
-                get_class_eachtoken_likelihood = train_model_data.get_class_eachtoken_likelihood()
-                vocabulary = train_model_data.get_vocabulary()
-                if(word in vocabulary):
-                    
-                    if(get_class_eachtoken_likelihood[class_label][word]==0):
-                       
-                        condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
-                    else:
-                        condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label] + get_class_eachtoken_likelihood[class_label][word]
-                else:
-                    
-                    condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
+        lenth=len(words)
+        
+        if(lenth>=1):
             
-            if(condProbabilityOfTermClass[class_label] == 0):
-             
-                is_norm = 1  
-                continue      
-            score_Class = logprior_val + condProbabilityOfTermClass[class_label]
-            if(max_score > score_Class):
-                max_score = score_Class
-                final_class_label = class_label
+            
+            for class_label in train_model_data.get_class_labels(): 
+                condProbabilityOfTermClass[class_label] = 0
               
-        if(is_norm == 1):
-            final_doc_class_label['doc' + '-' + str(doccount)] = "norm" 
-        else:         
-            final_doc_class_label['doc' + '-' + str(doccount)] = final_class_label
-      
-        doccount = doccount + 1    
-   
+                logprior_val=logprior[class_label]
+                for word in words:
+                    word=word.lower()
+                    get_class_eachtoken_likelihood = train_model_data.get_class_eachtoken_likelihood()
+                    vocabulary = train_model_data.get_vocabulary()
+                    if(word in vocabulary):
+                        
+                        if(get_class_eachtoken_likelihood[class_label][word]==0):
+                           
+                            condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
+                        else:
+                            condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label] + get_class_eachtoken_likelihood[class_label][word]
+                    else:
+                        
+                        condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
+                
+                if(condProbabilityOfTermClass[class_label] == 0):
+                 
+                    is_norm = 1  
+                    continue      
+                score_Class = logprior_val + condProbabilityOfTermClass[class_label]
+                if(max_score > score_Class):
+                    max_score = score_Class
+                    final_class_label = class_label
+                  
+            if(is_norm == 1):
+                final_doc_class_label['doc' + '-' + str(doccount)] = "norm" 
+            else:         
+                final_doc_class_label['doc' + '-' + str(doccount)] = final_class_label
+          
+            doccount = doccount + 1    
+        else:
+            final_doc_class_label['doc' + '-' + str(doccount)] = "norm"
     
     return final_doc_class_label
 
@@ -102,7 +106,7 @@ def live_multi_nativebayes_verna_predict(train_model_data, input_doc):
     
     condProbabilityOfTermClass = {}
     
-    doc=re.sub("\d+", " ", input_doc)
+    doc=re.sub("\d+", " ", str(input_doc))
     final_doc_class_label = ''
     words = word_tokenize(doc)
     score_Class = 0
@@ -113,41 +117,44 @@ def live_multi_nativebayes_verna_predict(train_model_data, input_doc):
     vocabulary = train_model_data.get_vocabulary() 
     logprior = train_model_data.get_logprior()
     class_label_list=train_model_data.get_class_labels()
- 
-    for class_label in class_label_list: 
-        condProbabilityOfTermClass[class_label] = 0
-     
-        logprior=logprior[class_label]
-        for word in words:
-            word=word.lower()
-            class_eachtoken_likelihood = train_model_data.get_class_eachtoken_likelihood()
-            
-            if(word in vocabulary):
+    lenth=len(words)
+    
+    if(lenth>=1):
+        for class_label in class_label_list: 
+            condProbabilityOfTermClass[class_label] = 0
+         
+            logprior=logprior[class_label]
+            for word in words:
+                word=word.lower()
+                class_eachtoken_likelihood = train_model_data.get_class_eachtoken_likelihood()
                 
-                if(class_eachtoken_likelihood[class_label][word]==0):
-                   
-                    condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
+                if(word in vocabulary):
+                    
+                    if(class_eachtoken_likelihood[class_label][word]==0):
+                       
+                        condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
+                    else:
+                        condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label] + class_eachtoken_likelihood[class_label][word]
                 else:
-                    condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label] + class_eachtoken_likelihood[class_label][word]
-            else:
-              
-                condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
-              
-        
-        if(condProbabilityOfTermClass[class_label] == 0):
-           
-            is_norm = 1  
-            continue      
-        score_Class = logprior + condProbabilityOfTermClass[class_label]
-        if(max_score > score_Class):
-            max_score = score_Class
-            final_class_label = class_label
+                  
+                    condProbabilityOfTermClass[class_label] = condProbabilityOfTermClass[class_label]+0;
+                  
             
-    if(is_norm == 1):
-        final_doc_class_label= "norm" 
-    else:         
-        final_doc_class_label = final_class_label
-           
+            if(condProbabilityOfTermClass[class_label] == 0):
+               
+                is_norm = 1  
+                continue      
+            score_Class = logprior + condProbabilityOfTermClass[class_label]
+            if(max_score > score_Class):
+                max_score = score_Class
+                final_class_label = class_label
+                
+        if(is_norm == 1):
+            final_doc_class_label= "norm" 
+        else:         
+            final_doc_class_label = final_class_label
+    else:
+        final_doc_class_label= "norm"        
     
     return final_doc_class_label
 

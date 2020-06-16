@@ -34,6 +34,7 @@ public class Sapnil_WAF {
 
     public static boolean detect_verna_param(HttpServletRequest request, String param_file_path) {
         boolean is_vernable = false;
+        Process p=null;
         try {
 
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
@@ -44,13 +45,22 @@ public class Sapnil_WAF {
           // System.out.println("context pathr is " + context_path);
 
            
-            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path+ "','"+file_path+ "','payload');print(live_verna_detection)"});
+            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path+ "','"+file_path+ "','payload');print(live_verna_detection)"});
             p.waitFor();
+            
 
             String stdout = IOUtils.toString(p.getInputStream());
             System.out.println("versify_result1 is 11 " + stdout);
+             if(stdout==null){
+                 p.destroy();
+                return true;
+            }
             JSONArray syspathRaw = JSONArray.parseArray(stdout);
             String versify_result1 = "";
+            if(syspathRaw==null){
+                p.destroy();
+                return true;
+            }
             for (int i = 0; i < syspathRaw.size(); i++) {
                 versify_result1 = syspathRaw.getString(i);
               
@@ -62,7 +72,11 @@ public class Sapnil_WAF {
 
            
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("the exception is "+ex.getMessage());
+            p.destroy();
+            return true;
+        }finally{
+            p.destroy(); 
         }
 
         return is_vernable;

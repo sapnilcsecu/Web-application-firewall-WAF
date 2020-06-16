@@ -41,7 +41,7 @@ public class Web_app_servlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        String final_cvs_path = null;
         try {
             JSONObject jsonObject = new JSONObject();
             String emp_name1 = request.getParameter("emp_name1");
@@ -56,34 +56,34 @@ public class Web_app_servlet extends HttpServlet {
             result_list.add(new String[]{"payload"});
             //String decode_param = Encode_detection.decode(paramlist.get(count));
 
-            if (!Utility.is_empty(emp_name1)) {
-                System.out.println("emp_name1 is "+emp_name1);
+            if (!Utility.is_empty_string(emp_name1)) {
+                System.out.println("emp_name1 is " + emp_name1);
                 result_list.add(new String[]{Encode_detection.decode(emp_name1.trim())});
             }
-            if (!Utility.is_empty(reg)) {
-                System.out.println("reg is "+reg);
+            if (!Utility.is_empty_string(reg)) {
+                System.out.println("reg is " + reg);
                 result_list.add(new String[]{Encode_detection.decode(reg.trim())});
             }
-            if (!Utility.is_empty(Date)) {
-                System.out.println("date is "+Date);
+            if (!Utility.is_empty_string(Date)) {
+                System.out.println("date is " + Date);
                 result_list.add(new String[]{Encode_detection.decode(Date.trim())});
             }
-            if (!Utility.is_empty(emp_mobile)) {
+            if (!Utility.is_empty_string(emp_mobile)) {
                 String decode_val = Encode_detection.decode(emp_mobile.trim());
-                System.out.println("emp_mobile is "+emp_mobile);
+                System.out.println("emp_mobile is " + emp_mobile);
                 result_list.add(new String[]{Encode_detection.decode(emp_mobile.trim())});
             }
 
             HttpSession session = request.getSession(true);
             String csv_file = session.getId() + ".csv";
             String context_path = session.getServletContext().getRealPath("/");
-            String final_cvs_path = context_path + csv_file;
+            final_cvs_path = context_path + csv_file;
             CSVWriter writer = new CSVWriter(new FileWriter(final_cvs_path));
             writer.writeAll(result_list);
             writer.close();
             if (result_list.size() > 1) {
                 boolean is_vernable = Sapnil_WAF.detect_verna_param(request, csv_file);
-               if (is_vernable) {
+                if (is_vernable) {
                     Utility.del_file(final_cvs_path);
                     System.out.println("Parameter contain script");
                     response.getWriter().write("Parameter contain script");
@@ -100,28 +100,29 @@ public class Web_app_servlet extends HttpServlet {
                 response.getWriter().write("empty parameter");
                 return;
             }
-        
-       // Utility.del_file(final_cvs_path);
-              
-      
 
+            // Utility.del_file(final_cvs_path);
+        } catch (Exception ex) {
+
+            ex.getMessage();
+            Utility.del_file(final_cvs_path);
+            System.out.println("Parameter contain script");
+            response.getWriter().write("Parameter contain script");
+            return;
+        }
     }
-    catch (Exception ex) {
-            ex.printStackTrace();
-    }
-}
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -135,7 +136,7 @@ public class Web_app_servlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -146,7 +147,7 @@ public class Web_app_servlet extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
