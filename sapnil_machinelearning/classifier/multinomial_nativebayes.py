@@ -94,9 +94,11 @@ def multi_nativebayes_verna_predict(train_model_data, test_dataset):
             else:         
                 final_doc_class_label['doc' + '-' + str(doccount)] = final_class_label
           
-            doccount = doccount + 1    
+              
         else:
             final_doc_class_label['doc' + '-' + str(doccount)] = "norm"
+        
+        doccount = doccount + 1      
     
     return final_doc_class_label
 

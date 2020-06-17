@@ -112,20 +112,20 @@ def count_ver_word_fit(doc_list, class_labels):
         #doc = re.sub(r'[^a-z]+', ' ', doc)
         #doc = re.sub(r'\s+', ' ', doc, flags=re.I)
         #print('the doc is11 ',doc)
-       # print('the doc is ',doc)
+        # print('the doc is ',doc)
         # documents.append(str(doc))
         
-         # remove stop words
+        # remove stop words
         result_doc=word_tokenize(doc)
         #testing purpose
-        
+        '''
         tagged_sentence = nltk.pos_tag(result_doc)
         edited_sentence = [word for word,tag in tagged_sentence if tag != 'NNP' and tag != 'NNPS' and tag != 'NNS' and tag != 'NN' and tag != 'JJ' and tag != 'JJR' and tag != 'JJS']
-        
+        '''
         #testing purpose
         # REMOVE punctuation mark
         #print('the doc is11 ',result_doc)
-        for word in edited_sentence:                        
+        for word in result_doc:                        
             if word not in vocabulary:
                 
                 vocabulary.append(word.lower())
