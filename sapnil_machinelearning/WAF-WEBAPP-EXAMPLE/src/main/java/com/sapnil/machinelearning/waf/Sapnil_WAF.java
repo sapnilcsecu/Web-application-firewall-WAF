@@ -34,56 +34,53 @@ public class Sapnil_WAF {
 
     public static boolean detect_verna_param(HttpServletRequest request, String param_file_path) {
         boolean is_vernable = false;
-        Process p=null;
+        Process p = null;
         try {
 
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
             HttpSession session = request.getSession(true);
             String context_path = session.getServletContext().getRealPath("/").replace(File.separator, "/");
-           
-            String file_path=context_path+ param_file_path;
-          // System.out.println("context pathr is " + context_path);
 
-           
-            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path+ "','"+file_path+ "','payload');print(live_verna_detection)"});
+            String file_path = context_path + param_file_path;
+            // System.out.println("context pathr is " + context_path);
+
+            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path + "','" + file_path + "','payload');print(live_verna_detection)"});
             p.waitFor();
-            
 
             String stdout = IOUtils.toString(p.getInputStream());
             System.out.println("versify_result1 is 11 " + stdout);
-             if(stdout==null){
-                 p.destroy();
+            if (stdout == null) {
+                p.destroy();
                 return true;
             }
             JSONArray syspathRaw = JSONArray.parseArray(stdout);
             String versify_result1 = "";
-            if(syspathRaw==null){
+            if (syspathRaw == null) {
                 p.destroy();
                 return true;
             }
             for (int i = 0; i < syspathRaw.size(); i++) {
                 versify_result1 = syspathRaw.getString(i);
-              
+
                 if (versify_result1.equals("anom")) {
                     System.out.println("param is anom ");
                     is_vernable = true;
                 }
             }
 
-           
         } catch (Exception ex) {
-            System.out.println("the exception is "+ex.getMessage());
+            System.out.println("the exception is " + ex.getMessage());
             p.destroy();
             return true;
-        }finally{
-            p.destroy(); 
+        } finally {
+            p.destroy();
         }
 
         return is_vernable;
     }
 
     public static String write_append_model(Train_model_param param_ob) {
-       
+
         String accuracy = "";
         String final_input_dataset_path = param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename();
         try {
@@ -91,7 +88,7 @@ public class Sapnil_WAF {
             if (param_ob.getMod_of_tran().equals("NEW TRAINING MODEL")) {
 
                 // System.out.println("input_dataset_path is " + input_dataset_path);
-                Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','write'); print(json.dumps([str(accuracy_score)]))"});
+                Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','write'); print(json.dumps([str(accuracy_score)]))"});
 
                 p.waitFor();
                 String stdout = IOUtils.toString(p.getInputStream());
@@ -102,7 +99,7 @@ public class Sapnil_WAF {
 
                 }
             } else if (param_ob.getMod_of_tran().equals("APPEND TRAINING MODEL")) {
-                Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model; accuracy_score=train_model('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','append'); print(json.dumps([str(accuracy_score)]))"});
+                Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','append'); print(json.dumps([str(accuracy_score)]))"});
 
                 p.waitFor();
                 String stdout = IOUtils.toString(p.getInputStream());
@@ -122,8 +119,17 @@ public class Sapnil_WAF {
     }
 
     public static List<String[]> bulktest(Train_model_param param_ob) {
-       
-        ArrayList<String[]> result_list = new ArrayList<String[]>();
+       /* try {
+            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import bulk_live_verna_detection; live_verna_detection1=bulk_live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/xss_payload_33.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/','payload','label');print(live_verna_detection1)"});
+            p.waitFor();
+            String stdout = IOUtils.toString(p.getInputStream());
+            System.out.println("stdout result is ----" + stdout);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }*/
+
+           
+       ArrayList<String[]> result_list = new ArrayList<String[]>();
         try {
             String final_input_dataset_path = param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename();
             CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
@@ -147,8 +153,8 @@ public class Sapnil_WAF {
                 label_list.add(wordList.get(label_index));
             }
 
-            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path().replace(File.separator, "/") + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "');print(bulk_verna_detect_result)"});
-
+            //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path().replace(File.separator, "/") + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "');print(bulk_verna_detect_result)"});
+            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import bulk_live_verna_detection; live_verna_detection1=bulk_live_verna_detection('" + final_input_dataset_path + "','"+param_ob.getInput_dataset_path().replace(File.separator, "/")+"','"+param_ob.getPayload_name()+"','"+param_ob.getPayload_label()+"');print(live_verna_detection1)"});
             p.waitFor();
             String stdout = IOUtils.toString(p.getInputStream());
             System.out.println("stdout result is ----" + stdout);
@@ -177,6 +183,7 @@ public class Sapnil_WAF {
         }
 
         return result_list;
+        //return null;
     }
 
 }
