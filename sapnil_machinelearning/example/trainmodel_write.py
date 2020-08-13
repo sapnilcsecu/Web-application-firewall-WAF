@@ -4,41 +4,42 @@ Created on May 7, 2019
 @author: Nasir uddin
 '''
 
+import numpy as np
+import pandas as pd
+import pickle
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
 from sklearn import naive_bayes
-from dataset_pre.dataset_load import load_cvs_dataset
-from feature_eng.word_tf_idf import word_tf_idf
-from classifier.Classifier import train_model
-import pickle 
+from sklearn.metrics import accuracy_score
+
 
 def main():
     
-    #load the dataset
+    np.random.seed(500)
+    # Add the Data using pandas
+    train_data = pd.read_csv('../payload_full_path.csv', encoding='latin-1', error_bad_lines=False)
+    payload=train_data['payload']
+    label=train_data['label']
+    
+    
+    
+    tfidfconverter = TfidfVectorizer(max_features=1500, min_df=5, max_df=0.7, stop_words=stopwords.words('english'))
+    X = tfidfconverter.fit_transform(payload).toarray()
+    X_train, X_test, y_train, y_test = train_test_split(X,label, test_size=0.2, random_state=0)
+    
+    classifier=naive_bayes.MultinomialNB()
+    classifier.fit(X_train, y_train)
+    
+    # predict the labels on validation dataset
+    predictions = classifier.predict(X_test)
    
-    trainDF=load_cvs_dataset("../payload_full.csv")
-    #load the dataset
-    
-    #Text Preprocessing
-    
-    txt_label=trainDF['label']
-    txt_text=trainDF['payload']
-    
-    #Text feature engineering 
-    model_input=word_tf_idf(txt_text,txt_label)
-    #Text feature engineering 
-    
-    #  Build Text Classification Model and Evaluating the Model
-    naive=naive_bayes.MultinomialNB()
-    accuracy =train_model(naive,model_input[0], model_input[1], model_input[2], model_input[3])
-    print ("NB, word_tf_idf accuracy is : ", accuracy*100)
-    
-    
+   
+    acc=accuracy_score(predictions, y_test)*100
+    print("acc is ",acc)
   
-    with open('../vocabulary_file', 'wb') as vocabulary_file:  
-        pickle.dump(model_input[4],vocabulary_file)
-    
-    with open('../text_classifier', 'wb') as picklefile:  
-        pickle.dump(naive,picklefile)
-    
+    pickle.dump(classifier, open("../text_classifier.pickle", "wb"))
+    pickle.dump(tfidfconverter, open("../tfidf.pickle", "wb"))
     
     #  Build Text Classification Model and Evaluating the Model
 if __name__ == '__main__':

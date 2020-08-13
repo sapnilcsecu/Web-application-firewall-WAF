@@ -70,7 +70,12 @@ public class Bulk_testing extends HttpServlet {
 
                         input_dataset_name = new File(item.getName()).getName();
                         final_input_dataset_path = input_dataset_path + input_dataset_name;
-                        item.write(new File(final_input_dataset_path));
+                        File file = new File(final_input_dataset_path);
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                        item.write(file);
+
                     } else {
                         System.out.println("not file data ");
                         if (item.getFieldName().equals("payload_name")) {
@@ -108,7 +113,7 @@ public class Bulk_testing extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

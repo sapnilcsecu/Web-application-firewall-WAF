@@ -58,7 +58,12 @@ public class UploadFile extends HttpServlet {
                         System.out.println("file data ");
 
                         input_dataset_name = new File(item.getName()).getName();
-                        item.write(new File(input_dataset_path + input_dataset_name));
+                        File file = new File(input_dataset_path + input_dataset_name);
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                        item.write(file);
+
                     } else {
                         if (item.getFieldName().equals("payload_name")) {
                             payload_name = item.getString();
@@ -93,7 +98,7 @@ public class UploadFile extends HttpServlet {
 
             e.printStackTrace();
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

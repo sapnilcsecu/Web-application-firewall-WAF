@@ -80,7 +80,7 @@ public class Sapnil_WAF {
     }
 
     public static String write_append_model(Train_model_param param_ob) {
-
+        Process p=null;
         String accuracy = "";
         String final_input_dataset_path = param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename();
         try {
@@ -88,7 +88,7 @@ public class Sapnil_WAF {
             if (param_ob.getMod_of_tran().equals("NEW TRAINING MODEL")) {
 
                 // System.out.println("input_dataset_path is " + input_dataset_path);
-                Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','write'); print(json.dumps([str(accuracy_score)]))"});
+                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','write'); print(json.dumps([str(accuracy_score)]))"});
 
                 p.waitFor();
                 String stdout = IOUtils.toString(p.getInputStream());
@@ -98,8 +98,8 @@ public class Sapnil_WAF {
                     accuracy = syspathRaw.getString(i);
 
                 }
-            } else if (param_ob.getMod_of_tran().equals("APPEND TRAINING MODEL")) {
-                Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','append'); print(json.dumps([str(accuracy_score)]))"});
+            } /*else if (param_ob.getMod_of_tran().equals("APPEND TRAINING MODEL")) {
+                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','append'); print(json.dumps([str(accuracy_score)]))"});
 
                 p.waitFor();
                 String stdout = IOUtils.toString(p.getInputStream());
@@ -109,12 +109,13 @@ public class Sapnil_WAF {
                     accuracy = syspathRaw.getString(i);
 
                 }
-            }
+            }*/
         } catch (Exception e) {
             // exception handling
+              p.destroy();
             e.printStackTrace();
         }
-
+          p.destroy();
         return accuracy;
     }
 
@@ -130,10 +131,12 @@ public class Sapnil_WAF {
 
            
        ArrayList<String[]> result_list = new ArrayList<String[]>();
-        try {
+        Process p=null; 
+       try {
             String final_input_dataset_path = param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename();
             CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
             String readFilerow;
+           
 
             int payload_index = 0, label_index = 0;
             ArrayList<String> payload_list = new ArrayList<String>();
@@ -151,10 +154,11 @@ public class Sapnil_WAF {
                 }
                 payload_list.add(wordList.get(payload_index));
                 label_list.add(wordList.get(label_index));
+                
             }
 
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import bulk_live_verna_detection; bulk_verna_detect_result=bulk_live_verna_detection('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path().replace(File.separator, "/") + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "');print(bulk_verna_detect_result)"});
-            Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import bulk_live_verna_detection; live_verna_detection1=bulk_live_verna_detection('" + final_input_dataset_path + "','"+param_ob.getInput_dataset_path().replace(File.separator, "/")+"','"+param_ob.getPayload_name()+"','"+param_ob.getPayload_label()+"');print(live_verna_detection1)"});
+            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import bulk_live_verna_detection; live_verna_detection1=bulk_live_verna_detection('" + final_input_dataset_path + "','"+param_ob.getInput_dataset_path().replace(File.separator, "/")+"','"+param_ob.getPayload_name()+"','"+param_ob.getPayload_label()+"');print(live_verna_detection1)"});
             p.waitFor();
             String stdout = IOUtils.toString(p.getInputStream());
             System.out.println("stdout result is ----" + stdout);
@@ -164,6 +168,8 @@ public class Sapnil_WAF {
 
             String versify_result1 = "";
             //CSVWriter csvWriter = new CSVWriter(new FileWriter("new.csv"), ",", "'","/", "\n");
+            System.out.println("the label size is "+label_list.size());
+            System.out.println("the result array size is "+syspathRaw.size());
             for (int i = 0; i < syspathRaw.size(); i++) {
                 versify_result1 = syspathRaw.getString(i);
                 if (!label_list.get(i).trim().equals(versify_result1.trim())) {
@@ -179,9 +185,10 @@ public class Sapnil_WAF {
 
         } catch (Exception e) {
             // exception handling
+             p.destroy();
             e.printStackTrace();
         }
-
+          p.destroy();
         return result_list;
         //return null;
     }

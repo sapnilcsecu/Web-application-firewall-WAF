@@ -8,7 +8,7 @@ from nltk.tokenize import word_tokenize
 from model.train_model import train_model
 import re
 
-
+#https://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
 def multi_nativebayes_train(model_data):
     #
    
