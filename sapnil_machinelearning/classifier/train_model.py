@@ -14,6 +14,9 @@ from sklearn.metrics import accuracy_score
 from builtins import str
 from sklearn import model_selection
 from sklearn.feature_extraction.text import TfidfVectorizer
+import os, sys
+from _ast import Str
+import re
 
 
 # this function take separate trainset,testdataset as input
@@ -41,22 +44,53 @@ def train_model_write(input_dataset, vocabulary_path, payload_col_name, payload_
     accuracy =train_model(naive,model_input[0], model_input[1], model_input[2], model_input[3])
     # print("the write mode"+str(input_dataset))
     
-    pickle.dump(naive, open(str(vocabulary_path)+"text_classifier.pickle", "wb"))
-    pickle.dump(model_input[4], open(str(vocabulary_path)+"tfidf.pickle", "wb"))   
+    #path = '../train_model'
+    dirs = os.listdir( vocabulary_path )
+    file_no=len(dirs)
+    
+   
+
+    
+    pickle.dump(naive, open(str(vocabulary_path)+"text_classifier-"+str(file_no)+".pickle", "wb"))
+    pickle.dump(model_input[4], open(str(vocabulary_path)+"tfidf-"+str(file_no)+".pickle", "wb"))   
 
    
     
     return accuracy*100 
 
 
+
+def live_verna_single_detection(model_path,web_param):
+    dirs = os.listdir( model_path )
+    allmodel_result=[]
+    count_limit=len(dirs)-2
+    count=0;
+    for pkl_file in dirs:
+        file_num = int(re.search(r'\d+', pkl_file).group())
+        classifier = pickle.load(open(str(model_path)+"text_classifier-"+str(file_num)+".pickle", mode='rb'))
+        tfidf = pickle.load(open(str(model_path)+"tfidf-"+str(file_num)+".pickle", mode='rb'))
+        imput_param= [''+str(web_param)]
+        classifier_result = classifier.predict(tfidf.transform(imput_param))
+        allmodel_result.append(classifier_result[0])
+        count=count+1
+        if(count>=count_limit):
+            break;
+        
+    
+    return allmodel_result
+
+
 def live_verna_detection(vocabulary_path, input_web_param_path,payload_col_name):
+    
+
     verify_result = []
     trainDF = load_cvs_dataset(input_web_param_path)
-
+    dirs = os.listdir( vocabulary_path )
+    file_no=len(dirs)
    
     txt_text = trainDF[payload_col_name]
     with open(str(vocabulary_path)+'tfidf.pickle', 'rb') as vocabulary_file:  
-       count_vect= pickle.load(vocabulary_file)
+        count_vect= pickle.load(vocabulary_file)
     with open(str(vocabulary_path)+'text_classifier.pickle', 'rb') as training_model:  
         model = pickle.load(training_model)
        
@@ -71,6 +105,8 @@ def live_verna_detection(vocabulary_path, input_web_param_path,payload_col_name)
    
     
     return verify_result
+
+     
 
 
 def bulk_live_detection(train_model1, web_param):

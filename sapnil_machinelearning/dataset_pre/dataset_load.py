@@ -59,3 +59,24 @@ def splitDataset(dataset, dataset_label, splitRatio):
         labelset.append(testlabelcopy.pop(index))    
         
     return [trainSet, testcopy, labelset, testlabelcopy]
+
+def splitDataset_row(dataset, dataset_label):
+    train_dataset = list(dataset)
+    #split_part=[]
+    count=0
+    is_empty=False 
+    while is_empty:
+        split_part=[]
+        while len(train_dataset)>0:
+            index = random.randrange(len(train_dataset))
+            split_part.append(train_dataset.pop(index)) 
+            if count==1000:
+                break
+            count=count+1
+        if len(train_dataset)==0:
+            is_empty=True     
+        
+    return
+
+
+

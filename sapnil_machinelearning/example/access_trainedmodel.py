@@ -15,9 +15,9 @@ from sklearn import model_selection
 def main():
     np.random.seed(500)
    
-    train_data = pd.read_csv('../response.csv', encoding='latin-1', error_bad_lines=False)
-    payload=train_data['payload_name']
-    label=train_data['payload_label']
+    ##train_data = pd.read_csv('../response.csv', encoding='latin-1', error_bad_lines=False)
+   ## payload=train_data['payload_name']
+    ##label=train_data['payload_label']
     
     result=[]
      
@@ -30,7 +30,11 @@ def main():
     
        
     tfidf_vect2 = TfidfVectorizer(analyzer='word', max_features=5000)   
-    tfidf_vect2.fit(payload)
+    new_observation = [[ 5.2,  3.2,  1.1,  0.1]]
+    X= [['nasir','forhad']]
+    #matrix=tfidf_vect2.fit_transform(X) 
+    result=model.predict(new_observation)
+    print(result)
     #for pram in payload:
         #X= [''+str(pram)]
     #matrix=tfidf_vect2.transform(Train_X) 
@@ -40,8 +44,8 @@ def main():
     trainData = vectorizer.fit_transform(payload)
     tfidf_transformer = TfidfTransformer()
     '''
-    tfidfData = tfidfconverter1.transform(payload).toarray()
-    print(tfidfData)
+    #tfidfData = tfidfconverter1.transform(payload).toarray()
+    #print(tfidfData)
     #model.predict(tfidfData)
    # for result1 in result:
     #print(result)

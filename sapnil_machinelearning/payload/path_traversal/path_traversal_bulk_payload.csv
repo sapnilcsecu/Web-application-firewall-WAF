@@ -1,8 +1,0 @@
-payload,label
-C:/inetpub/wwwroot/global.asa,anom
-C:\inetpub\wwwroot\global.asa,anom
-C:/boot.ini,anom
-C:\boot.ini,anom
-D:\inetpub\wwwroot\global.asa,anom
-D:/inetpub/wwwroot/global.asa,anom
-/../{FILE},anom

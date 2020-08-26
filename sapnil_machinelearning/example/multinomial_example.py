@@ -16,6 +16,7 @@ import pickle
 #from dataset_pre.dataset_load import load_cvs_dataset
 
 from classifier.train_model import train_model_write
+from classifier.train_model import live_verna_single_detection
 
 
 #import json
@@ -76,11 +77,14 @@ def main():
     for doc1 in bulk_verna_detect_result:
         print(doc1)    
     '''   
-    
-    accuracy_score=train_model_write('../response.csv','../',"payload","label")
+    '''
+    accuracy_score=train_model_write('../payload/dir_traversal.csv','../train_model/',"payload","label")
     print("the score is ",accuracy_score)
+    '''
     
     
+    detect_result=live_verna_single_detection('../train_model/',"%2e%2e/{FILE}")
+    print('detect_result ',detect_result)
     
     #verna_detection_re=bulk_live_verna_detection('../payload_full.csv', '../',"payload","label")
     #print(verna_detection_re)
