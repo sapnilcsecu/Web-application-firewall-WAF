@@ -17,6 +17,8 @@ import pickle
 
 from classifier.train_model import train_model_write
 from classifier.train_model import live_verna_single_detection
+from classifier.train_model import live_verna_detection
+
 
 
 #import json
@@ -78,20 +80,24 @@ def main():
         print(doc1)    
     '''   
     '''
-    accuracy_score=train_model_write('../payload/dir_traversal.csv','../train_model/',"payload","label")
+    accuracy_score=train_model_write('../payload/cmd_payload.csv','../train_model/',"payload","label")
     print("the score is ",accuracy_score)
     '''
     
-    
-    detect_result=live_verna_single_detection('../train_model/',"%2e%2e/{FILE}")
+    '''
+    detect_result=live_verna_single_detection('../train_model/',"nasir")
     print('detect_result ',detect_result)
-    
+    '''
+    '''
+    detect_result=live_verna_detection('../train_model/' ,'../payload/test_payload.csv',"payload")
+    print('detect_result ',detect_result)
+    '''
     #verna_detection_re=bulk_live_verna_detection('../payload_full.csv', '../',"payload","label")
     #print(verna_detection_re)
-    '''
-    verna_detection_re=live_verna_detection('../','../lapd_bulk.csv',"payload")    
+    
+    verna_detection_re=live_verna_detection('../train_model/','../payload/test_payload.csv',"payload")    
     print(verna_detection_re)
-    '''
+    
     
     #To load the model
     
