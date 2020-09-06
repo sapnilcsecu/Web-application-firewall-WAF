@@ -60,16 +60,16 @@ def live_verna_single_detection(model_path,web_param):
 def live_verna_detection(model_path, input_web_param_path,payload_col_name):
     
     
-    verify_result =[]  
+    verify_result ='false'  
     trainDF = load_cvs_dataset(input_web_param_path)
     txt_text = trainDF[payload_col_name]
     for web_param in txt_text:
         result=live_verna_single_detection(model_path,web_param)
        
         if(result==True):    
-            verify_result.append('anom')
+            verify_result='true'
         elif (result==False) :
-            verify_result.append('norm')
+            verify_result='false'
     
     return verify_result
 
