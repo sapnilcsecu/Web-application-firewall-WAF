@@ -1,15 +1,4 @@
 payload,label
-c/ caridad s/n,norm
-"campello, el",norm
-40184,norm
-1.44243E+15,norm
-nue37,norm
-nuda drudes,norm
-tufts3@joll.rs,norm
-22997112x,norm
-%20{${phpinfo()}},anom
-%20{${sleep(20)}},anom
-%20{${sleep(3)}},anom
 a|id|,anom
 a;id|,anom
 a;id;,anom

