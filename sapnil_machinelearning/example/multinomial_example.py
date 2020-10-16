@@ -79,10 +79,10 @@ def main():
     for doc1 in bulk_verna_detect_result:
         print(doc1)    
     '''   
-    '''
-    accuracy_score=train_model_write('../payload/cmd_payload.csv','../train_model/',"payload","label")
+    
+    accuracy_score=train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/',"payload","label")
     print("the score is ",accuracy_score)
-    '''
+    
     
     '''
     detect_result=live_verna_single_detection('../train_model/',"nasir")
@@ -95,8 +95,8 @@ def main():
     #verna_detection_re=bulk_live_verna_detection('../payload_full.csv', '../',"payload","label")
     #print(verna_detection_re)
     
-    verna_detection_re=live_verna_detection('../train_model/','../payload/test_payload.csv',"payload")    
-    print(verna_detection_re)
+    #verna_detection_re=live_verna_detection('../train_model/','../payload/test_payload.csv',"payload")    
+    #print(verna_detection_re)
     
     
     #To load the model

@@ -84,6 +84,8 @@ public class Sapnil_WAF {
         Process p = null;
         String accuracy = "";
         String final_input_dataset_path = param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename();
+        String train_model_path = param_ob.getInput_dataset_path() + "train_model/";
+
         try {
 
             if (param_ob.getMod_of_tran().equals("NEW TRAINING MODEL")) {
@@ -93,8 +95,8 @@ public class Sapnil_WAF {
                 String[] record = null;
 
                 while ((record = reader.readNext()) != null) {
-                    System.out.println("payload " + record[0]);
-                    System.out.println("label " + record[1]);
+                    // System.out.println("payload " + record[0]);
+                    // System.out.println("label " + record[1]);
                     writer.writeNext(record);
 
                 }
@@ -102,8 +104,12 @@ public class Sapnil_WAF {
                 reader.close();
                 writer.close();
 
-                // System.out.println("input_dataset_path is " + input_dataset_path);
-                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + final_input_dataset_path + "','" + param_ob.getInput_dataset_path() + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "','write'); print(json.dumps([str(accuracy_score)]))"});
+                System.out.println("input_dataset_path is " + final_input_dataset_path);
+                System.out.println("train_model_path is " + train_model_path);
+                //train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/',"payload","label")
+                //p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + param_ob.getInput_dataset_path() + "','" + train_model_path + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "'); print(json.dumps([str(accuracy_score)]))"});
+                //p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/','payload','label'); print(json.dumps([str(accuracy_score)]))"});
+                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('"+final_input_dataset_path+"','"+train_model_path+"','payload','label'); print(json.dumps([str(accuracy_score)]))"});
 
                 p.waitFor();
                 String stdout = IOUtils.toString(p.getInputStream());

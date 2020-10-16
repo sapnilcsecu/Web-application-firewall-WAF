@@ -15,18 +15,19 @@ import re
 
 
 
-def train_model_write(input_dataset, vocabulary_path, payload_col_name, payload_label):
+def train_model_write(input_dataset,train_model_path, payload_col_name, payload_label):
    
+    #print(''+train_model_path)
     trainDF=load_cvs_dataset(input_dataset)
     txt_label=trainDF[payload_label]
     txt_text=trainDF[payload_col_name]
     model_input=word_tf_idf(txt_text,txt_label)
     naive=naive_bayes.MultinomialNB()
     accuracy =train_model(naive,model_input[0], model_input[1], model_input[2], model_input[3])
-    dirs = os.listdir( vocabulary_path )
+    dirs = os.listdir( train_model_path )
     file_no=len(dirs)
-    pickle.dump(naive, open(str(vocabulary_path)+"text_classifier-"+str(file_no)+".pickle", "wb"))
-    pickle.dump(model_input[4], open(str(vocabulary_path)+"tfidf-"+str(file_no)+".pickle", "wb"))   
+    pickle.dump(naive, open(str(train_model_path)+"text_classifier-"+str(file_no)+".pickle", "wb"))
+    pickle.dump(model_input[4], open(str(train_model_path)+"tfidf-"+str(file_no)+".pickle", "wb"))   
     return accuracy*100 
 
 
