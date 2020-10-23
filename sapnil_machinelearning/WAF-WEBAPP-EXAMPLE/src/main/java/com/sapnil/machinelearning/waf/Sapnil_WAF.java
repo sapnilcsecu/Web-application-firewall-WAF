@@ -40,12 +40,12 @@ public class Sapnil_WAF {
 
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
             HttpSession session = request.getSession(true);
-            String context_path = session.getServletContext().getRealPath("/").replace(File.separator, "/");
-
+            String model_path = session.getServletContext().getRealPath("/").replace(File.separator, "/")+ "train_model/";
+            String context_path=session.getServletContext().getRealPath("/").replace(File.separator, "/");
             String file_path = context_path + param_file_path;
-            // System.out.println("context pathr is " + context_path);
-
-            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + context_path + "','" + file_path + "','payload');print(live_verna_detection)"});
+            System.out.println("context pathr is " + model_path);
+            System.out.println("file_path is " + file_path);
+            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" +model_path+ "','" + file_path + "','payload');print(live_verna_detection)"});
             p.waitFor();
 
             String stdout = IOUtils.toString(p.getInputStream());

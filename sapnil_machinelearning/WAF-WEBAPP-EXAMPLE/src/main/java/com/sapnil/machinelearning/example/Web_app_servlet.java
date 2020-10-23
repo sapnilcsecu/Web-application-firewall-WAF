@@ -84,18 +84,18 @@ public class Web_app_servlet extends HttpServlet {
             if (result_list.size() > 1) {
                 boolean is_vernable = Sapnil_WAF.detect_verna_param(request, csv_file);
                 if (is_vernable) {
-                    Utility.del_file(final_cvs_path);
+                  //  Utility.del_file(final_cvs_path);
                     System.out.println("Parameter contain script");
                     response.getWriter().write("Parameter contain script");
                     return;
                 } else {
-                    Utility.del_file(final_cvs_path);
+                  //  Utility.del_file(final_cvs_path);
                     System.out.println("this is normal parameter");
                     response.getWriter().write("this is normal parameter");
                     return;
                 }
             } else {
-                Utility.del_file(final_cvs_path);
+               // Utility.del_file(final_cvs_path);
                 System.out.println("empty parameter");
                 response.getWriter().write("empty parameter");
                 return;
@@ -105,7 +105,7 @@ public class Web_app_servlet extends HttpServlet {
         } catch (Exception ex) {
 
             ex.getMessage();
-            Utility.del_file(final_cvs_path);
+           // Utility.del_file(final_cvs_path);
             System.out.println("Parameter contain script");
             response.getWriter().write("Parameter contain script");
             return;
