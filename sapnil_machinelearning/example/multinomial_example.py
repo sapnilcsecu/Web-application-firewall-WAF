@@ -79,17 +79,17 @@ def main():
     for doc1 in bulk_verna_detect_result:
         print(doc1)    
     '''   
-    '''
-    accuracy_score=train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/',"payload","label")
+    
+    accuracy_score=train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/normdatapayload.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/',"payload","label")
     print("the score is ",accuracy_score)
-    '''
+    
     
     '''
     detect_result=live_verna_single_detection('../train_model/',"nasir")
     print('detect_result ',detect_result)
     '''
     
-    detect_result=live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/' ,'E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/3BED4581520EC8AA0F828A4FD1771565.csv',"payload")
+    detect_result=live_verna_detection('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/' ,'E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/65A5C1FC68CF65BCC0CB90B558233BE6.csv',"payload")
     print('detect_result ',detect_result)
     
     #verna_detection_re=bulk_live_verna_detection('../payload_full.csv', '../',"payload","label")

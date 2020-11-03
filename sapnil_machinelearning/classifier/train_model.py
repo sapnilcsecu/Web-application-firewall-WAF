@@ -4,13 +4,14 @@ Created on Mar 23, 2020
 @author: Nasir uddin
 '''
 from sklearn import naive_bayes
-from feature_eng.word_tf_idf import word_tf_idf
+from feature_eng.count_vectorizer import count_vectorizer
 from classifier.Classifier import train_model
 from dataset_pre.dataset_load import load_cvs_dataset
 import pickle
 from builtins import str
 import os
 import re
+from _ast import Str
 
 
 
@@ -21,7 +22,7 @@ def train_model_write(input_dataset,train_model_path, payload_col_name, payload_
     trainDF=load_cvs_dataset(input_dataset)
     txt_label=trainDF[payload_label]
     txt_text=trainDF[payload_col_name]
-    model_input=word_tf_idf(txt_text,txt_label)
+    model_input=count_vectorizer(txt_text,txt_label)
     naive=naive_bayes.MultinomialNB()
     accuracy =train_model(naive,model_input[0], model_input[1], model_input[2], model_input[3])
     dirs = os.listdir( train_model_path )
@@ -44,11 +45,13 @@ def live_verna_single_detection(model_path,web_param):
         tfidf = pickle.load(open(str(model_path)+"tfidf-"+str(file_num)+".pickle", mode='rb'))
         imput_param= [''+str(web_param)]
         classifier_result = classifier.predict(tfidf.transform(imput_param))
-        print("classifier_result is ",classifier_result[0])
+        #print("the param is "+str(web_param)+"file count --"+str(file_num)+"classifier_result is ",classifier_result[0])
        
         if(classifier_result[0]=='anom'):
             is_anom=True
             break;
+        
+      
        
         count=count+1
         if(count>=count_limit):

