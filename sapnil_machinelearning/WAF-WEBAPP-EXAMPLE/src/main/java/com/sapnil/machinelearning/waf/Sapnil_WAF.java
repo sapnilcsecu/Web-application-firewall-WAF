@@ -40,12 +40,12 @@ public class Sapnil_WAF {
 
             //Process p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('D:/bitbuket sapnil machinelearning/sapnil_machinelearning/sapnil_machinelearning','"+user_name+"');print(json.dumps([str(live_verna_detection)]))"});
             HttpSession session = request.getSession(true);
-            String model_path = session.getServletContext().getRealPath("/").replace(File.separator, "/")+ "train_model/";
-            String context_path=session.getServletContext().getRealPath("/").replace(File.separator, "/");
+            String model_path = session.getServletContext().getRealPath("/").replace(File.separator, "/") + "train_model/";
+            String context_path = session.getServletContext().getRealPath("/").replace(File.separator, "/");
             String file_path = context_path + param_file_path;
             System.out.println("context pathr is " + model_path);
             System.out.println("file_path is " + file_path);
-            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" +model_path+ "','" + file_path + "','payload');print(live_verna_detection)"});
+            p = Runtime.getRuntime().exec(new String[]{"python", "-c", "from classifier.train_model import live_verna_detection; live_verna_detection=live_verna_detection('" + model_path + "','" + file_path + "','payload');print(live_verna_detection)"});
             p.waitFor();
 
             String stdout = IOUtils.toString(p.getInputStream());
@@ -90,24 +90,44 @@ public class Sapnil_WAF {
 
             if (param_ob.getMod_of_tran().equals("NEW TRAINING MODEL")) {
                 CSVReader reader = new CSVReader(new FileReader(final_input_dataset_path));
+                CSVReader reader1 = new CSVReader(new FileReader(param_ob.getInput_dataset_path() + "normdatapayload.csv"));
                 //String csv = "cmd_payload.csv";
-                CSVWriter writer = new CSVWriter(new FileWriter(param_ob.getInput_dataset_path() + "normdatapayload.csv", true));
+                ArrayList<String[]> result_list = new ArrayList<String[]>();
+                result_list.add(new String[]{"payload", "label"});
+                CSVWriter writer = new CSVWriter(new FileWriter(param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename() + "inputdataset.csv"));
+
+                writer.writeAll(result_list);
                 String[] record = null;
-                int count=0;
-                while ((record = reader.readNext()) != null) {
+                int count = 0;
+                while ((record = reader1.readNext()) != null) {
                     // System.out.println("payload " + record[0]);
                     // System.out.println("label " + record[1]);
-                    if(count==0){
+                    if (count == 0) {
                         ++count;
                         continue;
                     }
                     writer.writeNext(record);
-                    
+
+                    ++count;
+
+                }
+
+                int count1 = 0;
+                while ((record = reader.readNext()) != null) {
+                    // System.out.println("payload " + record[0]);
+                    // System.out.println("label " + record[1]);
+                    if (count1 == 0) {
+                        ++count1;
+                        continue;
+                    }
+                    writer.writeNext(record);
+
                     ++count;
 
                 }
 
                 reader.close();
+                reader1.close();
                 writer.close();
 
                 System.out.println("param_ob.getInput_dataset_path() is " + param_ob.getInput_dataset_path());
@@ -115,7 +135,7 @@ public class Sapnil_WAF {
                 //train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/',"payload","label")
                 //p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + param_ob.getInput_dataset_path() + "','" + train_model_path + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "'); print(json.dumps([str(accuracy_score)]))"});
                 //p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/','payload','label'); print(json.dumps([str(accuracy_score)]))"});
-                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('"+param_ob.getInput_dataset_path() + "normdatapayload.csv"+"','"+train_model_path+"','payload','label'); print(json.dumps([str(accuracy_score)]))"});
+                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + param_ob.getInput_dataset_path() + "normdatapayload.csv" + "','" + train_model_path + "','payload','label'); print(json.dumps([str(accuracy_score)]))"});
 
                 p.waitFor();
                 String stdout = IOUtils.toString(p.getInputStream());
@@ -142,8 +162,11 @@ public class Sapnil_WAF {
             // exception handling
             p.destroy();
             e.printStackTrace();
+        } finally {
+            Utility.del_file(param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename() + "inputdataset.csv");
+            p.destroy();
         }
-        p.destroy();
+
         return accuracy;
     }
 
