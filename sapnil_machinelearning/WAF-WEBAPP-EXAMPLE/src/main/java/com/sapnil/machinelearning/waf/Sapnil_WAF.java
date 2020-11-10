@@ -94,7 +94,8 @@ public class Sapnil_WAF {
                 //String csv = "cmd_payload.csv";
                 ArrayList<String[]> result_list = new ArrayList<String[]>();
                 result_list.add(new String[]{"payload", "label"});
-                CSVWriter writer = new CSVWriter(new FileWriter(param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename() + "inputdataset.csv"));
+                String input_file_path=param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename() + "inputdataset.csv";
+                CSVWriter writer = new CSVWriter(new FileWriter(input_file_path));
 
                 writer.writeAll(result_list);
                 String[] record = null;
@@ -135,7 +136,7 @@ public class Sapnil_WAF {
                 //train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/',"payload","label")
                 //p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + param_ob.getInput_dataset_path() + "','" + train_model_path + "','" + param_ob.getPayload_name() + "','" + param_ob.getPayload_label() + "'); print(json.dumps([str(accuracy_score)]))"});
                 //p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/Command Injection.csv','E:/github_repro/Web-application-firewall-WAF/sapnil_machinelearning/WAF-WEBAPP-EXAMPLE/target/WAF-WEBAPP-EXAMPLE-1.0-SNAPSHOT/train_model/','payload','label'); print(json.dumps([str(accuracy_score)]))"});
-                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" + param_ob.getInput_dataset_path() + "normdatapayload.csv" + "','" + train_model_path + "','payload','label'); print(json.dumps([str(accuracy_score)]))"});
+                p = Runtime.getRuntime().exec(new String[]{"python", "-c", "import sys, json;from classifier.train_model import train_model_write; accuracy_score=train_model_write('" +input_file_path+ "','" + train_model_path + "','payload','label'); print(json.dumps([str(accuracy_score)]))"});
 
                 p.waitFor();
                 String stdout = IOUtils.toString(p.getInputStream());
@@ -163,8 +164,8 @@ public class Sapnil_WAF {
             p.destroy();
             e.printStackTrace();
         } finally {
-            Utility.del_file(param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename() + "inputdataset.csv");
-            p.destroy();
+           // Utility.del_file(param_ob.getInput_dataset_path() + param_ob.getInput_dataset_filename() + "inputdataset.csv");
+          //  p.destroy();
         }
 
         return accuracy;
